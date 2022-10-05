@@ -34,4 +34,8 @@ export 'package:sentry/sentry.dart';
 export 'package:sentry_flutter/sentry_flutter.dart';
 
 export 'package:ohowallet/core/settings.dart';
+export 'package:ohowallet/services/app_data_service.dart';
 export 'package:ohowallet/services/wallet_service.dart';
+export 'package:ohowallet/services/theme_service.dart';
+export 'package:ohowallet/widgets/base_widget.dart';
+export 'package:ohowallet/screens/welcome_screen.dart';

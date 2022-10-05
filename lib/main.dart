@@ -1,62 +1,7 @@
 import 'package:ohowallet/core/exports.dart';
+import 'package:ohowallet/services/app_data_service.dart';
 
 const devicePreviewEnabled = false;
-
-Future<void> setupAppData() async {
-  const FlutterSecureStorage secureStorage = FlutterSecureStorage();
-  final String? appDataKey_ = await secureStorage.read(key: 'appDataKey');
-  List<int> appDataKey;
-
-  if (appDataKey_ != null) {
-    appDataKey = List<int>.from(jsonDecode(appDataKey_));
-  } else {
-    appDataKey = Hive.generateSecureKey();
-    await secureStorage.write(
-      key: 'appDataKey',
-      value: jsonEncode(appDataKey),
-    );
-  }
-
-  await Hive.initFlutter('hive');
-  await Hive.openBox(
-    'appData',
-    encryptionCipher: HiveAesCipher(appDataKey),
-  );
-}
-
-Future<void> setupWallet() async {
-  final appDataBox = Hive.box('appData');
-
-  String? accountMnemonic = appDataBox.get('account_mnemonic');
-  if (accountMnemonic == null) {
-    accountMnemonic = generateMnemonic();
-    await appDataBox.put('account_mnemonic', accountMnemonic);
-  }
-  print("accountMnemonic: $accountMnemonic");
-
-  String? accountPrivateKey = appDataBox.get('account_private_key');
-  if (accountPrivateKey == null) {
-    accountPrivateKey = await WalletService.getPrivateKey(accountMnemonic);
-    await appDataBox.put('account_private_key', accountPrivateKey);
-  }
-  print("accountPrivateKey: $accountPrivateKey");
-
-  String? accountAddress = appDataBox.get('account_address');
-  if (accountAddress == null) {
-    accountAddress =
-        (await WalletService.getPublicKey(accountPrivateKey)).hexEip55;
-    await appDataBox.put('account_address', accountAddress);
-  }
-  print("accountAddress: $accountAddress");
-
-  final walletService = Get.put(WalletService());
-
-  if (kReleaseMode) {
-    await walletService.initialize(accountPrivateKey);
-  } else {
-    await walletService.initialize(OHOSettings.testPrivateKey);
-  }
-}
 
 Future<void> setupMyApp() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,8 +11,9 @@ Future<void> setupMyApp() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  await setupAppData();
-  await setupWallet();
+  await Get.putAsync(() => AppDataService().init());
+  await Get.putAsync(() => WalletService().init());
+  await Get.putAsync(() => ThemeService().init());
 }
 
 void runMyApp() {
@@ -119,7 +65,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Container(),
+      home: WelcomeScreen(),
       useInheritedMediaQuery: true,
       locale: DevicePreview.locale(context),
       builder: (BuildContext context, Widget? child) => devicePreviewEnabled

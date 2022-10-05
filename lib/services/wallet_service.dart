@@ -39,7 +39,7 @@ typedef OnUpdateTransaction = Future<void> Function({
   double? feeCharged,
 });
 
-class WalletService {
+class WalletService extends GetxService {
   static const alchemyApiKey = 'OGQhAKlTDHBObj8ENGTjmUzWRVKLAeFJ';
   static const rpcUrl =
       'https://polygon-mainnet.g.alchemy.com/v2/$alchemyApiKey';
@@ -53,6 +53,43 @@ class WalletService {
   final Web3Client web3client;
 
   WalletService() : web3client = Web3Client(rpcUrl, Client());
+
+  Future<WalletService> init() async {
+    final appDataBox =
+        Get.find<AppDataService>().appDataBox; // Hive.box('appData');
+
+    String? accountMnemonic = appDataBox.get('account_mnemonic');
+    if (accountMnemonic == null) {
+      accountMnemonic = generateMnemonic();
+      await appDataBox.put('account_mnemonic', accountMnemonic);
+    }
+    print("accountMnemonic: $accountMnemonic");
+
+    String? accountPrivateKey = appDataBox.get('account_private_key');
+    if (accountPrivateKey == null) {
+      accountPrivateKey = await WalletService.getPrivateKey(accountMnemonic);
+      await appDataBox.put('account_private_key', accountPrivateKey);
+    }
+    print("accountPrivateKey: $accountPrivateKey");
+
+    String? accountAddress = appDataBox.get('account_address');
+    if (accountAddress == null) {
+      accountAddress =
+          (await WalletService.getPublicKey(accountPrivateKey)).hexEip55;
+      await appDataBox.put('account_address', accountAddress);
+    }
+    print("accountAddress: $accountAddress");
+
+    final walletService = Get.put(WalletService());
+
+    if (kReleaseMode) {
+      await walletService.initialize(accountPrivateKey);
+    } else {
+      await walletService.initialize(OHOSettings.testPrivateKey);
+    }
+
+    return this;
+  }
 
   Future<void> initialize(String accountPrivateKey) async {
     _accountPrivateKey = accountPrivateKey;
