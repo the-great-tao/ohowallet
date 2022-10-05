@@ -96,6 +96,8 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -122,3 +124,24 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: Outfit
+      fonts:
+        - asset: assets/fonts/Outfit/Outfit-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Outfit/Outfit-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Outfit/Outfit-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Outfit/Outfit-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Outfit/Outfit-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Outfit/Outfit-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Outfit/Outfit-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Outfit/Outfit-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Outfit/Outfit-Black.ttf
+          weight: 900
