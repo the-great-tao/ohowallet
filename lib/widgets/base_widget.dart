@@ -29,7 +29,4 @@ abstract class BaseWidget<T extends BaseController> extends StatelessWidget {
   WalletService get walletService => controller.walletService;
 
   ThemeService get themeService => controller.themeService;
-
-  @override
-  Widget build(BuildContext context);
 }
