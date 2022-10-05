@@ -77,10 +77,9 @@ class ThemeService extends GetxService {
   Color get textFieldHintColor =>
       lightMode.value ? OHOColors.grey5 : OHOColors.grey5;
 
-  Color get textNormalColor =>
-      lightMode.value ? OHOColors.blue3 : OHOColors.blue2;
+  Color get textColor => lightMode.value ? OHOColors.blue3 : OHOColors.blue2;
 
-  Color get textHeaderColor =>
+  Color get headerTextColor =>
       lightMode.value ? OHOColors.blue5 : OHOColors.white;
 
   Color get statusSuccessColor =>
