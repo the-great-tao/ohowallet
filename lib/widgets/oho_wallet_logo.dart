@@ -16,7 +16,7 @@ class OHOWalletLogo extends BaseWidget<OHOWalletLogoController> {
           'assets/images/oho_logo_square_512.png',
           width: 400.r,
         ),
-        SizedBox(height: 10.h),
+        SizedBox(height: 10.r),
         Text(
           'OHO',
           textAlign: TextAlign.center,
@@ -28,7 +28,7 @@ class OHOWalletLogo extends BaseWidget<OHOWalletLogoController> {
             letterSpacing: 4.sp,
           ),
         ),
-        SizedBox(height: 10.h),
+        SizedBox(height: 10.r),
         Text(
           'Universal EVM Wallet',
           textAlign: TextAlign.center,

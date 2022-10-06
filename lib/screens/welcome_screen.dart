@@ -19,11 +19,11 @@ class WelcomeScreen extends BaseWidget<WelcomeScreenController> {
           ),
           child: SafeArea(
             child: Padding(
-              padding: EdgeInsets.all(100.r),
+              padding: EdgeInsets.all(50.r),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(height: 50.h),
+                  SizedBox(height: 50.r),
                   OHOHeaderText(
                     'Welcome to',
                     fontSize: 120.sp,
@@ -35,7 +35,7 @@ class WelcomeScreen extends BaseWidget<WelcomeScreenController> {
                     title: 'Get Started',
                     onTap: () => Get.to(() => WalletSetupScreen()),
                   ),
-                  SizedBox(height: 50.h),
+                  SizedBox(height: 50.r),
                 ],
               ),
             ),

@@ -19,27 +19,30 @@ class WalletSetupScreen extends BaseWidget<WalletSetupScreenController> {
           ),
           child: SafeArea(
             child: Padding(
-              padding: EdgeInsets.all(100.r),
+              padding: EdgeInsets.all(50.r),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(height: 50.h),
+                  SizedBox(height: 50.r),
                   OHOWalletLogo(),
                   Column(
                     children: [
                       OHOHeaderText('Wallet Setup'),
-                      SizedBox(height: 50.h),
-                      OHOText('Import an exiting wallet or\ncreate a new one'),
+                      SizedBox(height: 50.r),
+                      OHOText('Import an exiting wallet\nor create a new one'),
                     ],
                   ),
                   Column(
                     children: [
                       OHOOutlinedButton(title: 'Import a Wallet'),
-                      SizedBox(height: 50.h),
-                      OHOSolidButton(title: 'Create a New Wallet'),
+                      SizedBox(height: 50.r),
+                      OHOSolidButton(
+                        title: 'Create a New Wallet',
+                        onTap: () => Get.to(() => WalletSetup01Screen()),
+                      ),
                     ],
                   ),
-                  SizedBox(height: 50.h),
+                  SizedBox(height: 50.r),
                 ],
               ),
             ),
