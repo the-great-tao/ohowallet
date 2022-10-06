@@ -26,7 +26,7 @@ class OHOSolidButton extends BaseWidget<OHOSolidButtonController> {
   Widget build(BuildContext context) {
     return Container(
       width: width ?? double.infinity,
-      height: height ?? 120.h,
+      height: height ?? 140.h,
       decoration: BoxDecoration(
         color: themeService.solidButtonBackgroundColor,
         border: Border.all(color: themeService.solidButtonBorderColor),
