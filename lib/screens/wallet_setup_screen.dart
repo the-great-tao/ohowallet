@@ -23,7 +23,12 @@ class WalletSetupScreen extends BaseWidget<WalletSetupScreenController> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(height: 50.r),
+                  Column(
+                    children: [
+                      SizedBox(height: 100.r),
+                      OHOModeSwitch(),
+                    ],
+                  ),
                   OHOWalletLogo(),
                   Column(
                     children: [
@@ -40,9 +45,9 @@ class WalletSetupScreen extends BaseWidget<WalletSetupScreenController> {
                         title: 'Create a New Wallet',
                         onTap: () => Get.to(() => WalletSetup01Screen()),
                       ),
+                      SizedBox(height: 200.r),
                     ],
                   ),
-                  SizedBox(height: 50.r),
                 ],
               ),
             ),

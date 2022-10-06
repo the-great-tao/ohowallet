@@ -23,7 +23,12 @@ class WelcomeScreen extends BaseWidget<WelcomeScreenController> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(height: 50.r),
+                  Column(
+                    children: [
+                      SizedBox(height: 100.r),
+                      OHOModeSwitch(),
+                    ],
+                  ),
                   OHOHeaderText(
                     'Welcome to',
                     fontSize: 120.sp,
@@ -31,11 +36,15 @@ class WelcomeScreen extends BaseWidget<WelcomeScreenController> {
                   ),
                   OHOWalletLogo(),
                   OHOText('A secure wallet\nfor all EVM compatible networks'),
-                  OHOSolidButton(
-                    title: 'Get Started',
-                    onTap: () => Get.to(() => WalletSetupScreen()),
+                  Column(
+                    children: [
+                      OHOSolidButton(
+                        title: 'Get Started',
+                        onTap: () => Get.to(() => WalletSetupScreen()),
+                      ),
+                      SizedBox(height: 200.r),
+                    ],
                   ),
-                  SizedBox(height: 50.r),
                 ],
               ),
             ),
