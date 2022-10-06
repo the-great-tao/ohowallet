@@ -31,6 +31,7 @@ class OHOColors {
   static const green3 = Color(0xff619a46);
 
   static const white = Color(0xffffffff);
+  static const black10 = Color(0x10000000);
 }
 
 class OHOGradients {
@@ -93,6 +94,18 @@ class ThemeService extends GetxService {
 
   Color get solidButtonHoverColor =>
       lightMode.value ? OHOColors.gold3 : OHOColors.gold3;
+
+  Color get outlinedButtonTextColor =>
+      lightMode.value ? OHOColors.gold2 : OHOColors.gold2;
+
+  Color get outlinedButtonBackgroundColor =>
+      lightMode.value ? OHOColors.white : OHOColors.white;
+
+  Color get outlinedButtonBorderColor =>
+      lightMode.value ? OHOColors.gold2 : OHOColors.gold2;
+
+  Color get outlinedButtonHoverColor =>
+      lightMode.value ? OHOColors.black10 : OHOColors.black10;
 
   Color get statusSuccessColor =>
       lightMode.value ? OHOColors.green3 : OHOColors.green3;

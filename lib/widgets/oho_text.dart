@@ -4,11 +4,15 @@ class OHOTextController extends BaseController {}
 
 class OHOText extends BaseWidget<OHOTextController> {
   final String data;
+  final double? fontSize;
+  final double? letterSpacing;
 
   OHOText(
     this.data, {
     super.key,
     super.tag,
+    this.fontSize,
+    this.letterSpacing,
   }) : super(controller: OHOTextController());
 
   @override
@@ -19,9 +23,9 @@ class OHOText extends BaseWidget<OHOTextController> {
       style: TextStyle(
         color: themeService.textColor,
         fontFamily: 'Outfit',
-        fontSize: 50.sp,
+        fontSize: fontSize ?? 50.sp,
         fontWeight: FontWeight.w300,
-        letterSpacing: 2.sp,
+        letterSpacing: letterSpacing ?? 2.sp,
       ),
     );
   }

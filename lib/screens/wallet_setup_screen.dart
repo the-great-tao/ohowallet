@@ -1,11 +1,11 @@
 import 'package:ohowallet/core/exports.dart';
 
-class WelcomeScreenController extends BaseController {}
+class WalletSetupScreenController extends BaseController {}
 
-class WelcomeScreen extends BaseWidget<WelcomeScreenController> {
-  WelcomeScreen({
+class WalletSetupScreen extends BaseWidget<WalletSetupScreenController> {
+  WalletSetupScreen({
     super.key,
-  }) : super(controller: WelcomeScreenController());
+  }) : super(controller: WalletSetupScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +24,20 @@ class WelcomeScreen extends BaseWidget<WelcomeScreenController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(height: 50.h),
-                  OHOHeaderText(
-                    'Welcome to',
-                    fontSize: 120.sp,
-                    letterSpacing: 4.sp,
-                  ),
                   OHOWalletLogo(),
-                  OHOText('A secure wallet\nfor all EVM compatible networks'),
-                  OHOSolidButton(
-                    title: 'Get Started',
-                    onTap: () => Get.to(() => WalletSetupScreen()),
+                  Column(
+                    children: [
+                      OHOHeaderText('Wallet Setup'),
+                      SizedBox(height: 50.h),
+                      OHOText('Import an exiting wallet or\ncreate a new one'),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      OHOOutlinedButton(title: 'Import a Wallet'),
+                      SizedBox(height: 50.h),
+                      OHOSolidButton(title: 'Create a New Wallet'),
+                    ],
                   ),
                   SizedBox(height: 50.h),
                 ],
