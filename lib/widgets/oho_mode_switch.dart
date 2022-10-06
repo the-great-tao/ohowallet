@@ -12,8 +12,8 @@ class OHOModeSwitch extends BaseWidget<OHOModeSwitchController> {
   Widget build(BuildContext context) {
     return Obx(
       () => FlutterSwitch(
-        width: 120.r,
-        height: 60.r,
+        width: 140.r,
+        height: 70.r,
         value: themeService.lightMode.value,
         onToggle: (value) => themeService.lightMode.value = value,
         activeColor: themeService.textFieldBackgroundColor,
