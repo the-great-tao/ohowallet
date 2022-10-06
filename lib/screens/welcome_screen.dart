@@ -25,8 +25,13 @@ class WelcomeScreen extends BaseWidget<WelcomeScreenController> {
                 children: [
                   Column(
                     children: [
-                      SizedBox(height: 100.r),
-                      OHOModeSwitch(),
+                      SizedBox(height: 50.r),
+                      Row(
+                        children: [
+                          Expanded(child: Container()),
+                          OHOModeSwitch(),
+                        ],
+                      ),
                     ],
                   ),
                   OHOHeaderText(
