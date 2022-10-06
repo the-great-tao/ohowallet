@@ -20,7 +20,7 @@ class OHOAppBar01 extends BaseWidget<OHOAppBar01Controller> {
         shape: BoxShape.circle,
         color: themeService.textFieldBackgroundColor,
         border: Border.all(
-          width: 5.sp,
+          width: 5.r,
           color: color,
         ),
       ),
@@ -47,7 +47,7 @@ class OHOAppBar01 extends BaseWidget<OHOAppBar01Controller> {
       height: 100.r,
       child: Divider(
         color: color,
-        thickness: 5.sp,
+        thickness: 5.r,
       ),
     );
   }

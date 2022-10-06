@@ -14,17 +14,27 @@ class OHOModeSwitch extends BaseWidget<OHOModeSwitchController> {
       () => FlutterSwitch(
         width: 120.r,
         height: 60.r,
-        inactiveColor: themeService.textFieldBackgroundColor,
-        inactiveToggleColor: themeService.textColor,
-        inactiveSwitchBorder: Border.all(color: themeService.textColor),
-        inactiveToggleBorder: Border.all(color: themeService.textColor),
-        activeColor: themeService.solidButtonBackgroundColor,
-        activeSwitchBorder:
-            Border.all(color: themeService.solidButtonBorderColor),
-        activeToggleBorder:
-            Border.all(color: themeService.solidButtonBorderColor),
         value: themeService.lightMode.value,
         onToggle: (value) => themeService.lightMode.value = value,
+        activeColor: themeService.textFieldBackgroundColor,
+        activeSwitchBorder: Border.all(
+          width: 5.r,
+          color: themeService.textColor,
+        ),
+        activeToggleBorder: Border.all(
+          width: 5.r,
+          color: themeService.textColor,
+        ),
+        inactiveColor: themeService.textFieldBackgroundColor,
+        inactiveToggleColor: themeService.textColor,
+        inactiveSwitchBorder: Border.all(
+          width: 5.r,
+          color: themeService.textColor,
+        ),
+        inactiveToggleBorder: Border.all(
+          width: 5.r,
+          color: themeService.textColor,
+        ),
       ),
     );
   }
