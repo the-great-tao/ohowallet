@@ -87,7 +87,15 @@ class OHOAppBar01 extends BaseWidget<OHOAppBar01Controller> {
                 ],
               ),
             ],
-          )
+          ),
+          Positioned(
+            top: 50.r,
+            right: 0.r,
+            child: SizedBox(
+              height: 100.r,
+              child: Center(child: OHOModeSwitch()),
+            ),
+          ),
         ],
       ),
     );

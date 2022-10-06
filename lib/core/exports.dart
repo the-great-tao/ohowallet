@@ -43,6 +43,7 @@ export 'package:ohowallet/widgets/oho_text.dart';
 export 'package:ohowallet/widgets/oho_header_text.dart';
 export 'package:ohowallet/widgets/oho_solid_button.dart';
 export 'package:ohowallet/widgets/oho_outlined_button.dart';
+export 'package:ohowallet/widgets/oho_mode_switch.dart';
 export 'package:ohowallet/widgets/oho_app_bar_01.dart';
 export 'package:ohowallet/screens/welcome_screen.dart';
 export 'package:ohowallet/screens/wallet_setup_screen.dart';
