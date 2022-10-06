@@ -21,7 +21,7 @@ class OHOText extends BaseWidget<OHOTextController> {
         fontFamily: 'Outfit',
         fontSize: 50.sp,
         fontWeight: FontWeight.w300,
-        letterSpacing: 2.sp
+        letterSpacing: 2.sp,
       ),
     );
   }

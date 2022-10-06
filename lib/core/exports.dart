@@ -38,6 +38,8 @@ export 'package:ohowallet/services/app_data_service.dart';
 export 'package:ohowallet/services/wallet_service.dart';
 export 'package:ohowallet/services/theme_service.dart';
 export 'package:ohowallet/widgets/base_widget.dart';
+export 'package:ohowallet/widgets/oho_wallet_logo.dart';
 export 'package:ohowallet/widgets/oho_text.dart';
 export 'package:ohowallet/widgets/oho_header_text.dart';
+export 'package:ohowallet/widgets/oho_solid_button.dart';
 export 'package:ohowallet/screens/welcome_screen.dart';

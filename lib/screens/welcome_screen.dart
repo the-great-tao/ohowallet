@@ -1,29 +1,5 @@
 import 'package:ohowallet/core/exports.dart';
 
-class OHOTextController extends BaseController {}
-
-class OHOText extends BaseWidget<OHOTextController> {
-  final String data;
-
-  OHOText(
-    this.data, {
-    super.key,
-    super.tag,
-  }) : super(controller: OHOTextController());
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      data,
-      style: TextStyle(
-        fontFamily: 'Outfit',
-        fontSize: 100.sp,
-        color: themeService.textNormalColor,
-      ),
-    );
-  }
-}
-
 class WelcomeScreenController extends BaseController {}
 
 class WelcomeScreen extends BaseWidget<WelcomeScreenController> {
@@ -46,8 +22,19 @@ class WelcomeScreen extends BaseWidget<WelcomeScreenController> {
               onTap: themeService.lightMode.value
                   ? themeService.setDarkMode
                   : themeService.setLightMode,
-              child: Center(
-                child: OHOText('Hello World!'),
+              child: Padding(
+                padding: EdgeInsets.all(100.r),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(height: 50.h),
+                    OHOHeaderText('Welcome To'),
+                    OHOWalletLogo(),
+                    OHOText('A secure wallet\nfor all EVM compatible networks'),
+                    OHOSolidButton(text: 'Get Started'),
+                    SizedBox(height: 50.h),
+                  ],
+                ),
               ),
             ),
           ),

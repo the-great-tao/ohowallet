@@ -82,6 +82,18 @@ class ThemeService extends GetxService {
   Color get headerTextColor =>
       lightMode.value ? OHOColors.blue5 : OHOColors.white;
 
+  Color get solidButtonTextColor =>
+      lightMode.value ? OHOColors.white : OHOColors.white;
+
+  Color get solidButtonBackgroundColor =>
+      lightMode.value ? OHOColors.gold2 : OHOColors.gold2;
+
+  Color get solidButtonBorderColor =>
+      lightMode.value ? OHOColors.gold2 : OHOColors.gold2;
+
+  Color get solidButtonHoverColor =>
+      lightMode.value ? OHOColors.gold3 : OHOColors.gold3;
+
   Color get statusSuccessColor =>
       lightMode.value ? OHOColors.green3 : OHOColors.green3;
 
