@@ -52,7 +52,7 @@ class OHOSolidButton extends BaseWidget<OHOSolidButtonController> {
               color: themeService.solidButtonTextColor,
               fontFamily: 'Outfit',
               fontSize: 60.sp,
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.normal,
               letterSpacing: 2.sp,
             ),
           ),

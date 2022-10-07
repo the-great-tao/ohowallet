@@ -24,7 +24,7 @@ class OHOHeaderText extends BaseWidget<OHOHeaderTextController> {
         color: themeService.headerTextColor,
         fontFamily: 'Outfit',
         fontSize: fontSize ?? 80.sp,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.normal,
         letterSpacing: letterSpacing ?? 3.sp,
       ),
     );

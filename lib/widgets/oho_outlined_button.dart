@@ -52,7 +52,7 @@ class OHOOutlinedButton extends BaseWidget<OHOOutlinedButtonController> {
               color: themeService.outlinedButtonTextColor,
               fontFamily: 'Outfit',
               fontSize: 60.sp,
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.normal,
               letterSpacing: 2.sp,
             ),
           ),

@@ -32,7 +32,7 @@ class OHOAppBar01 extends BaseWidget<OHOAppBar01Controller> {
             color: color,
             fontFamily: 'Outfit',
             fontSize: 60.sp,
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.normal,
             letterSpacing: 2.sp,
           ),
         ),
