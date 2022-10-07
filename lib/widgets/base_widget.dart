@@ -20,7 +20,7 @@ abstract class BaseWidget<T extends BaseController> extends StatelessWidget {
     super.key,
     this.tag,
     required T controller,
-  }) : controller = Get.put(controller, tag: tag);
+  }) : controller = Get.put<T>(controller, tag: tag);
 
   AppDataService get appDataService => controller.appDataService;
 

@@ -33,20 +33,20 @@ class OHOColors {
   static const white = Color(0xffffffff);
   static const black10 = Color(0x10000000);
 
-  static const Color primaryPrimary = Color(0xFF310BE8);
-  static const Color primaryPrimary10 = Color(0x1A310BE8);
-
-  static const Color neutralBlack = Color(0xFF09101D);
-  static const Color neutralNeutral1 = Color(0xFF2C3A4B);
-  static const Color neutralNeutral3 = Color(0xFF545D69);
-  static const Color neutralNeutral5 = Color(0xFF858C94);
-  static const Color neutralNeutral7 = Color(0xFFDADEE3);
-  static const Color neutralNeutral8 = Color(0xFFEBEEF2);
-  static const Color neutralNeutral9 = Color(0xFFF4F6F9);
-
-  static const Color actionPrimaryDefault = Color(0xFF310BE8);
-  static const Color actionPrimaryDisabled = Color(0xFF9784F3);
-  static const Color actionPrimaryInverted = Color(0xFFFFFFFF);
+  // static const Color primaryPrimary = Color(0xFF310BE8);
+  // static const Color primaryPrimary10 = Color(0x1A310BE8);
+  //
+  // static const Color neutralBlack = Color(0xFF09101D);
+  // static const Color neutralNeutral1 = Color(0xFF2C3A4B);
+  // static const Color neutralNeutral3 = Color(0xFF545D69);
+  // static const Color neutralNeutral5 = Color(0xFF858C94);
+  // static const Color neutralNeutral7 = Color(0xFFDADEE3);
+  // static const Color neutralNeutral8 = Color(0xFFEBEEF2);
+  // static const Color neutralNeutral9 = Color(0xFFF4F6F9);
+  //
+  // static const Color actionPrimaryDefault = Color(0xFF310BE8);
+  // static const Color actionPrimaryDisabled = Color(0xFF9784F3);
+  // static const Color actionPrimaryInverted = Color(0xFFFFFFFF);
 
   static const Color statusSuccess = Color(0xFF23A757);
   static const Color statusSuccessBackground = Color(0xFFEDF9F0);
