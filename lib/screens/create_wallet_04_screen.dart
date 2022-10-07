@@ -1,11 +1,11 @@
 import 'package:ohowallet/core/exports.dart';
 
-class WalletSetup04ScreenController extends BaseController {}
+class CreateWallet04ScreenController extends BaseController {}
 
-class WalletSetup04Screen extends BaseWidget<WalletSetup04ScreenController> {
-  WalletSetup04Screen({
+class CreateWallet04Screen extends BaseWidget<CreateWallet04ScreenController> {
+  CreateWallet04Screen({
     super.key,
-  }) : super(controller: WalletSetup04ScreenController());
+  }) : super(controller: CreateWallet04ScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +38,13 @@ class WalletSetup04Screen extends BaseWidget<WalletSetup04ScreenController> {
                     child: OHOText(
                       'OHO Universal EVM Wallet cannot recover your wallet if you lose your seed phase. You can find your seed phrase in Settings > Security.',
                     ),
+                  ),
+                  Expanded(child: Container()),
+                  Column(
+                    children: [
+                      OHOSolidButton(title: 'Finish'),
+                      SizedBox(height: 200.r),
+                    ],
                   ),
                 ],
               ),

@@ -1,11 +1,11 @@
 import 'package:ohowallet/core/exports.dart';
 
-class WalletSetup03ScreenController extends BaseController {}
+class CreateWallet01ScreenController extends BaseController {}
 
-class WalletSetup03Screen extends BaseWidget<WalletSetup03ScreenController> {
-  WalletSetup03Screen({
+class CreateWallet01Screen extends BaseWidget<CreateWallet01ScreenController> {
+  CreateWallet01Screen({
     super.key,
-  }) : super(controller: WalletSetup03ScreenController());
+  }) : super(controller: CreateWallet01ScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +22,25 @@ class WalletSetup03Screen extends BaseWidget<WalletSetup03ScreenController> {
               padding: EdgeInsets.all(50.r),
               child: Column(
                 children: [
-                  OHOAppBar01(step: 3),
+                  OHOAppBar01(step: 1),
                   SizedBox(height: 50.r),
-                  OHOHeaderText('Confirm Seed Phrase'),
+                  OHOHeaderText('Create Password'),
                   SizedBox(height: 50.r),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 50.r),
                     child: OHOText(
-                      'Select words in the numerical order to confirm your seed phrase.',
+                      'This password will unlock your OHO Wallet only on this device.',
                     ),
                   ),
-                  SizedBox(height: 50.r),
-                  OHOSolidButton(
-                    title: 'Next',
-                    onTap: () => Get.to(() => WalletSetup04Screen()),
+                  Expanded(child: Container()),
+                  Column(
+                    children: [
+                      OHOSolidButton(
+                        title: 'Next',
+                        onTap: () => Get.to(() => CreateWallet02Screen()),
+                      ),
+                      SizedBox(height: 200.r),
+                    ],
                   ),
                 ],
               ),

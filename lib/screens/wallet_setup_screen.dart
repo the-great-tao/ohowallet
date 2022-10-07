@@ -48,7 +48,7 @@ class WalletSetupScreen extends BaseWidget<WalletSetupScreenController> {
                       SizedBox(height: 50.r),
                       OHOSolidButton(
                         title: 'Create a New Wallet',
-                        onTap: () => Get.to(() => WalletSetup01Screen()),
+                        onTap: () => Get.to(() => CreateWallet01Screen()),
                       ),
                       SizedBox(height: 200.r),
                     ],

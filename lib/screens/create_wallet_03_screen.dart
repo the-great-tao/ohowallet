@@ -1,11 +1,11 @@
 import 'package:ohowallet/core/exports.dart';
 
-class WalletSetup02ScreenController extends BaseController {}
+class CreateWallet03ScreenController extends BaseController {}
 
-class WalletSetup02Screen extends BaseWidget<WalletSetup02ScreenController> {
-  WalletSetup02Screen({
+class CreateWallet03Screen extends BaseWidget<CreateWallet03ScreenController> {
+  CreateWallet03Screen({
     super.key,
-  }) : super(controller: WalletSetup02ScreenController());
+  }) : super(controller: CreateWallet03ScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +22,25 @@ class WalletSetup02Screen extends BaseWidget<WalletSetup02ScreenController> {
               padding: EdgeInsets.all(50.r),
               child: Column(
                 children: [
-                  OHOAppBar01(step: 2),
+                  OHOAppBar01(step: 3),
                   SizedBox(height: 50.r),
-                  OHOHeaderText('Write down Seed Phrase'),
+                  OHOHeaderText('Confirm Seed Phrase'),
                   SizedBox(height: 50.r),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 50.r),
                     child: OHOText(
-                      'Below is your seed phrase. Write it down on a paper, and keep it in a safe place. You will be asked to reenter this phrase in numerical order in the next step.',
+                      'Select words in the numerical order to confirm your seed phrase.',
                     ),
                   ),
-                  SizedBox(height: 50.r),
-                  OHOSolidButton(
-                    title: 'Next',
-                    onTap: () => Get.to(() => WalletSetup03Screen()),
+                  Expanded(child: Container()),
+                  Column(
+                    children: [
+                      OHOSolidButton(
+                        title: 'Next',
+                        onTap: () => Get.to(() => CreateWallet04Screen()),
+                      ),
+                      SizedBox(height: 200.r),
+                    ],
                   ),
                 ],
               ),

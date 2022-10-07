@@ -1,11 +1,11 @@
 import 'package:ohowallet/core/exports.dart';
 
-class WalletSetup01ScreenController extends BaseController {}
+class CreateWallet02ScreenController extends BaseController {}
 
-class WalletSetup01Screen extends BaseWidget<WalletSetup01ScreenController> {
-  WalletSetup01Screen({
+class CreateWallet02Screen extends BaseWidget<CreateWallet02ScreenController> {
+  CreateWallet02Screen({
     super.key,
-  }) : super(controller: WalletSetup01ScreenController());
+  }) : super(controller: CreateWallet02ScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +22,25 @@ class WalletSetup01Screen extends BaseWidget<WalletSetup01ScreenController> {
               padding: EdgeInsets.all(50.r),
               child: Column(
                 children: [
-                  OHOAppBar01(step: 1),
+                  OHOAppBar01(step: 2),
                   SizedBox(height: 50.r),
-                  OHOHeaderText('Create Password'),
+                  OHOHeaderText('Write down Seed Phrase'),
                   SizedBox(height: 50.r),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 50.r),
                     child: OHOText(
-                      'This password will unlock your OHO Wallet only on this device.',
+                      'Below is your seed phrase. Write it down on a paper, and keep it in a safe place. You will be asked to reenter this phrase in numerical order in the next step.',
                     ),
                   ),
-                  SizedBox(height: 50.r),
-                  OHOSolidButton(
-                    title: 'Next',
-                    onTap: () => Get.to(() => WalletSetup02Screen()),
+                  Expanded(child: Container()),
+                  Column(
+                    children: [
+                      OHOSolidButton(
+                        title: 'Next',
+                        onTap: () => Get.to(() => CreateWallet03Screen()),
+                      ),
+                      SizedBox(height: 200.r),
+                    ],
                   ),
                 ],
               ),
