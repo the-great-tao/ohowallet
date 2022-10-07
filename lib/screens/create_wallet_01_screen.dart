@@ -32,6 +32,40 @@ class CreateWallet01Screen extends BaseWidget<CreateWallet01ScreenController> {
                       'This password will unlock your OHO Wallet only on this device.',
                     ),
                   ),
+                  SizedBox(height: 50.r),
+                  OHOTextField(
+                    tag: 'new-password',
+                    label: 'New Password',
+                    description: 'Password must be at least 8 characters',
+                    required: true,
+                    obscureText: true,
+                    validators: [
+                      OHOTextFieldValidatorRequired(
+                        errorMessage: 'Password is required',
+                      ),
+                      OHOTextFieldValidatorMinLength(
+                        minLength: 8,
+                        errorMessage: 'Password is too short',
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 50.r),
+                  OHOTextField(
+                    tag: 'confirm-new-password',
+                    label: 'Confirm New Password',
+                    description: 'Password confirmation must be matched',
+                    required: true,
+                    obscureText: true,
+                    validators: [
+                      OHOTextFieldValidatorRequired(
+                        errorMessage: 'Password confirmation is required',
+                      ),
+                      OHOTextFieldValidatorEqual(
+                        tag: 'new-password',
+                        errorMessage: 'Password confirmation is not matched',
+                      ),
+                    ],
+                  ),
                   Expanded(child: Container()),
                   Column(
                     children: [
