@@ -38,7 +38,10 @@ class OHOSolidButton extends BaseWidget<OHOSolidButtonController> {
         height: height ?? 140.h,
         decoration: BoxDecoration(
           color: themeService.solidButtonBackgroundColor,
-          border: Border.all(color: themeService.solidButtonBorderColor),
+          border: Border.all(
+            width: 5.sp,
+            color: themeService.solidButtonBorderColor,
+          ),
           borderRadius: BorderRadius.circular(9999),
         ),
         child: Center(

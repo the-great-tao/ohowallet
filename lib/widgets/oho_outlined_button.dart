@@ -38,7 +38,10 @@ class OHOOutlinedButton extends BaseWidget<OHOOutlinedButtonController> {
         height: height ?? 140.h,
         decoration: BoxDecoration(
           color: themeService.outlinedButtonBackgroundColor,
-          border: Border.all(color: themeService.outlinedButtonBorderColor),
+          border: Border.all(
+            width: 5.sp,
+            color: themeService.outlinedButtonBorderColor,
+          ),
           borderRadius: BorderRadius.circular(9999),
         ),
         child: Center(
