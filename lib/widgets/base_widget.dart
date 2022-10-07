@@ -14,15 +14,13 @@ abstract class BaseController extends GetxController {
 
 abstract class BaseWidget<T extends BaseController> extends StatelessWidget {
   final String? tag;
-  final T controller;
+  late final T controller;
 
   BaseWidget({
     super.key,
     this.tag,
-    required this.controller,
-  }) {
-    Get.put(controller, tag: tag);
-  }
+    required T controller,
+  }) : controller = Get.put(controller, tag: tag);
 
   AppDataService get appDataService => controller.appDataService;
 
