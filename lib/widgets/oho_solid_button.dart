@@ -1,28 +1,21 @@
 import 'package:ohowallet/core/exports.dart';
 
-class OHOSolidButtonController extends BaseController {
-  var data = ''.obs;
-
-  OHOSolidButtonController({
-    required String title,
-  }) : super() {
-    data.value = title;
-  }
-}
+class OHOSolidButtonController extends BaseController {}
 
 class OHOSolidButton extends BaseWidget<OHOSolidButtonController> {
-  double? width;
-  double? height;
-  VoidCallback? onTap;
+  final String title;
+  final double? width;
+  final double? height;
+  final VoidCallback? onTap;
 
   OHOSolidButton({
     super.key,
     super.tag,
-    required String title,
+    required this.title,
     this.width,
     this.height,
     this.onTap,
-  }) : super(controller: OHOSolidButtonController(title: title));
+  }) : super(controller: OHOSolidButtonController());
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +39,7 @@ class OHOSolidButton extends BaseWidget<OHOSolidButtonController> {
         ),
         child: Center(
           child: Text(
-            controller.data.value,
+            title,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: themeService.solidButtonTextColor,

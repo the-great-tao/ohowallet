@@ -1,28 +1,21 @@
 import 'package:ohowallet/core/exports.dart';
 
-class OHOOutlinedButtonController extends BaseController {
-  var data = ''.obs;
-
-  OHOOutlinedButtonController({
-    required String title,
-  }) : super() {
-    data.value = title;
-  }
-}
+class OHOOutlinedButtonController extends BaseController {}
 
 class OHOOutlinedButton extends BaseWidget<OHOOutlinedButtonController> {
-  double? width;
-  double? height;
-  VoidCallback? onTap;
+  final String title;
+  final double? width;
+  final double? height;
+  final VoidCallback? onTap;
 
   OHOOutlinedButton({
     super.key,
     super.tag,
-    required String title,
+    required this.title,
     this.width,
     this.height,
     this.onTap,
-  }) : super(controller: OHOOutlinedButtonController(title: title));
+  }) : super(controller: OHOOutlinedButtonController());
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +39,7 @@ class OHOOutlinedButton extends BaseWidget<OHOOutlinedButtonController> {
         ),
         child: Center(
           child: Text(
-            controller.data.value,
+            title,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: themeService.outlinedButtonTextColor,

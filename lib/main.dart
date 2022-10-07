@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: CreateWallet01Screen(),
+      home: WelcomeScreen(),
       useInheritedMediaQuery: true,
       locale: DevicePreview.locale(context),
       builder: (BuildContext context, Widget? child) => devicePreviewEnabled

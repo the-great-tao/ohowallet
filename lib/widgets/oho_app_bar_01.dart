@@ -54,7 +54,7 @@ class OHOAppBar01 extends BaseWidget<OHOAppBar01Controller> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: Stack(
         children: [
