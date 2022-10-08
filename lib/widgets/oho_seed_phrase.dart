@@ -31,7 +31,7 @@ class OHOSeedPhraseItem extends BaseWidget<OHOSeedPhraseItemController> {
     return Container(
       width: 450.w,
       padding: EdgeInsets.symmetric(
-        vertical: 10.h,
+        vertical: 5.h,
         horizontal: 50.w,
       ),
       decoration: BoxDecoration(
@@ -79,7 +79,7 @@ class OHOSeedPhrase extends BaseWidget<OHOSeedPhraseController> {
       () => !controller.hidden.value
           ? Container(
               width: double.infinity,
-              height: 700.h,
+              height: 650.h,
               padding: EdgeInsets.all(30.r),
               decoration: BoxDecoration(
                 border: Border.all(
@@ -108,7 +108,7 @@ class OHOSeedPhrase extends BaseWidget<OHOSeedPhraseController> {
             )
           : Ink(
               width: double.infinity,
-              height: 700.h,
+              height: 650.h,
               padding: EdgeInsets.all(30.r),
               decoration: BoxDecoration(
                 color: themeService.solidButtonBackgroundColor,
