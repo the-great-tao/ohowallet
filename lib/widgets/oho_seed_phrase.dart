@@ -79,7 +79,7 @@ class OHOSeedPhrase extends BaseWidget<OHOSeedPhraseController> {
       () => !controller.hidden.value
           ? Container(
               width: double.infinity,
-              height: 650.h,
+              height: 600.h,
               padding: EdgeInsets.all(30.r),
               decoration: BoxDecoration(
                 border: Border.all(
@@ -92,8 +92,8 @@ class OHOSeedPhrase extends BaseWidget<OHOSeedPhraseController> {
                 direction: Axis.vertical,
                 alignment: WrapAlignment.spaceBetween,
                 runAlignment: WrapAlignment.spaceBetween,
-                spacing: 20.r,
-                runSpacing: 20.r,
+                spacing: 10.r,
+                runSpacing: 10.r,
                 children: [
                   for (int index = 0;
                       index < controller.seedPhrase.length;
@@ -108,7 +108,7 @@ class OHOSeedPhrase extends BaseWidget<OHOSeedPhraseController> {
             )
           : Ink(
               width: double.infinity,
-              height: 650.h,
+              height: 600.h,
               padding: EdgeInsets.all(30.r),
               decoration: BoxDecoration(
                 color: themeService.solidButtonBackgroundColor,

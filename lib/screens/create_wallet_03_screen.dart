@@ -46,7 +46,7 @@ class CreateWallet03Screen extends BaseWidget<CreateWallet03ScreenController> {
                       'nine',
                       'ten',
                       'eleven',
-                      'confirmation',
+                      'twelve',
                     ],
                   ),
                   OHOSeedPhrase(
