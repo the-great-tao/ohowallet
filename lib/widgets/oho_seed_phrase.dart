@@ -123,8 +123,8 @@ class OHOSeedPhrase extends BaseWidget<OHOSeedPhraseController> {
                   SizedBox(height: 50.h),
                   SvgPicture.asset(
                     'assets/icons/eye-2-slash.svg',
-                    width: 150.r,
-                    height: 150.r,
+                    width: 120.r,
+                    height: 120.r,
                     color: themeService.solidButtonTextColor,
                   ),
                   SizedBox(height: 50.h),
