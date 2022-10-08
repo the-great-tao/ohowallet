@@ -270,7 +270,7 @@ class OHOTextField extends BaseWidget<OHOTextFieldController> {
                                       !controller.isObscured.value;
                                 },
                                 child: SvgPicture.asset(
-                                  'assets/icons/eye-slash.svg',
+                                  'assets/icons/eye-1-slash.svg',
                                   width: 60.r,
                                   height: 60.r,
                                   color: themeService.textFieldHintColor,
@@ -282,7 +282,7 @@ class OHOTextField extends BaseWidget<OHOTextFieldController> {
                                       !controller.isObscured.value;
                                 },
                                 child: SvgPicture.asset(
-                                  'assets/icons/eye.svg',
+                                  'assets/icons/eye-1.svg',
                                   width: 60.r,
                                   height: 60.r,
                                   color: themeService.textFieldHintColor,
