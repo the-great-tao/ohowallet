@@ -32,6 +32,23 @@ class CreateWallet02Screen extends BaseWidget<CreateWallet02ScreenController> {
                       'Below is your seed phrase. Write it down on a paper, and keep it in a safe place. You will be asked to reenter this phrase in numerical order in the next step.',
                     ),
                   ),
+                  SizedBox(height: 100.r),
+                  OHOSeedPhrase(
+                    seedPhrase: const [
+                      'one',
+                      'two',
+                      'three',
+                      'four',
+                      'five',
+                      'six',
+                      'seven',
+                      'eight',
+                      'nine',
+                      'ten',
+                      'eleven',
+                      'twelve',
+                    ],
+                  ),
                   Expanded(child: Container()),
                   Column(
                     children: [

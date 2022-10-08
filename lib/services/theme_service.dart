@@ -97,7 +97,7 @@ class ThemeService extends GetxService {
       : OHOGradients.darkScreenBackground;
 
   Color get textFieldBorderColor =>
-      lightMode.value ? OHOColors.gold3 : OHOColors.gold2;
+      lightMode.value ? OHOColors.gold2 : OHOColors.gold2;
 
   Color get textFieldBackgroundColor =>
       lightMode.value ? OHOColors.white : OHOColors.blue9;

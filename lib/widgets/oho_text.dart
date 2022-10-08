@@ -4,6 +4,8 @@ class OHOTextController extends BaseController {}
 
 class OHOText extends BaseWidget<OHOTextController> {
   final String data;
+  final TextAlign? textAlign;
+  final Color? color;
   final double? fontSize;
   final double? letterSpacing;
 
@@ -11,6 +13,8 @@ class OHOText extends BaseWidget<OHOTextController> {
     this.data, {
     super.key,
     super.tag,
+    this.textAlign,
+    this.color,
     this.fontSize,
     this.letterSpacing,
   }) : super(controller: OHOTextController());
@@ -19,9 +23,9 @@ class OHOText extends BaseWidget<OHOTextController> {
   Widget build(BuildContext context) {
     return Text(
       data,
-      textAlign: TextAlign.center,
+      textAlign: textAlign ?? TextAlign.center,
       style: TextStyle(
-        color: themeService.textColor,
+        color: color ?? themeService.textColor,
         fontFamily: 'Outfit',
         fontSize: fontSize ?? 50.sp,
         fontWeight: FontWeight.w300,

@@ -47,6 +47,8 @@ export 'package:ohowallet/widgets/oho_mode_switch.dart';
 export 'package:ohowallet/widgets/oho_app_bar_01.dart';
 export 'package:ohowallet/widgets/oho_message.dart';
 export 'package:ohowallet/widgets/oho_text_field.dart';
+export 'package:ohowallet/widgets/oho_seed_phrase.dart';
+export 'package:ohowallet/widgets/oho_seed_phrase_chip.dart';
 export 'package:ohowallet/screens/welcome_screen.dart';
 export 'package:ohowallet/screens/wallet_setup_screen.dart';
 export 'package:ohowallet/screens/create_wallet_01_screen.dart';
