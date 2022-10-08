@@ -70,7 +70,7 @@ class CreateWallet01Screen extends BaseWidget<CreateWallet01ScreenController> {
                   Column(
                     children: [
                       OHOSolidButton(
-                        title: 'Next',
+                        title: 'Create Password',
                         onTap: () => Get.to(() => CreateWallet02Screen()),
                       ),
                       SizedBox(height: 100.r),

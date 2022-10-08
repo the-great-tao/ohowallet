@@ -99,7 +99,7 @@ class OHOSeedPhrase extends BaseWidget<OHOSeedPhraseController> {
                       index < controller.seedPhrase.length;
                       index++)
                     OHOSeedPhraseItem(
-                      tag: 'seed-phrase-item-$index',
+                      tag: '$tag-item-$index',
                       order: index,
                       content: controller.seedPhrase[index],
                     ),

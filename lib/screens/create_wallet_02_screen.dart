@@ -34,6 +34,7 @@ class CreateWallet02Screen extends BaseWidget<CreateWallet02ScreenController> {
                   ),
                   SizedBox(height: 100.r),
                   OHOSeedPhrase(
+                    tag: 'seed-phrase-1',
                     seedPhrase: const [
                       'one',
                       'two',

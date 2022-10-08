@@ -32,6 +32,12 @@ class CreateWallet03Screen extends BaseWidget<CreateWallet03ScreenController> {
                       'Select words in the numerical order to confirm your seed phrase.',
                     ),
                   ),
+                  SizedBox(height: 100.r),
+                  OHOSeedPhrase(
+                    tag: 'seed-phrase-2',
+                    hidden: false,
+                    seedPhrase: [for (int index = 0; index < 12; index++) ''],
+                  ),
                   Expanded(child: Container()),
                   Column(
                     children: [
