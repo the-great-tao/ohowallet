@@ -40,8 +40,9 @@ class OHOSeedPhraseItem extends BaseWidget<OHOSeedPhraseItemController> {
       ),
       child: Obx(
         () => OHOText(
-          '${controller.order.value + 1}.  ${controller.content.value}',
+          '${controller.order.value + 1}. ${controller.content.value}',
           textAlign: TextAlign.left,
+          fontWeight: FontWeight.normal,
         ),
       ),
     );
@@ -79,7 +80,7 @@ class OHOSeedPhrase extends BaseWidget<OHOSeedPhraseController> {
       () => !controller.hidden.value
           ? Container(
               width: double.infinity,
-              height: 600.h,
+              height: 650.h,
               padding: EdgeInsets.all(30.r),
               decoration: BoxDecoration(
                 border: Border.all(
@@ -92,8 +93,8 @@ class OHOSeedPhrase extends BaseWidget<OHOSeedPhraseController> {
                 direction: Axis.vertical,
                 alignment: WrapAlignment.spaceBetween,
                 runAlignment: WrapAlignment.spaceBetween,
-                spacing: 10.r,
-                runSpacing: 10.r,
+                spacing: 20.r,
+                runSpacing: 20.r,
                 children: [
                   for (int index = 0;
                       index < controller.seedPhrase.length;
@@ -108,7 +109,7 @@ class OHOSeedPhrase extends BaseWidget<OHOSeedPhraseController> {
             )
           : Ink(
               width: double.infinity,
-              height: 600.h,
+              height: 650.h,
               padding: EdgeInsets.all(30.r),
               decoration: BoxDecoration(
                 color: themeService.solidButtonBackgroundColor,
@@ -123,8 +124,8 @@ class OHOSeedPhrase extends BaseWidget<OHOSeedPhraseController> {
                   SizedBox(height: 50.h),
                   SvgPicture.asset(
                     'assets/icons/eye-2-slash.svg',
-                    width: 120.r,
-                    height: 120.r,
+                    width: 100.r,
+                    height: 100.r,
                     color: themeService.solidButtonTextColor,
                   ),
                   SizedBox(height: 50.h),

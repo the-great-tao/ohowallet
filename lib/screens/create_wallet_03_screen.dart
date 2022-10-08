@@ -61,7 +61,7 @@ class CreateWallet03Screen extends BaseWidget<CreateWallet03ScreenController> {
                         title: 'Next',
                         onTap: () => Get.to(() => CreateWallet04Screen()),
                       ),
-                      SizedBox(height: 50.r),
+                      SizedBox(height: 100.r),
                     ],
                   ),
                 ],

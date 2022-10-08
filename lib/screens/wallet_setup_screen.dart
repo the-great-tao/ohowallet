@@ -50,7 +50,7 @@ class WalletSetupScreen extends BaseWidget<WalletSetupScreenController> {
                         title: 'Create a New Wallet',
                         onTap: () => Get.to(() => CreateWallet01Screen()),
                       ),
-                      SizedBox(height: 50.r),
+                      SizedBox(height: 100.r),
                     ],
                   ),
                 ],

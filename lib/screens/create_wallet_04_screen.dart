@@ -43,7 +43,7 @@ class CreateWallet04Screen extends BaseWidget<CreateWallet04ScreenController> {
                   Column(
                     children: [
                       OHOSolidButton(title: 'Finish'),
-                      SizedBox(height: 50.r),
+                      SizedBox(height: 100.r),
                     ],
                   ),
                 ],

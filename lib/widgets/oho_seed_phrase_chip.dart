@@ -20,29 +20,23 @@ class OHOSeedPhraseChipItem
   Widget build(BuildContext context) {
     return SizedBox(
       width: 300.w,
-      height: 90.h,
       child: Obx(
         () => FilterChip(
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           pressElevation: 10.r,
-          shape: StadiumBorder(
-            side: BorderSide(
-              width: 5.r,
-              color: themeService.solidButtonBorderColor,
-            ),
-          ),
+          // shape: StadiumBorder(),
           label: SizedBox(
             width: double.infinity,
             child: Text(
               content,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 40.sp,
+                fontSize: 50.sp,
                 fontFamily: 'Outfit',
                 fontWeight: FontWeight.normal,
                 color: controller.selected.value
                     ? themeService.solidButtonTextColor
-                    : themeService.outlinedButtonTextColor,
+                    : themeService.textColor,
               ),
             ),
           ),
