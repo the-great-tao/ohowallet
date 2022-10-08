@@ -1,6 +1,8 @@
 import 'package:ohowallet/core/exports.dart';
 
-class CreateWallet02ScreenController extends BaseController {}
+class CreateWallet02ScreenController extends BaseController {
+  static const seedPhraseTag = 'seed-phrase-view';
+}
 
 class CreateWallet02Screen extends BaseWidget<CreateWallet02ScreenController> {
   CreateWallet02Screen({
@@ -34,7 +36,7 @@ class CreateWallet02Screen extends BaseWidget<CreateWallet02ScreenController> {
                   ),
                   SizedBox(height: 100.r),
                   OHOSeedPhrase(
-                    tag: 'seed-phrase-1',
+                    tag: CreateWallet02ScreenController.seedPhraseTag,
                     seedPhrase: const [
                       'one',
                       'two',

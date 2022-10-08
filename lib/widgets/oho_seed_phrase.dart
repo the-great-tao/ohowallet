@@ -50,27 +50,48 @@ class OHOSeedPhraseItem extends BaseWidget<OHOSeedPhraseItemController> {
 }
 
 class OHOSeedPhraseController extends BaseController {
-  var hidden = true.obs;
+  final String tag;
   final List<String> seedPhrase;
+  var hidden = true.obs;
+  var currentIndex = 0;
 
   OHOSeedPhraseController({
-    bool hidden = true,
+    required this.tag,
     required this.seedPhrase,
+    bool hidden = true,
   }) : super() {
     this.hidden.value = hidden;
+  }
+
+  void reset() {
+    for (int index = 0; index < seedPhrase.length; index++) {
+      final seedPhraseItemController =
+          Get.find<OHOSeedPhraseItemController>(tag: '$tag-item-$index');
+      seedPhraseItemController.content.value = '';
+    }
+    currentIndex = 0;
+  }
+
+  void insertPhrase(String phrase) {
+    final seedPhraseItemController =
+        Get.find<OHOSeedPhraseItemController>(tag: '$tag-item-$currentIndex');
+    seedPhraseItemController.content.value = phrase;
+    currentIndex++;
   }
 }
 
 class OHOSeedPhrase extends BaseWidget<OHOSeedPhraseController> {
   OHOSeedPhrase({
     super.key,
-    required super.tag,
-    bool hidden = true,
+    required String tag,
     required List<String> seedPhrase,
+    bool hidden = true,
   }) : super(
+          tag: tag,
           controller: OHOSeedPhraseController(
-            hidden: hidden,
+            tag: tag,
             seedPhrase: seedPhrase,
+            hidden: hidden,
           ),
         );
 

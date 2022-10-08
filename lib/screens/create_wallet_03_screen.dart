@@ -1,6 +1,19 @@
 import 'package:ohowallet/core/exports.dart';
 
-class CreateWallet03ScreenController extends BaseController {}
+class CreateWallet03ScreenController extends BaseController {
+  static const seedPhraseChipTag = 'seed-phrase-chip';
+  static const seedPhraseTag = 'seed-phrase';
+
+  void reset() {
+    final seedPhraseChipController =
+        Get.find<OHOSeedPhraseChipController>(tag: seedPhraseChipTag);
+    final seedPhraseController =
+        Get.find<OHOSeedPhraseController>(tag: seedPhraseTag);
+
+    seedPhraseChipController.reset();
+    seedPhraseController.reset();
+  }
+}
 
 class CreateWallet03Screen extends BaseWidget<CreateWallet03ScreenController> {
   CreateWallet03Screen({
@@ -33,7 +46,8 @@ class CreateWallet03Screen extends BaseWidget<CreateWallet03ScreenController> {
                     ),
                   ),
                   OHOSeedPhraseChip(
-                    tag: 'seed-phrase-chip',
+                    tag: CreateWallet03ScreenController.seedPhraseChipTag,
+                    seedPhraseTag: CreateWallet03ScreenController.seedPhraseTag,
                     seedPhrase: const [
                       'one',
                       'two',
@@ -50,16 +64,27 @@ class CreateWallet03Screen extends BaseWidget<CreateWallet03ScreenController> {
                     ],
                   ),
                   OHOSeedPhrase(
-                    tag: 'seed-phrase-2',
-                    hidden: false,
+                    tag: CreateWallet03ScreenController.seedPhraseTag,
                     seedPhrase: [for (int index = 0; index < 12; index++) ''],
+                    hidden: false,
                   ),
                   Expanded(child: Container()),
                   Column(
                     children: [
-                      OHOSolidButton(
-                        title: 'Next',
-                        onTap: () => Get.to(() => CreateWallet04Screen()),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          OHOOutlinedButton(
+                            width: 400.w,
+                            title: 'Reset',
+                            onTap: () => controller.reset(),
+                          ),
+                          OHOSolidButton(
+                            width: 600.w,
+                            title: 'Next',
+                            onTap: () => Get.to(() => CreateWallet04Screen()),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 100.r),
                     ],

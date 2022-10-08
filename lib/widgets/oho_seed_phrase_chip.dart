@@ -1,19 +1,37 @@
 import 'package:ohowallet/core/exports.dart';
 
 class OHOSeedPhraseChipItemController extends BaseController {
-  final selected = false.obs;
+  final String seedPhraseTag;
+  final String content;
+  var selected = false.obs;
+
+  OHOSeedPhraseChipItemController({
+    required this.seedPhraseTag,
+    required this.content,
+  }) : super();
+
+  void onSelected(value) {
+    if (!selected.value) {
+      selected.value = value;
+      final seedPhraseController =
+          Get.find<OHOSeedPhraseController>(tag: seedPhraseTag);
+      seedPhraseController.insertPhrase(content);
+    }
+  }
 }
 
 class OHOSeedPhraseChipItem
     extends BaseWidget<OHOSeedPhraseChipItemController> {
-  final String content;
-
   OHOSeedPhraseChipItem({
     super.key,
     required super.tag,
-    required this.content,
+    required String seedPhraseTag,
+    required String content,
   }) : super(
-          controller: OHOSeedPhraseChipItemController(),
+          controller: OHOSeedPhraseChipItemController(
+            seedPhraseTag: seedPhraseTag,
+            content: content,
+          ),
         );
 
   @override
@@ -28,7 +46,7 @@ class OHOSeedPhraseChipItem
           label: SizedBox(
             width: double.infinity,
             child: Text(
-              content,
+              controller.content,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 50.sp,
@@ -44,11 +62,7 @@ class OHOSeedPhraseChipItem
           checkmarkColor: themeService.solidButtonTextColor,
           selectedColor: themeService.solidButtonBackgroundColor,
           selected: controller.selected.value,
-          onSelected: (value) {
-            if (!controller.selected.value) {
-              controller.selected.value = value;
-            }
-          },
+          onSelected: (value) => controller.onSelected(value),
         ),
       ),
     );
@@ -56,20 +70,35 @@ class OHOSeedPhraseChipItem
 }
 
 class OHOSeedPhraseChipController extends BaseController {
+  final String tag;
   final List<String> seedPhrase;
 
   OHOSeedPhraseChipController({
+    required this.tag,
     required this.seedPhrase,
   }) : super();
+
+  void reset() {
+    for (int index = 0; index < seedPhrase.length; index++) {
+      final seedPhraseChipItemController =
+          Get.find<OHOSeedPhraseChipItemController>(tag: '$tag-item-$index');
+      seedPhraseChipItemController.selected.value = false;
+    }
+  }
 }
 
 class OHOSeedPhraseChip extends BaseWidget<OHOSeedPhraseChipController> {
+  final String seedPhraseTag;
+
   OHOSeedPhraseChip({
     super.key,
-    required super.tag,
+    required String tag,
+    required this.seedPhraseTag,
     required List<String> seedPhrase,
   }) : super(
+          tag: tag,
           controller: OHOSeedPhraseChipController(
+            tag: tag,
             seedPhrase: seedPhrase,
           ),
         );
@@ -88,6 +117,7 @@ class OHOSeedPhraseChip extends BaseWidget<OHOSeedPhraseChipController> {
           for (int index = 0; index < controller.seedPhrase.length; index++)
             OHOSeedPhraseChipItem(
               tag: '$tag-item-$index',
+              seedPhraseTag: seedPhraseTag,
               content: controller.seedPhrase[index],
             ),
         ],
