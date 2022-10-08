@@ -81,7 +81,7 @@ class CreateWallet03Screen extends BaseWidget<CreateWallet03ScreenController> {
                           ),
                           OHOSolidButton(
                             width: 600.w,
-                            title: 'Next',
+                            title: 'Confirm',
                             onTap: () => Get.to(() => CreateWallet04Screen()),
                           ),
                         ],
