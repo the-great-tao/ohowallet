@@ -47,7 +47,7 @@ class WelcomeScreen extends BaseWidget<WelcomeScreenController> {
                         title: 'Get Started',
                         onTap: () => Get.to(() => WalletSetupScreen()),
                       ),
-                      SizedBox(height: 100.r),
+                      SizedBox(height: 50.r),
                     ],
                   ),
                 ],
