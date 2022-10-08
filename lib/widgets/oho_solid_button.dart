@@ -3,17 +3,19 @@ import 'package:ohowallet/core/exports.dart';
 class OHOSolidButtonController extends BaseController {}
 
 class OHOSolidButton extends BaseWidget<OHOSolidButtonController> {
-  final String title;
   final double? width;
   final double? height;
+  final String title;
+  final Widget? icon;
   final VoidCallback? onTap;
 
   OHOSolidButton({
     super.key,
     super.tag,
-    required this.title,
     this.width,
     this.height,
+    required this.title,
+    this.icon,
     this.onTap,
   }) : super(controller: OHOSolidButtonController());
 
@@ -37,18 +39,23 @@ class OHOSolidButton extends BaseWidget<OHOSolidButtonController> {
           ),
           borderRadius: BorderRadius.circular(9999),
         ),
-        child: Center(
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: themeService.solidButtonTextColor,
-              fontFamily: 'Outfit',
-              fontSize: 60.sp,
-              fontWeight: FontWeight.normal,
-              letterSpacing: 2.sp,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            icon ?? Container(),
+            icon != null ? SizedBox(width: 10.w) : Container(),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: themeService.solidButtonTextColor,
+                fontFamily: 'Outfit',
+                fontSize: 60.sp,
+                fontWeight: FontWeight.normal,
+                letterSpacing: 2.sp,
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

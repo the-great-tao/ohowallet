@@ -50,6 +50,7 @@ class OHOSeedPhraseItem extends BaseWidget<OHOSeedPhraseItemController> {
 
 class OHOSeedPhraseController extends BaseController {
   final List<String> seedPhrase;
+  var hidden = true.obs;
 
   OHOSeedPhraseController({
     required this.seedPhrase,
@@ -68,32 +69,84 @@ class OHOSeedPhrase extends BaseWidget<OHOSeedPhraseController> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 700.h,
-      padding: EdgeInsets.all(30.r),
-      decoration: BoxDecoration(
-        border: Border.all(
-          width: 5.r,
-          color: themeService.textFieldBorderColor,
-        ),
-        borderRadius: BorderRadius.circular(50.r),
-      ),
-      child: Wrap(
-        direction: Axis.vertical,
-        alignment: WrapAlignment.spaceBetween,
-        runAlignment: WrapAlignment.spaceBetween,
-        spacing: 20.r,
-        runSpacing: 20.r,
-        children: [
-          for (int index = 0; index < controller.seedPhrase.length; index++)
-            OHOSeedPhraseItem(
-              tag: 'seed-phrase-item-$index',
-              order: index,
-              content: controller.seedPhrase[index],
+    return Obx(
+      () => !controller.hidden.value
+          ? Container(
+              width: double.infinity,
+              height: 700.h,
+              padding: EdgeInsets.all(30.r),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 5.r,
+                  color: themeService.textFieldBorderColor,
+                ),
+                borderRadius: BorderRadius.circular(50.r),
+              ),
+              child: Wrap(
+                direction: Axis.vertical,
+                alignment: WrapAlignment.spaceBetween,
+                runAlignment: WrapAlignment.spaceBetween,
+                spacing: 20.r,
+                runSpacing: 20.r,
+                children: [
+                  for (int index = 0;
+                      index < controller.seedPhrase.length;
+                      index++)
+                    OHOSeedPhraseItem(
+                      tag: 'seed-phrase-item-$index',
+                      order: index,
+                      content: controller.seedPhrase[index],
+                    ),
+                ],
+              ),
+            )
+          : Ink(
+              width: double.infinity,
+              height: 700.h,
+              padding: EdgeInsets.all(30.r),
+              decoration: BoxDecoration(
+                color: themeService.solidButtonBackgroundColor,
+                border: Border.all(
+                  width: 5.r,
+                  color: themeService.solidButtonBackgroundColor,
+                ),
+                borderRadius: BorderRadius.circular(50.r),
+              ),
+              child: Column(
+                children: [
+                  SizedBox(height: 50.h),
+                  SvgPicture.asset(
+                    'assets/icons/eye-slash-2.svg',
+                    width: 150.r,
+                    height: 150.r,
+                    color: themeService.solidButtonTextColor,
+                  ),
+                  SizedBox(height: 50.h),
+                  OHOText(
+                    'Click View to see your Seed Phrase',
+                    color: themeService.solidButtonTextColor,
+                    fontWeight: FontWeight.normal,
+                  ),
+                  SizedBox(height: 50.h),
+                  OHOText(
+                    'Make sure that no one is watching your screen',
+                    color: themeService.solidButtonTextColor,
+                    fontSize: 40.sp,
+                  ),
+                  Expanded(child: Container()),
+                  OHOOutlinedButton(
+                    title: 'View',
+                    icon: SvgPicture.asset(
+                      'assets/icons/eye-2.svg',
+                      width: 60.r,
+                      height: 60.r,
+                      color: themeService.outlinedButtonTextColor,
+                    ),
+                    onTap: () => controller.hidden.value = false,
+                  ),
+                ],
+              ),
             ),
-        ],
-      ),
     );
   }
 }

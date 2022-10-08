@@ -273,6 +273,7 @@ class OHOTextField extends BaseWidget<OHOTextFieldController> {
                                   'assets/icons/eye-slash.svg',
                                   width: 60.r,
                                   height: 60.r,
+                                  color: themeService.textFieldHintColor,
                                 ),
                               )
                             : GestureDetector(
@@ -284,6 +285,7 @@ class OHOTextField extends BaseWidget<OHOTextFieldController> {
                                   'assets/icons/eye.svg',
                                   width: 60.r,
                                   height: 60.r,
+                                  color: themeService.textFieldHintColor,
                                 ),
                               ),
                       ),

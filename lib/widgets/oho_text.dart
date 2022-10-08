@@ -7,6 +7,7 @@ class OHOText extends BaseWidget<OHOTextController> {
   final TextAlign? textAlign;
   final Color? color;
   final double? fontSize;
+  final FontWeight? fontWeight;
   final double? letterSpacing;
 
   OHOText(
@@ -16,6 +17,7 @@ class OHOText extends BaseWidget<OHOTextController> {
     this.textAlign,
     this.color,
     this.fontSize,
+    this.fontWeight,
     this.letterSpacing,
   }) : super(controller: OHOTextController());
 
@@ -28,7 +30,7 @@ class OHOText extends BaseWidget<OHOTextController> {
         color: color ?? themeService.textColor,
         fontFamily: 'Outfit',
         fontSize: fontSize ?? 50.sp,
-        fontWeight: FontWeight.w300,
+        fontWeight: fontWeight ?? FontWeight.w300,
         letterSpacing: letterSpacing ?? 2.sp,
       ),
     );
