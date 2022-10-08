@@ -129,7 +129,7 @@ class OHOTextField extends BaseWidget<OHOTextFieldController> {
 
   OHOTextField({
     super.key,
-    super.tag,
+    required super.tag,
     this.width,
     this.label,
     this.hint,

@@ -16,7 +16,7 @@ class OHOSeedPhraseItemController extends BaseController {
 class OHOSeedPhraseItem extends BaseWidget<OHOSeedPhraseItemController> {
   OHOSeedPhraseItem({
     super.key,
-    super.tag,
+    required super.tag,
     required int order,
     required String content,
   }) : super(
@@ -63,7 +63,7 @@ class OHOSeedPhraseController extends BaseController {
 class OHOSeedPhrase extends BaseWidget<OHOSeedPhraseController> {
   OHOSeedPhrase({
     super.key,
-    super.tag,
+    required super.tag,
     bool hidden = true,
     required List<String> seedPhrase,
   }) : super(
