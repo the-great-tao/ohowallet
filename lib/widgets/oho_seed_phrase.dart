@@ -49,20 +49,26 @@ class OHOSeedPhraseItem extends BaseWidget<OHOSeedPhraseItemController> {
 }
 
 class OHOSeedPhraseController extends BaseController {
-  final List<String> seedPhrase;
   var hidden = true.obs;
+  final List<String> seedPhrase;
 
   OHOSeedPhraseController({
+    bool hidden = true,
     required this.seedPhrase,
-  }) : super();
+  }) : super() {
+    this.hidden.value = hidden;
+  }
 }
 
 class OHOSeedPhrase extends BaseWidget<OHOSeedPhraseController> {
   OHOSeedPhrase({
     super.key,
+    super.tag,
+    bool hidden = true,
     required List<String> seedPhrase,
   }) : super(
           controller: OHOSeedPhraseController(
+            hidden: hidden,
             seedPhrase: seedPhrase,
           ),
         );
