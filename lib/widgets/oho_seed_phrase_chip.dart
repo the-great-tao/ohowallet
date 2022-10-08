@@ -21,13 +21,10 @@ class OHOSeedPhraseChipItem
     return SizedBox(
       width: 300.w,
       height: 90.h,
-      child: Obx(() {
-        final textColor = controller.selected.value
-            ? themeService.solidButtonTextColor
-            : themeService.outlinedButtonTextColor;
-        return FilterChip(
+      child: Obx(
+        () => FilterChip(
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          pressElevation: 5.r,
+          pressElevation: 10.r,
           shape: StadiumBorder(
             side: BorderSide(
               width: 5.r,
@@ -43,11 +40,13 @@ class OHOSeedPhraseChipItem
                 fontSize: 40.sp,
                 fontFamily: 'Outfit',
                 fontWeight: FontWeight.normal,
-                color: textColor,
+                color: controller.selected.value
+                    ? themeService.solidButtonTextColor
+                    : themeService.outlinedButtonTextColor,
               ),
             ),
           ),
-          backgroundColor: themeService.solidButtonTextColor,
+          backgroundColor: themeService.textFieldBackgroundColor,
           checkmarkColor: themeService.solidButtonTextColor,
           selectedColor: themeService.solidButtonBackgroundColor,
           selected: controller.selected.value,
@@ -56,8 +55,8 @@ class OHOSeedPhraseChipItem
               controller.selected.value = value;
             }
           },
-        );
-      }),
+        ),
+      ),
     );
   }
 }
