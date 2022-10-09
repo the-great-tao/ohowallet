@@ -77,6 +77,7 @@ class OHOTextFieldController extends BaseController {
   final String messageTag;
   final List<OHOTextFieldValidator>? validators;
   final TextEditingController textEditingController;
+  var valid = false;
 
   OHOTextFieldController({
     required this.required,
@@ -93,18 +94,25 @@ class OHOTextFieldController extends BaseController {
     ever(data, (String value) => validate(value));
   }
 
-  validate(String data) {
+  bool isValid() {
+    validate(data.value);
+    return valid;
+  }
+
+  void validate(String data) {
     if (validators == null) return;
 
     OHOMessageController messageController = Get.find(tag: messageTag);
     for (var validator in validators!) {
       if (!validator.isValid(data)) {
+        valid = false;
         messageController.type.value = OHOMessageType.error;
         messageController.message.value = validator.errorMessage;
         return;
       }
     }
 
+    valid = true;
     messageController.type.value = OHOMessageType.none;
     messageController.message.value = '';
   }

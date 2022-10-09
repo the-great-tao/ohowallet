@@ -8,6 +8,7 @@ export 'package:flutter_secure_storage/flutter_secure_storage.dart';
 export 'package:hive_flutter/hive_flutter.dart';
 export 'package:hex/hex.dart';
 export 'package:uuid/uuid.dart';
+export 'package:crypto/crypto.dart';
 export 'package:bip39/bip39.dart';
 export 'package:ed25519_hd_key/ed25519_hd_key.dart' hide KeyData;
 export 'package:eth_sig_util/eth_sig_util.dart';

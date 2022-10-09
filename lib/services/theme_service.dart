@@ -1,5 +1,20 @@
 import 'package:ohowallet/core/exports.dart';
 
+Future<bool?> showToast({
+  required String message,
+  required Color backgroundColor,
+}) async {
+  return Fluttertoast.showToast(
+    msg: message,
+    toastLength: Toast.LENGTH_SHORT,
+    gravity: ToastGravity.CENTER,
+    timeInSecForIosWeb: 1,
+    backgroundColor: backgroundColor,
+    textColor: Colors.white,
+    fontSize: 40.sp,
+  );
+}
+
 class OHOColors {
   static const gold = Color(0xffd4af34);
   static const blue = Color(0xff0e8ca5);
