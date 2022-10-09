@@ -1,11 +1,54 @@
 import 'package:ohowallet/core/exports.dart';
 
-class WalletUnlockScreenController extends BaseController {}
+class WalletUnlockScreenController extends BaseController {
+  Future<void> eraseData() async {
+    await appDataService.reset();
+    Get.off(() => WelcomeScreen());
+  }
+}
 
 class WalletUnlockScreen extends BaseWidget<WalletUnlockScreenController> {
   WalletUnlockScreen({
     super.key,
   }) : super(controller: WalletUnlockScreenController());
+
+  Widget eraseWalletDialog() {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: EdgeInsets.symmetric(
+        vertical: 850.h,
+        horizontal: 50.w,
+      ),
+      child: Material(
+        borderRadius: BorderRadius.all(Radius.circular(50.r)),
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              OHOText('Are you sure to erase\nall of your data?'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  OHOOutlinedButton(
+                    width: 400.w,
+                    title: 'No',
+                    onTap: () => Get.back(),
+                  ),
+                  OHOSolidButton(
+                    width: 400.w,
+                    title: 'Yes',
+                    onTap: () => controller.eraseData(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,11 +125,14 @@ class WalletUnlockScreen extends BaseWidget<WalletUnlockScreenController> {
                         'You can erase your current wallet,\nand setup a new one.',
                       ),
                       SizedBox(height: 20.r),
-                      OHOText(
-                        'Erase Wallet',
-                        color: themeService.outlinedButtonTextColor,
-                        fontSize: 60.sp,
-                        fontWeight: FontWeight.normal,
+                      GestureDetector(
+                        child: OHOText(
+                          'Erase Wallet',
+                          color: themeService.outlinedButtonTextColor,
+                          fontSize: 60.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        onTap: () => Get.dialog(eraseWalletDialog()),
                       ),
                     ],
                   ),

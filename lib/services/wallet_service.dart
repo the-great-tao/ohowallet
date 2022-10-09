@@ -61,6 +61,8 @@ class WalletService extends GetxService {
     if (appDataBox == null) return this;
 
     _accountPrivateKey = appDataBox.get('accountPrivateKey');
+    if (_accountPrivateKey == null) return this;
+
     final privateKey = EthPrivateKey.fromHex(_accountPrivateKey!);
     accountAddress = await privateKey.extractAddress();
     print('accountAddress: $accountAddress');

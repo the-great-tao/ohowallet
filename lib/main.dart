@@ -60,12 +60,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appDataService = Get.find<AppDataService>();
+
     return GetMaterialApp(
       title: 'OHO Wallet',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: WelcomeScreen(),
+      home: appDataService.appDataBox == null
+          ? WelcomeScreen()
+          : WalletUnlockScreen(),
       useInheritedMediaQuery: true,
       locale: DevicePreview.locale(context),
       builder: (BuildContext context, Widget? child) => devicePreviewEnabled
