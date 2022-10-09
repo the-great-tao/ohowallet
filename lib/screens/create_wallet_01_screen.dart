@@ -1,6 +1,9 @@
 import 'package:ohowallet/core/exports.dart';
 
-class CreateWallet01ScreenController extends BaseController {}
+class CreateWallet01ScreenController extends BaseController {
+  var biometrics = true.obs;
+  var understood = true.obs;
+}
 
 class CreateWallet01Screen extends BaseWidget<CreateWallet01ScreenController> {
   CreateWallet01Screen({
@@ -63,6 +66,45 @@ class CreateWallet01Screen extends BaseWidget<CreateWallet01ScreenController> {
                       OHOTextFieldValidatorEqual(
                         tag: 'new-password',
                         errorMessage: 'Password confirmation is not matched',
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 50.r),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 50.r),
+                        child: OHOText('Sign in with Biometrics?'),
+                      ),
+                      Expanded(child: Container()),
+                      FlutterSwitch(
+                        activeColor: themeService.solidButtonBackgroundColor,
+                        value: controller.biometrics.value,
+                        onToggle: (value) =>
+                            controller.biometrics.value = value,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 100.r),
+                  Row(
+                    children: [
+                      Checkbox(
+                        side: BorderSide(
+                          width: 5.r,
+                          color: themeService.solidButtonBorderColor,
+                        ),
+                        activeColor: themeService.solidButtonBackgroundColor,
+                        value: controller.understood.value,
+                        onChanged: (value) =>
+                            controller.understood.value = value!,
+                      ),
+                      Expanded(
+                        child: OHOText(
+                          'I understand that OHO Wallet cannot recover this password for me.',
+                          textAlign: TextAlign.left,
+                          fontSize: 40.sp,
+                          fontWeight: FontWeight.w300,
+                        ),
                       ),
                     ],
                   ),
