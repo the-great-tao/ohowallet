@@ -30,7 +30,7 @@ class ImportWalletScreen extends BaseWidget<ImportWalletScreenController> {
                   OHOHeaderText('Import Wallet'),
                   SizedBox(height: 50.r),
                   OHOTextField(
-                    tag: 'seed-phrase',
+                    tag: 'import-seed-phrase',
                     hint: 'Enter your 12-word Seed Phrase',
                     obscureText: true,
                     validators: [
