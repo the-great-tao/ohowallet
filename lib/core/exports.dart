@@ -1,9 +1,11 @@
+export 'dart:io';
 export 'dart:async';
 export 'dart:convert';
 export 'package:flutter/foundation.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter/services.dart';
-export 'package:get/get.dart' hide FormData, MultipartFile, Response;
+export 'package:get/get.dart'
+    hide FormData, MultipartFile, Response, HeaderValue;
 export 'package:flutter_secure_storage/flutter_secure_storage.dart';
 export 'package:hive_flutter/hive_flutter.dart';
 export 'package:hex/hex.dart';
@@ -33,6 +35,7 @@ export 'package:device_preview/device_preview.dart'
     hide basicLocaleListResolution;
 export 'package:sentry/sentry.dart';
 export 'package:sentry_flutter/sentry_flutter.dart';
+export 'package:path_provider/path_provider.dart';
 
 export 'package:ohowallet/core/settings.dart';
 export 'package:ohowallet/services/app_data_service.dart';

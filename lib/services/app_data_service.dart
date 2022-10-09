@@ -1,31 +1,58 @@
 import 'package:ohowallet/core/exports.dart';
 
 class AppDataService extends GetxService {
+  static const hivePath = 'hive';
+
   late FlutterSecureStorage secureStorage;
-  late Box appDataBox;
+  late String setupPassword;
+  String? appDataKey;
+  Box? appDataBox;
 
   Future<AppDataService> init() async {
     secureStorage = const FlutterSecureStorage();
 
-    final String? appDataKey_ = await secureStorage.read(key: 'appDataKey');
-    List<int> appDataKey;
-
-    if (appDataKey_ != null) {
-      appDataKey = List<int>.from(jsonDecode(appDataKey_));
-    } else {
-      appDataKey = Hive.generateSecureKey();
-      await secureStorage.write(
-        key: 'appDataKey',
-        value: jsonEncode(appDataKey),
-      );
+    appDataKey = await secureStorage.read(key: 'appDataKey');
+    if (appDataKey == null) {
+      return this;
     }
 
     await Hive.initFlutter('hive');
     appDataBox = await Hive.openBox(
       'appData',
-      encryptionCipher: HiveAesCipher(appDataKey),
+      encryptionCipher: HiveAesCipher(hexToBytes(appDataKey!)),
     );
 
     return this;
+  }
+
+  Future<void> reset() async {
+    await appDataBox?.clear();
+    await appDataBox?.close();
+    await appDataBox?.deleteFromDisk();
+
+    final appDirectory = await getApplicationDocumentsDirectory();
+    final hiveDirectory =
+        Directory('${appDirectory.path}/${AppDataService.hivePath}');
+    await hiveDirectory.delete(recursive: true);
+
+    await secureStorage.deleteAll();
+  }
+
+  Future<void> setup() async {
+    if (setupPassword.isEmpty) return;
+
+    appDataKey = sha256.convert(utf8.encode(setupPassword)).toString();
+    await secureStorage.write(
+      key: 'appDataKey',
+      value: appDataKey,
+    );
+
+    await Hive.initFlutter('hive');
+    appDataBox = await Hive.openBox(
+      'appData',
+      encryptionCipher: HiveAesCipher(hexToBytes(appDataKey!)),
+    );
+
+    setupPassword = '';
   }
 }

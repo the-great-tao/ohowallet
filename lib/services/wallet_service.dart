@@ -46,6 +46,7 @@ class WalletService extends GetxService {
   static const nftApiUrl =
       'https://polygon-mainnet.g.alchemyapi.io/nft/v2/$alchemyApiKey';
 
+  late List<String> setupSeedPhrase;
   String? _accountPrivateKey;
   EthereumAddress? accountAddress;
   OnUpdateTransaction? onUpdateTransaction;
@@ -55,46 +56,32 @@ class WalletService extends GetxService {
   WalletService() : web3client = Web3Client(rpcUrl, Client());
 
   Future<WalletService> init() async {
-    final appDataBox =
-        Get.find<AppDataService>().appDataBox; // Hive.box('appData');
+    final appDataService = Get.find<AppDataService>();
+    final appDataBox = appDataService.appDataBox;
+    if (appDataBox == null) return this;
 
-    String? accountMnemonic = appDataBox.get('account_mnemonic');
-    if (accountMnemonic == null) {
-      accountMnemonic = generateMnemonic();
-      await appDataBox.put('account_mnemonic', accountMnemonic);
-    }
-    print("accountMnemonic: $accountMnemonic");
-
-    String? accountPrivateKey = appDataBox.get('account_private_key');
-    if (accountPrivateKey == null) {
-      accountPrivateKey = await WalletService.getPrivateKey(accountMnemonic);
-      await appDataBox.put('account_private_key', accountPrivateKey);
-    }
-    print("accountPrivateKey: $accountPrivateKey");
-
-    String? accountAddress = appDataBox.get('account_address');
-    if (accountAddress == null) {
-      accountAddress =
-          (await WalletService.getPublicKey(accountPrivateKey)).hexEip55;
-      await appDataBox.put('account_address', accountAddress);
-    }
-    print("accountAddress: $accountAddress");
-
-    final walletService = Get.put(WalletService());
-
-    if (kReleaseMode) {
-      await walletService.initialize(accountPrivateKey);
-    } else {
-      await walletService.initialize(OHOSettings.testPrivateKey);
-    }
+    _accountPrivateKey = appDataBox.get('accountPrivateKey');
+    final privateKey = EthPrivateKey.fromHex(_accountPrivateKey!);
+    accountAddress = await privateKey.extractAddress();
+    print('accountAddress: $accountAddress');
 
     return this;
   }
 
-  Future<void> initialize(String accountPrivateKey) async {
-    _accountPrivateKey = accountPrivateKey;
-    final privateKey = EthPrivateKey.fromHex(_accountPrivateKey!);
-    accountAddress = await privateKey.extractAddress();
+  Future<void> setup() async {
+    final appDataService = Get.find<AppDataService>();
+    final appDataBox = appDataService.appDataBox;
+    if (appDataBox == null) return;
+
+    if (setupSeedPhrase.isEmpty) return;
+    final accountMnemonic = setupSeedPhrase.join(' ');
+    await appDataBox.put('accountMnemonic', accountMnemonic);
+
+    final accountPrivateKey =
+        await WalletService.getPrivateKey(accountMnemonic);
+    await appDataBox.put('accountPrivateKey', accountPrivateKey);
+
+    setupSeedPhrase = [];
   }
 
   static Future<String> getPrivateKey(String mnemonic) async {

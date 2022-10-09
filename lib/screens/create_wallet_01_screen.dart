@@ -22,7 +22,7 @@ class CreateWallet01ScreenController extends BaseController {
     return valid;
   }
 
-  void submit() {
+  Future<void> submit() async {
     if (!isValid()) {
       showToast(
         message: 'Please check your input data.',
@@ -40,7 +40,7 @@ class CreateWallet01ScreenController extends BaseController {
     }
 
     appDataService.setupPassword = passwordController.data.value;
-    appDataService.setupSeedPhrase = generateMnemonic().split(' ');
+    walletService.setupSeedPhrase = generateMnemonic().split(' ');
 
     Get.to(() => CreateWallet02Screen());
   }

@@ -17,18 +17,21 @@ class CreateWallet03ScreenController extends BaseController {
     seedPhraseController.reset();
   }
 
-  void submit() {
+  Future<void> submit() async {
     seedPhraseController =
         Get.find<OHOSeedPhraseController>(tag: seedPhraseTag);
 
     if (seedPhraseController.seedPhrase.toString() !=
-        appDataService.setupSeedPhrase.toString()) {
+        walletService.setupSeedPhrase.toString()) {
       showToast(
         message: 'Your Seed Phrase confirmation is not correct.',
         backgroundColor: OHOColors.statusError,
       );
       return;
     }
+
+    await appDataService.setup();
+    await walletService.setup();
 
     Get.to(() => CreateWallet04Screen());
   }
@@ -67,7 +70,7 @@ class CreateWallet03Screen extends BaseWidget<CreateWallet03ScreenController> {
                   OHOSeedPhraseChip(
                     tag: CreateWallet03ScreenController.seedPhraseChipTag,
                     seedPhraseTag: CreateWallet03ScreenController.seedPhraseTag,
-                    seedPhrase: appDataService.setupSeedPhrase.toList()
+                    seedPhrase: walletService.setupSeedPhrase.toList()
                       ..shuffle(),
                   ),
                   OHOSeedPhrase(

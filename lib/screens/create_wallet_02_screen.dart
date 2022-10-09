@@ -5,7 +5,7 @@ class CreateWallet02ScreenController extends BaseController {
 
   late OHOSeedPhraseController seedPhraseController;
 
-  void submit() {
+  Future<void> submit() async {
     seedPhraseController =
         Get.find<OHOSeedPhraseController>(tag: seedPhraseTag);
     if (seedPhraseController.hidden.value) {
@@ -53,7 +53,7 @@ class CreateWallet02Screen extends BaseWidget<CreateWallet02ScreenController> {
                   SizedBox(height: 100.r),
                   OHOSeedPhrase(
                     tag: CreateWallet02ScreenController.seedPhraseTag,
-                    seedPhrase: appDataService.setupSeedPhrase!,
+                    seedPhrase: walletService.setupSeedPhrase,
                   ),
                   Expanded(child: Container()),
                   Column(
