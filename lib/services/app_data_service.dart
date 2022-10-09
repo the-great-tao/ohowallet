@@ -32,7 +32,9 @@ class AppDataService extends GetxService {
     final appDirectory = await getApplicationDocumentsDirectory();
     final hiveDirectory =
         Directory('${appDirectory.path}/${AppDataService.hivePath}');
-    await hiveDirectory.delete(recursive: true);
+    if (await hiveDirectory.exists()) {
+      await hiveDirectory.delete(recursive: true);
+    }
 
     await secureStorage.deleteAll();
   }
