@@ -44,13 +44,16 @@ class WalletSetupScreen extends BaseWidget<WalletSetupScreenController> {
                   ),
                   Column(
                     children: [
-                      OHOOutlinedButton(title: 'Import a Wallet'),
+                      OHOOutlinedButton(
+                        title: 'Import a Wallet',
+                        onTap: () => Get.to(() => ImportWalletScreen()),
+                      ),
                       SizedBox(height: 50.r),
                       OHOSolidButton(
                         title: 'Create a New Wallet',
                         onTap: () => Get.to(() => CreateWallet01Screen()),
                       ),
-                      SizedBox(height: 100.r),
+                      SizedBox(height: 200.r),
                     ],
                   ),
                 ],

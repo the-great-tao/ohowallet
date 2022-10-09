@@ -75,17 +75,19 @@ class OHOAppBar01 extends BaseWidget<OHOAppBar01Controller> {
                 'assets/images/oho_logo_square_256.png',
                 width: 200.r,
               ),
-              SizedBox(height: 50.r),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  stepCircle(1),
-                  stepDivider(1),
-                  stepCircle(2),
-                  stepDivider(2),
-                  stepCircle(3),
-                ],
-              ),
+              step <= 0 ? Container() : SizedBox(height: 50.r),
+              step <= 0
+                  ? Container()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        stepCircle(1),
+                        stepDivider(1),
+                        stepCircle(2),
+                        stepDivider(2),
+                        stepCircle(3),
+                      ],
+                    ),
             ],
           ),
           Positioned(

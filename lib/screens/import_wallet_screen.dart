@@ -1,14 +1,14 @@
 import 'package:ohowallet/core/exports.dart';
 
-class CreateWallet01ScreenController extends BaseController {
+class ImportWalletScreenController extends BaseController {
   var biometrics = true.obs;
   var understood = true.obs;
 }
 
-class CreateWallet01Screen extends BaseWidget<CreateWallet01ScreenController> {
-  CreateWallet01Screen({
+class ImportWalletScreen extends BaseWidget<ImportWalletScreenController> {
+  ImportWalletScreen({
     super.key,
-  }) : super(controller: CreateWallet01ScreenController());
+  }) : super(controller: ImportWalletScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +25,19 @@ class CreateWallet01Screen extends BaseWidget<CreateWallet01ScreenController> {
               padding: EdgeInsets.all(50.r),
               child: Column(
                 children: [
-                  OHOAppBar01(step: 1),
+                  OHOAppBar01(step: 0),
                   SizedBox(height: 50.r),
-                  OHOHeaderText('Create Password'),
+                  OHOHeaderText('Import Wallet'),
                   SizedBox(height: 50.r),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 50.r),
-                    child: OHOText(
-                      'This password will unlock your OHO Wallet only on this device.',
-                    ),
+                  OHOTextField(
+                    tag: 'seed-phrase',
+                    hint: 'Enter your 12-word Seed Phrase',
+                    obscureText: true,
+                    validators: [
+                      OHOTextFieldValidatorRequired(
+                        errorMessage: 'Seed Phrase is required',
+                      ),
+                    ],
                   ),
                   SizedBox(height: 50.r),
                   OHOTextField(

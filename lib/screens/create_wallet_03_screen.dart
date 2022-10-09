@@ -86,7 +86,7 @@ class CreateWallet03Screen extends BaseWidget<CreateWallet03ScreenController> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 100.r),
+                      SizedBox(height: 50.r),
                     ],
                   ),
                 ],
