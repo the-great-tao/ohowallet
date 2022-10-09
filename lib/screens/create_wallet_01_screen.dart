@@ -1,8 +1,49 @@
 import 'package:ohowallet/core/exports.dart';
 
 class CreateWallet01ScreenController extends BaseController {
+  static const passwordTag = 'new-password';
+  static const passwordConfirmationTag = 'confirm-new-password';
+
   var biometrics = true.obs;
-  var understood = true.obs;
+  var understood = false.obs;
+
+  late OHOTextFieldController passwordController;
+  late OHOTextFieldController passwordConfirmationController;
+
+  bool isValid() {
+    passwordController = Get.find<OHOTextFieldController>(tag: passwordTag);
+    passwordConfirmationController =
+        Get.find<OHOTextFieldController>(tag: passwordConfirmationTag);
+
+    var valid = true;
+    valid &= passwordController.isValid();
+    valid &= passwordConfirmationController.isValid();
+
+    return valid;
+  }
+
+  void submit() {
+    if (!isValid()) {
+      showToast(
+        message: 'Please check your input data.',
+        backgroundColor: OHOColors.statusError,
+      );
+      return;
+    }
+    if (!understood.value) {
+      showToast(
+        message:
+            'Please understand that OHO Wallet cannot recover your password.',
+        backgroundColor: OHOColors.statusError,
+      );
+      return;
+    }
+
+    appDataService.setupPassword = passwordController.data.value;
+    appDataService.setupSeedPhrase = generateMnemonic().split(' ');
+
+    Get.to(() => CreateWallet02Screen());
+  }
 }
 
 class CreateWallet01Screen extends BaseWidget<CreateWallet01ScreenController> {
@@ -37,7 +78,7 @@ class CreateWallet01Screen extends BaseWidget<CreateWallet01ScreenController> {
                   ),
                   SizedBox(height: 50.r),
                   OHOTextField(
-                    tag: 'new-password',
+                    tag: CreateWallet01ScreenController.passwordTag,
                     label: 'New Password',
                     description: 'Password must be at least 8 characters',
                     required: true,
@@ -54,7 +95,7 @@ class CreateWallet01Screen extends BaseWidget<CreateWallet01ScreenController> {
                   ),
                   SizedBox(height: 50.r),
                   OHOTextField(
-                    tag: 'confirm-new-password',
+                    tag: CreateWallet01ScreenController.passwordConfirmationTag,
                     label: 'Confirm New Password',
                     description: 'Password confirmation must be matched',
                     required: true,
@@ -113,7 +154,7 @@ class CreateWallet01Screen extends BaseWidget<CreateWallet01ScreenController> {
                     children: [
                       OHOSolidButton(
                         title: 'Create Password',
-                        onTap: () => Get.to(() => CreateWallet02Screen()),
+                        onTap: () => controller.submit(),
                       ),
                       SizedBox(height: 50.r),
                     ],

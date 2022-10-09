@@ -2,7 +2,7 @@ import 'package:ohowallet/core/exports.dart';
 
 class ImportWalletScreenController extends BaseController {
   var biometrics = true.obs;
-  var understood = true.obs;
+  var understood = false.obs;
 }
 
 class ImportWalletScreen extends BaseWidget<ImportWalletScreenController> {

@@ -68,6 +68,7 @@ class OHOSeedPhraseController extends BaseController {
       final seedPhraseItemController =
           Get.find<OHOSeedPhraseItemController>(tag: '$tag-item-$index');
       seedPhraseItemController.content.value = '';
+      seedPhrase[index] = '';
     }
     currentIndex = 0;
   }
@@ -76,6 +77,7 @@ class OHOSeedPhraseController extends BaseController {
     final seedPhraseItemController =
         Get.find<OHOSeedPhraseItemController>(tag: '$tag-item-$currentIndex');
     seedPhraseItemController.content.value = phrase;
+    seedPhrase[currentIndex] = phrase;
     currentIndex++;
   }
 }

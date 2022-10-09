@@ -4,14 +4,33 @@ class CreateWallet03ScreenController extends BaseController {
   static const seedPhraseChipTag = 'seed-phrase-chip';
   static const seedPhraseTag = 'seed-phrase';
 
+  late OHOSeedPhraseChipController seedPhraseChipController;
+  late OHOSeedPhraseController seedPhraseController;
+
   void reset() {
-    final seedPhraseChipController =
+    seedPhraseChipController =
         Get.find<OHOSeedPhraseChipController>(tag: seedPhraseChipTag);
-    final seedPhraseController =
+    seedPhraseController =
         Get.find<OHOSeedPhraseController>(tag: seedPhraseTag);
 
     seedPhraseChipController.reset();
     seedPhraseController.reset();
+  }
+
+  void submit() {
+    seedPhraseController =
+        Get.find<OHOSeedPhraseController>(tag: seedPhraseTag);
+
+    if (seedPhraseController.seedPhrase.toString() !=
+        appDataService.setupSeedPhrase.toString()) {
+      showToast(
+        message: 'Your Seed Phrase confirmation is not correct.',
+        backgroundColor: OHOColors.statusError,
+      );
+      return;
+    }
+
+    Get.to(() => CreateWallet04Screen());
   }
 }
 
@@ -48,20 +67,8 @@ class CreateWallet03Screen extends BaseWidget<CreateWallet03ScreenController> {
                   OHOSeedPhraseChip(
                     tag: CreateWallet03ScreenController.seedPhraseChipTag,
                     seedPhraseTag: CreateWallet03ScreenController.seedPhraseTag,
-                    seedPhrase: const [
-                      'one',
-                      'two',
-                      'three',
-                      'four',
-                      'five',
-                      'six',
-                      'seven',
-                      'eight',
-                      'nine',
-                      'ten',
-                      'eleven',
-                      'twelve',
-                    ],
+                    seedPhrase: appDataService.setupSeedPhrase.toList()
+                      ..shuffle(),
                   ),
                   OHOSeedPhrase(
                     tag: CreateWallet03ScreenController.seedPhraseTag,
@@ -82,7 +89,7 @@ class CreateWallet03Screen extends BaseWidget<CreateWallet03ScreenController> {
                           OHOSolidButton(
                             width: 600.w,
                             title: 'Confirm',
-                            onTap: () => Get.to(() => CreateWallet04Screen()),
+                            onTap: () => controller.submit(),
                           ),
                         ],
                       ),

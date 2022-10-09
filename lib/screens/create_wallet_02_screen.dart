@@ -2,6 +2,22 @@ import 'package:ohowallet/core/exports.dart';
 
 class CreateWallet02ScreenController extends BaseController {
   static const seedPhraseTag = 'seed-phrase-view';
+
+  late OHOSeedPhraseController seedPhraseController;
+
+  void submit() {
+    seedPhraseController =
+        Get.find<OHOSeedPhraseController>(tag: seedPhraseTag);
+    if (seedPhraseController.hidden.value) {
+      showToast(
+        message: 'Please view and write down your Seed Phrase.',
+        backgroundColor: OHOColors.statusError,
+      );
+      return;
+    }
+
+    Get.to(() => CreateWallet03Screen());
+  }
 }
 
 class CreateWallet02Screen extends BaseWidget<CreateWallet02ScreenController> {
@@ -37,27 +53,14 @@ class CreateWallet02Screen extends BaseWidget<CreateWallet02ScreenController> {
                   SizedBox(height: 100.r),
                   OHOSeedPhrase(
                     tag: CreateWallet02ScreenController.seedPhraseTag,
-                    seedPhrase: const [
-                      'one',
-                      'two',
-                      'three',
-                      'four',
-                      'five',
-                      'six',
-                      'seven',
-                      'eight',
-                      'nine',
-                      'ten',
-                      'eleven',
-                      'twelve',
-                    ],
+                    seedPhrase: appDataService.setupSeedPhrase!,
                   ),
                   Expanded(child: Container()),
                   Column(
                     children: [
                       OHOSolidButton(
                         title: 'Next',
-                        onTap: () => Get.to(() => CreateWallet03Screen()),
+                        onTap: () => controller.submit(),
                       ),
                       SizedBox(height: 50.r),
                     ],
