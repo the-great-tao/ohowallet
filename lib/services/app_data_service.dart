@@ -29,6 +29,7 @@ class AppDataService extends GetxService {
     await appDataBox?.clear();
     await appDataBox?.close();
     await appDataBox?.deleteFromDisk();
+    appDataBox = null;
 
     final appDirectory = await getApplicationDocumentsDirectory();
     final hiveDirectory =
@@ -39,6 +40,8 @@ class AppDataService extends GetxService {
   }
 
   Future<void> setup() async {
+    await reset();
+
     if (setupPassword.isEmpty) return;
 
     appDataKey = sha256.convert(utf8.encode(setupPassword)).toString();
