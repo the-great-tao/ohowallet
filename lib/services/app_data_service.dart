@@ -5,6 +5,7 @@ class AppDataService extends GetxService {
 
   late LocalAuthentication localAuthentication;
   late bool usableBiometrics;
+  late List<BiometricType> availableBiometrics;
   late FlutterSecureStorage secureStorage;
   late String setupPassword;
   String? appDataKey;
@@ -15,8 +16,7 @@ class AppDataService extends GetxService {
     usableBiometrics = await localAuthentication.isDeviceSupported();
     usableBiometrics &= await localAuthentication.canCheckBiometrics;
     if (usableBiometrics) {
-      final availableBiometrics =
-          await localAuthentication.getAvailableBiometrics();
+      availableBiometrics = await localAuthentication.getAvailableBiometrics();
       usableBiometrics &= availableBiometrics.isNotEmpty &&
           (availableBiometrics.contains(BiometricType.strong) ||
               availableBiometrics.contains(BiometricType.fingerprint) ||

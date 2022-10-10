@@ -110,22 +110,27 @@ class CreateWallet01Screen extends BaseWidget<CreateWallet01ScreenController> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 50.r),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 50.r),
-                        child: OHOText('Sign in with Biometrics?'),
-                      ),
-                      Expanded(child: Container()),
-                      FlutterSwitch(
-                        activeColor: themeService.solidButtonBackgroundColor,
-                        value: controller.biometrics.value,
-                        onToggle: (value) =>
-                            controller.biometrics.value = value,
-                      ),
-                    ],
-                  ),
+                  !appDataService.usableBiometrics
+                      ? Container()
+                      : SizedBox(height: 50.r),
+                  !appDataService.usableBiometrics
+                      ? Container()
+                      : Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 50.r),
+                              child: OHOText('Sign in with Biometrics?'),
+                            ),
+                            Expanded(child: Container()),
+                            FlutterSwitch(
+                              activeColor:
+                                  themeService.solidButtonBackgroundColor,
+                              value: controller.biometrics.value,
+                              onToggle: (value) =>
+                                  controller.biometrics.value = value,
+                            ),
+                          ],
+                        ),
                   SizedBox(height: 50.r),
                   Row(
                     children: [
