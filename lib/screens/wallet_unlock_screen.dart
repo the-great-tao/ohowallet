@@ -17,9 +17,10 @@ class WalletUnlockScreenController extends BaseController {
       return;
     }
 
-    if (appDataService.usableBiometrics) {
+    if (appDataService.hasBiometrics) {
       appDataService.localAuthentication.authenticate(
         localizedReason: 'Please authenticate to open your Wallet',
+        options: const AuthenticationOptions(biometricOnly: true),
       );
     }
   }
@@ -76,6 +77,24 @@ class WalletUnlockScreen extends BaseWidget<WalletUnlockScreenController> {
     );
   }
 
+  Widget get faceIdButton => appDataService.hasFaceId
+      ? SvgPicture.asset(
+          'assets/icons/face-id.svg',
+          width: 120.r,
+          height: 120.r,
+          color: themeService.outlinedButtonTextColor,
+        )
+      : Container();
+
+  Widget get touchIdButton => appDataService.hasTouchId
+      ? SvgPicture.asset(
+          'assets/icons/touch-id.svg',
+          width: 120.r,
+          height: 120.r,
+          color: themeService.outlinedButtonTextColor,
+        )
+      : Container();
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -119,24 +138,18 @@ class WalletUnlockScreen extends BaseWidget<WalletUnlockScreenController> {
                         title: 'Unlock',
                         onTap: () => controller.submit(),
                       ),
-                      SizedBox(height: 20.r),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/face-id.svg',
-                            width: 120.r,
-                            height: 120.r,
-                            color: themeService.outlinedButtonTextColor,
-                          ),
-                          SvgPicture.asset(
-                            'assets/icons/touch-id.svg',
-                            width: 120.r,
-                            height: 120.r,
-                            color: themeService.outlinedButtonTextColor,
-                          ),
-                        ],
-                      ),
+                      !appDataService.hasBiometrics
+                          ? Container()
+                          : SizedBox(height: 20.r),
+                      !appDataService.hasBiometrics
+                          ? Container()
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                faceIdButton,
+                                touchIdButton,
+                              ],
+                            ),
                     ],
                   ),
                   SizedBox(height: 50.r),

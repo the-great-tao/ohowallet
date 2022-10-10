@@ -4,23 +4,27 @@ class AppDataService extends GetxService {
   static const hivePath = 'hive';
 
   late LocalAuthentication localAuthentication;
-  late bool usableBiometrics;
+  late bool hasBiometrics;
   late List<BiometricType> availableBiometrics;
   late FlutterSecureStorage secureStorage;
   late String setupPassword;
   String? appDataKey;
   Box? appDataBox;
 
+  bool get hasFaceId => availableBiometrics.contains(BiometricType.face);
+
+  bool get hasTouchId =>
+      availableBiometrics.contains(BiometricType.fingerprint) ||
+      availableBiometrics.contains(BiometricType.strong);
+
   Future<AppDataService> init() async {
     localAuthentication = LocalAuthentication();
-    usableBiometrics = await localAuthentication.isDeviceSupported();
-    usableBiometrics &= await localAuthentication.canCheckBiometrics;
-    if (usableBiometrics) {
+    hasBiometrics = await localAuthentication.isDeviceSupported();
+    hasBiometrics &= await localAuthentication.canCheckBiometrics;
+    if (hasBiometrics) {
       availableBiometrics = await localAuthentication.getAvailableBiometrics();
-      usableBiometrics &= availableBiometrics.isNotEmpty &&
-          (availableBiometrics.contains(BiometricType.strong) ||
-              availableBiometrics.contains(BiometricType.fingerprint) ||
-              availableBiometrics.contains(BiometricType.face));
+      hasBiometrics &=
+          availableBiometrics.isNotEmpty && (hasFaceId || hasTouchId);
     }
 
     secureStorage = const FlutterSecureStorage();
