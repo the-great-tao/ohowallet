@@ -3,12 +3,26 @@ import 'package:ohowallet/core/exports.dart';
 class AppDataService extends GetxService {
   static const hivePath = 'hive';
 
+  late LocalAuthentication localAuthentication;
+  late bool usableBiometrics;
   late FlutterSecureStorage secureStorage;
   late String setupPassword;
   String? appDataKey;
   Box? appDataBox;
 
   Future<AppDataService> init() async {
+    localAuthentication = LocalAuthentication();
+    usableBiometrics = await localAuthentication.isDeviceSupported();
+    usableBiometrics &= await localAuthentication.canCheckBiometrics;
+    if (usableBiometrics) {
+      final availableBiometrics =
+          await localAuthentication.getAvailableBiometrics();
+      usableBiometrics &= availableBiometrics.isNotEmpty &&
+          (availableBiometrics.contains(BiometricType.strong) ||
+              availableBiometrics.contains(BiometricType.fingerprint) ||
+              availableBiometrics.contains(BiometricType.face));
+    }
+
     secureStorage = const FlutterSecureStorage();
 
     appDataKey = await secureStorage.read(key: 'appDataKey');
@@ -55,5 +69,12 @@ class AppDataService extends GetxService {
     );
 
     setupPassword = '';
+  }
+
+  Future<bool> checkPassword(String password) async {
+    appDataKey = await secureStorage.read(key: 'appDataKey');
+    String hashedPassword = sha256.convert(utf8.encode(password)).toString();
+    if (appDataKey != hashedPassword) return false;
+    return true;
   }
 }

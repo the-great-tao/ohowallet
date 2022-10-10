@@ -1,6 +1,29 @@
 import 'package:ohowallet/core/exports.dart';
 
 class WalletUnlockScreenController extends BaseController {
+  static const walletPasswordTag = 'wallet-password';
+
+  late OHOTextFieldController walletPasswordController;
+
+  Future<void> submit() async {
+    walletPasswordController =
+        Get.find<OHOTextFieldController>(tag: walletPasswordTag);
+    final password = walletPasswordController.data.value;
+    if (!(await appDataService.checkPassword(password))) {
+      showToast(
+        message: 'Wallet Password is incorrect.',
+        backgroundColor: OHOColors.statusError,
+      );
+      return;
+    }
+
+    if (appDataService.usableBiometrics) {
+      appDataService.localAuthentication.authenticate(
+        localizedReason: 'Please authenticate to open your Wallet',
+      );
+    }
+  }
+
   Future<void> eraseData() async {
     await appDataService.reset();
     Get.offAll(() => WelcomeScreen());
@@ -87,14 +110,14 @@ class WalletUnlockScreen extends BaseWidget<WalletUnlockScreenController> {
                   Column(
                     children: [
                       OHOTextField(
-                        tag: 'wallet-password',
+                        tag: WalletUnlockScreenController.walletPasswordTag,
                         label: 'Wallet Password',
                         obscureText: true,
                       ),
                       SizedBox(height: 20.r),
                       OHOSolidButton(
                         title: 'Unlock',
-                        onTap: () => Get.to(() => CreateWallet01Screen()),
+                        onTap: () => controller.submit(),
                       ),
                       SizedBox(height: 20.r),
                       Row(
