@@ -3,7 +3,7 @@ import 'package:ohowallet/core/exports.dart';
 class WalletUnlockScreenController extends BaseController {
   Future<void> eraseData() async {
     await appDataService.reset();
-    Get.off(() => WelcomeScreen());
+    Get.offAll(() => WelcomeScreen());
   }
 }
 
@@ -21,13 +21,16 @@ class WalletUnlockScreen extends BaseWidget<WalletUnlockScreenController> {
       ),
       child: Material(
         borderRadius: BorderRadius.all(Radius.circular(50.r)),
-        child: Container(
+        child: Ink(
           width: double.infinity,
           height: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              OHOText('Are you sure to erase\nall of your data?'),
+              OHOText(
+                'Are you sure to erase\nall of your data?',
+                color: OHOColors.blue3,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

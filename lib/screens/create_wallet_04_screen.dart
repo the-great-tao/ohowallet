@@ -42,7 +42,10 @@ class CreateWallet04Screen extends BaseWidget<CreateWallet04ScreenController> {
                   Expanded(child: Container()),
                   Column(
                     children: [
-                      OHOSolidButton(title: 'Finish'),
+                      OHOSolidButton(
+                        title: 'Finish',
+                        onTap: () => Get.offAll(() => WalletUnlockScreen()),
+                      ),
                       SizedBox(height: 50.r),
                     ],
                   ),
