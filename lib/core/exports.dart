@@ -36,6 +36,7 @@ export 'package:device_preview/device_preview.dart'
 export 'package:sentry/sentry.dart';
 export 'package:sentry_flutter/sentry_flutter.dart';
 export 'package:path_provider/path_provider.dart';
+export 'package:local_auth/local_auth.dart';
 
 export 'package:ohowallet/core/settings.dart';
 export 'package:ohowallet/services/app_data_service.dart';

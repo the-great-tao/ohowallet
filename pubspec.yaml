@@ -66,6 +66,7 @@ dependencies:
   sentry: ^6.11.2
   sentry_flutter: ^6.11.2
   path_provider: ^2.0.11
+  local_auth: ^2.1.2
 
 dev_dependencies:
   flutter_test:

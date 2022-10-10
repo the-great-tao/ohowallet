@@ -24,7 +24,7 @@ class CreateWallet03ScreenController extends BaseController {
     if (seedPhraseController.seedPhrase.toString() !=
         walletService.setupSeedPhrase.toString()) {
       showToast(
-        message: 'Your Seed Phrase confirmation is not correct.',
+        message: 'Your Seed Phrase confirmation is incorrect.',
         backgroundColor: OHOColors.statusError,
       );
       return;
