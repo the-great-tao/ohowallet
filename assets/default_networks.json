@@ -3,7 +3,7 @@
     "locked": true,
     "networkName": "Ethereum Mainnet",
     "rpcUrl": "https://mainnet.infura.io/v3/",
-    "chainId": 1,
+    "chainId": "1",
     "currencySymbol": "ETH",
     "blockExplorerUrl": "https://etherscan.io/"
   },
@@ -11,7 +11,7 @@
     "locked": true,
     "networkName": "BNB Smart Chain Mainnet",
     "rpcUrl": "https://bsc-dataseed1.binance.org/",
-    "chainId": 56,
+    "chainId": "56",
     "currencySymbol": "BNB",
     "blockExplorerUrl": "https://bscscan.com/"
   },
@@ -19,7 +19,7 @@
     "locked": true,
     "networkName": "Polygon Mainnet",
     "rpcUrl": "https://polygon-rpc.com/",
-    "chainId": 137,
+    "chainId": "137",
     "currencySymbol": "MATIC",
     "blockExplorerUrl": "https://polygonscan.com/"
   },
@@ -27,7 +27,7 @@
     "locked": true,
     "networkName": "Fantom Opera",
     "rpcUrl": "https://rpcapi.fantom.network/",
-    "chainId": 250,
+    "chainId": "250",
     "currencySymbol": "FTM",
     "blockExplorerUrl": "https://ftmscan.com/"
   },
@@ -35,7 +35,7 @@
     "locked": true,
     "networkName": "Avalanche Mainnet",
     "rpcUrl": "https://api.avax.network/ext/bc/C/rpc/",
-    "chainId": 43114,
+    "chainId": "43114",
     "currencySymbol": "AVAX",
     "blockExplorerUrl": "https://snowtrace.io/"
   },
@@ -43,7 +43,7 @@
     "locked": true,
     "networkName": "OHO Mainnet",
     "rpcUrl": "https://mainnet-rpc.ohoscan.com/",
-    "chainId": 39815,
+    "chainId": "39815",
     "currencySymbol": "OHO",
     "blockExplorerUrl": "https://ohoscan.com/"
   },
@@ -51,7 +51,7 @@
     "locked": true,
     "networkName": "Hertz Mainnet",
     "rpcUrl": "https://mainnet-rpc.hertzscan.com",
-    "chainId": 26600,
+    "chainId": "26600",
     "currencySymbol": "HTZ",
     "blockExplorerUrl": "https://hertzscan.com/"
   }
