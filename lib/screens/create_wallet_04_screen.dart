@@ -1,4 +1,6 @@
 import 'package:ohowallet/core/exports.dart';
+import 'package:ohowallet/screens/about_oho_screen.dart';
+import 'package:ohowallet/screens/contact_us_screen.dart';
 
 class CreateWallet04ScreenController extends BaseController {}
 
@@ -42,7 +44,10 @@ class CreateWallet04Screen extends BaseWidget<CreateWallet04ScreenController> {
                   Expanded(child: Container()),
                   Column(
                     children: [
-                      OHOSolidButton(title: 'Finish'),
+                      OHOSolidButton(
+                        title: 'Finish',
+                        onTap: () => Get.to(() => AboutOHOScreen()),
+                      ),
                       SizedBox(height: 50.r),
                     ],
                   ),
