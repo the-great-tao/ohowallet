@@ -39,6 +39,7 @@ export 'package:path_provider/path_provider.dart';
 export 'package:local_auth/local_auth.dart';
 
 export 'package:ohowallet/core/settings.dart';
+export 'package:ohowallet/services/biometric_service.dart';
 export 'package:ohowallet/services/app_data_service.dart';
 export 'package:ohowallet/services/wallet_service.dart';
 export 'package:ohowallet/services/theme_service.dart';

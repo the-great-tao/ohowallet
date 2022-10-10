@@ -17,8 +17,8 @@ class WalletUnlockScreenController extends BaseController {
       return;
     }
 
-    if (appDataService.hasBiometrics) {
-      appDataService.localAuthentication.authenticate(
+    if (biometricService.hasBiometrics) {
+      biometricService.localAuthentication.authenticate(
         localizedReason: 'Please authenticate to open your Wallet',
         options: const AuthenticationOptions(biometricOnly: true),
       );
@@ -77,7 +77,7 @@ class WalletUnlockScreen extends BaseWidget<WalletUnlockScreenController> {
     );
   }
 
-  Widget get faceIdButton => appDataService.hasFaceId
+  Widget get faceIdButton => biometricService.hasFaceId
       ? SvgPicture.asset(
           'assets/icons/face-id.svg',
           width: 120.r,
@@ -86,7 +86,7 @@ class WalletUnlockScreen extends BaseWidget<WalletUnlockScreenController> {
         )
       : Container();
 
-  Widget get touchIdButton => appDataService.hasTouchId
+  Widget get touchIdButton => biometricService.hasTouchId
       ? SvgPicture.asset(
           'assets/icons/touch-id.svg',
           width: 120.r,
@@ -138,10 +138,10 @@ class WalletUnlockScreen extends BaseWidget<WalletUnlockScreenController> {
                         title: 'Unlock',
                         onTap: () => controller.submit(),
                       ),
-                      !appDataService.hasBiometrics
+                      !biometricService.hasBiometrics
                           ? Container()
                           : SizedBox(height: 20.r),
-                      !appDataService.hasBiometrics
+                      !biometricService.hasBiometrics
                           ? Container()
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.center,

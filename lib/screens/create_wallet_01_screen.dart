@@ -110,10 +110,10 @@ class CreateWallet01Screen extends BaseWidget<CreateWallet01ScreenController> {
                       ),
                     ],
                   ),
-                  !appDataService.hasBiometrics
+                  !biometricService.hasBiometrics
                       ? Container()
                       : SizedBox(height: 50.r),
-                  !appDataService.hasBiometrics
+                  !biometricService.hasBiometrics
                       ? Container()
                       : Row(
                           children: [
