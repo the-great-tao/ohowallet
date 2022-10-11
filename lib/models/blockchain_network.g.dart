@@ -8,7 +8,7 @@ part of 'blockchain_network.dart';
 
 BlockchainNetwork _$BlockchainNetworkFromJson(Map<String, dynamic> json) =>
     BlockchainNetwork(
-      locked: json['locked'] as bool,
+      keyName: json['keyName'] as String,
       networkName: json['networkName'] as String,
       rpcUrl: json['rpcUrl'] as String,
       chainId: BigInt.parse(json['chainId'] as String),
@@ -18,10 +18,24 @@ BlockchainNetwork _$BlockchainNetworkFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$BlockchainNetworkToJson(BlockchainNetwork instance) =>
     <String, dynamic>{
-      'locked': instance.locked,
+      'keyName': instance.keyName,
       'networkName': instance.networkName,
       'rpcUrl': instance.rpcUrl,
       'chainId': instance.chainId.toString(),
       'currencySymbol': instance.currencySymbol,
       'blockExplorerUrl': instance.blockExplorerUrl,
+    };
+
+BlockchainNetworkList _$BlockchainNetworkListFromJson(
+        Map<String, dynamic> json) =>
+    BlockchainNetworkList(
+      blockchainNetworks: (json['blockchainNetworks'] as List<dynamic>)
+          .map((e) => BlockchainNetwork.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$BlockchainNetworkListToJson(
+        BlockchainNetworkList instance) =>
+    <String, dynamic>{
+      'blockchainNetworks': instance.blockchainNetworks,
     };

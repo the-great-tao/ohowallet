@@ -4,7 +4,7 @@ part 'blockchain_network.g.dart';
 
 @JsonSerializable()
 class BlockchainNetwork {
-  bool locked;
+  String keyName;
   String networkName;
   String rpcUrl;
   BigInt chainId;
@@ -12,7 +12,7 @@ class BlockchainNetwork {
   String blockExplorerUrl;
 
   BlockchainNetwork({
-    required this.locked,
+    required this.keyName,
     required this.networkName,
     required this.rpcUrl,
     required this.chainId,
@@ -24,4 +24,18 @@ class BlockchainNetwork {
       _$BlockchainNetworkFromJson(json);
 
   Map<String, dynamic> toJson() => _$BlockchainNetworkToJson(this);
+}
+
+@JsonSerializable()
+class BlockchainNetworkList {
+  List<BlockchainNetwork> blockchainNetworks;
+
+  BlockchainNetworkList({
+    required this.blockchainNetworks,
+  });
+
+  factory BlockchainNetworkList.fromJson(Map<String, dynamic> json) =>
+      _$BlockchainNetworkListFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BlockchainNetworkListToJson(this);
 }

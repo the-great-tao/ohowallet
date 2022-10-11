@@ -67,9 +67,11 @@ class WalletService extends GetxService {
     accountAddress = await privateKey.extractAddress();
     print('accountAddress: $accountAddress');
 
-    final defaultNetworks =
+    final defaultNetworksJson =
         await rootBundle.loadString('assets/default_networks.json');
-    print(jsonDecode(defaultNetworks));
+    final defaultNetworks =
+        BlockchainNetworkList.fromJson(jsonDecode(defaultNetworksJson));
+    print(defaultNetworks);
 
     return this;
   }

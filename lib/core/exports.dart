@@ -63,3 +63,4 @@ export 'package:ohowallet/screens/create_wallet_02_screen.dart';
 export 'package:ohowallet/screens/create_wallet_03_screen.dart';
 export 'package:ohowallet/screens/create_wallet_04_screen.dart';
 export 'package:ohowallet/screens/import_wallet_screen.dart';
+export 'package:ohowallet/models/blockchain_network.dart';
