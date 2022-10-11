@@ -45,71 +45,69 @@ class AddNetworkScreen extends BaseWidget<AddNetworkScreenController> {
           ),
           child: SafeArea(
             bottom: false,
-            child: Stack(
-              children: [
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      OHOHeaderText('${controller.isEditing.value ? 'Edit' : 'Add'} Network'),
-                      SizedBox(height: 50.h),
-                      OHOTextField(
-                        tag: AddNetworkScreenController.networkNameTag,
-                        label: 'Network Name',
-                        required: true,
-                        validators: [
-                          OHOTextFieldValidatorRequired(
-                            errorMessage: 'Network Name is required',
-                          ),
-                        ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  OHOHeaderText(
+                      '${controller.isEditing.value ? 'Edit' : 'Add'} Network'),
+                  SizedBox(height: 50.h),
+                  OHOTextField(
+                    tag: AddNetworkScreenController.networkNameTag,
+                    label: 'Network Name',
+                    required: true,
+                    validators: [
+                      OHOTextFieldValidatorRequired(
+                        errorMessage: 'Network Name is required',
                       ),
-                      SizedBox(height: 50.h),
-                      OHOTextField(
-                        tag: AddNetworkScreenController.rpcUrlTag,
-                        label: 'RPC URL',
-                        required: true,
-                        validators: [
-                          OHOTextFieldValidatorRequired(
-                            errorMessage: 'RPC URL is required',
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 50.h),
-                      OHOTextField(
-                        tag: AddNetworkScreenController.chainIdTag,
-                        label: 'Chain ID',
-                        required: true,
-                        validators: [
-                          OHOTextFieldValidatorRequired(
-                            errorMessage: 'Chain ID is required',
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 50.h),
-                      OHOTextField(
-                        tag: AddNetworkScreenController.currencySymbolTag,
-                        label: 'Currency Symbol',
-                        required: true,
-                        validators: [
-                          OHOTextFieldValidatorRequired(
-                            errorMessage: 'Currency Symbol is required',
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 50.h),
-                      OHOTextField(
-                        tag: AddNetworkScreenController.blockExplorerUrlTag,
-                        label: 'Block Explorer URL',
-                      ),
-                      SizedBox(height: 200.h),
-                      OHOSolidButton(
-                        title: '${controller.isEditing.value ? 'Save' : 'Add'} Network',
-                        onTap: () {},
-                      ),
-                      SizedBox(height: 500.h),
                     ],
                   ),
-                ),
-              ],
+                  SizedBox(height: 50.h),
+                  OHOTextField(
+                    tag: AddNetworkScreenController.rpcUrlTag,
+                    label: 'RPC URL',
+                    required: true,
+                    validators: [
+                      OHOTextFieldValidatorRequired(
+                        errorMessage: 'RPC URL is required',
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 50.h),
+                  OHOTextField(
+                    tag: AddNetworkScreenController.chainIdTag,
+                    label: 'Chain ID',
+                    required: true,
+                    validators: [
+                      OHOTextFieldValidatorRequired(
+                        errorMessage: 'Chain ID is required',
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 50.h),
+                  OHOTextField(
+                    tag: AddNetworkScreenController.currencySymbolTag,
+                    label: 'Currency Symbol',
+                    required: true,
+                    validators: [
+                      OHOTextFieldValidatorRequired(
+                        errorMessage: 'Currency Symbol is required',
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 50.h),
+                  OHOTextField(
+                    tag: AddNetworkScreenController.blockExplorerUrlTag,
+                    label: 'Block Explorer URL',
+                  ),
+                  SizedBox(height: 200.h),
+                  OHOSolidButton(
+                    title:
+                        '${controller.isEditing.value ? 'Save' : 'Add'} Network',
+                    onTap: () {},
+                  ),
+                  SizedBox(height: 500.h),
+                ],
+              ),
             ),
           ),
         ),
