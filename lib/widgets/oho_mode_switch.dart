@@ -15,7 +15,7 @@ class OHOModeSwitch extends BaseWidget<OHOModeSwitchController> {
         width: 140.r,
         height: 70.r,
         value: themeService.lightMode.value,
-        onToggle: (value) => themeService.lightMode.value = value,
+        onToggle: (value) => themeService.setLightMode(value),
         activeColor: themeService.textFieldBackgroundColor,
         activeSwitchBorder: Border.all(
           width: 5.r,

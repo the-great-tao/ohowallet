@@ -97,15 +97,41 @@ class OHOGradients {
 }
 
 class ThemeService extends GetxService {
+  static const lightModeKey = 'appSettings-lightMode';
+
+  late FlutterSecureStorage secureStorage;
   var lightMode = true.obs;
 
   Future<ThemeService> init() async {
+    final appDataService = Get.find<AppDataService>();
+    secureStorage = appDataService.secureStorage;
+
+    final lightMode_ = await secureStorage.read(key: lightModeKey);
+    if (lightMode_ == null) {
+      await storeSetting();
+      return this;
+    }
+
+    if (lightMode_.toLowerCase() == 'true') {
+      lightMode.value = true;
+    } else if (lightMode_.toLowerCase() == 'false') {
+      lightMode.value = false;
+    }
+
     return this;
   }
 
-  void setLightMode() => lightMode.value = true;
+  Future<void> storeSetting() async {
+    await secureStorage.write(
+      key: lightModeKey,
+      value: lightMode.value.toString(),
+    );
+  }
 
-  void setDarkMode() => lightMode.value = false;
+  Future<void> setLightMode(bool value) async {
+    lightMode.value = value;
+    await storeSetting();
+  }
 
   LinearGradient get screenBackgroundGradient => lightMode.value
       ? OHOGradients.lightScreenBackground
