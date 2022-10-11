@@ -8,6 +8,7 @@ class ImportWalletScreenController extends BaseController {
 class ImportWalletScreen extends BaseWidget<ImportWalletScreenController> {
   ImportWalletScreen({
     super.key,
+    super.tag,
   }) : super(controller: ImportWalletScreenController());
 
   @override
