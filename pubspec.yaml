@@ -65,6 +65,7 @@ dependencies:
   device_preview: ^1.1.0
   sentry: ^6.11.2
   sentry_flutter: ^6.11.2
+  dropdown_button2: ^1.8.5
 
 dev_dependencies:
   flutter_test:

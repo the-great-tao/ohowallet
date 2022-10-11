@@ -350,7 +350,7 @@ class FAQScreen extends BaseWidget<FAQScreenController> {
                                 ),
                               ),
                               SizedBox(
-                                width: 50.w,
+                                width: 40.w,
                                 child: Container(
                                   color: Colors.transparent,
                                 ),

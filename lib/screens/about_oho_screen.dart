@@ -2,6 +2,7 @@ import 'package:ohowallet/core/exports.dart';
 import 'package:ohowallet/screens/contact_us_screen.dart';
 import 'package:ohowallet/screens/faq_screen.dart';
 import 'package:ohowallet/screens/privacy_policy_screen.dart';
+import 'package:ohowallet/screens/security_privacy_screen.dart';
 import 'package:ohowallet/screens/terms_of_use_screen.dart';
 import 'package:ohowallet/widgets/oho_app_bar_02.dart';
 
@@ -54,6 +55,7 @@ class AboutOHOScreen extends BaseWidget<AboutOHOScreenController> {
                             ),
                             ListTileAbout(
                               title: 'Visit Our Website',
+                              screen: SecurityPrivacyScreen(),
                             ),
                             ListTileAbout(
                               title: 'Contact Us',
