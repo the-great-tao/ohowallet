@@ -120,7 +120,6 @@ class WalletService extends GetxService {
 
   Future<Account?> getSelectedAccount() async {
     _selectedAccount = accounts.value.accounts[selectedAccount.value];
-    print('selectedAccount: ${_selectedAccount?.toJson()}');
     return _selectedAccount;
   }
 
@@ -173,11 +172,8 @@ class WalletService extends GetxService {
     if (setupSeedPhrase.isEmpty) return;
 
     final mnemonic = setupSeedPhrase.join(' ');
-    print('mnemonic: $mnemonic');
     final privateKey = await WalletService.getPrivateKey(mnemonic);
-    print('privateKey: $privateKey');
     final address = await WalletService.getPublicKey(privateKey);
-    print('address: $address');
     final account = Account(
       name: 'Account 1',
       mnemonic: mnemonic,

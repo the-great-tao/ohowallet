@@ -76,7 +76,13 @@ class AccountListItem extends BaseWidget<AccountListItemController> {
               !editable
                   ? Container()
                   : GestureDetector(
-                      onTap: () {},
+                      onTap: () => Get.to(
+                        () => AddAccountScreen(
+                          isEditing: true,
+                          accountKey: accountKey,
+                          account: account,
+                        ),
+                      ),
                       child: Icon(
                         Icons.edit,
                         size: 60.sp,
@@ -169,7 +175,7 @@ class AccountListScreen extends BaseWidget<AccountListScreenController> {
                   SizedBox(height: 50.h),
                   OHOSolidButton(
                     title: 'Add Account',
-                    onTap: () => Get.to(() => AddNetworkScreen()),
+                    onTap: () => Get.to(() => AddAccountScreen()),
                   ),
                   SizedBox(height: 500.h),
                 ],
