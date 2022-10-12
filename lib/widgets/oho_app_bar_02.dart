@@ -11,22 +11,39 @@ class OHOAppBar02 extends BaseWidget<OHOAppBar02Controller> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => SizedBox(
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            OHONetworkChip(
-              networkKey: walletService.selectedNetwork.value,
-              network: walletService.selectedNetworkInstance!,
+      () => Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          SizedBox(
+            height: 380.h,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Image.asset(
+                  'assets/images/oho_logo_square_512.png',
+                  width: 250.r,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    OHONetworkChip(
+                      networkKey: walletService.selectedNetwork.value,
+                      network: walletService.selectedNetworkInstance!,
+                    ),
+                    OHOAccountChip(
+                      accountKey: walletService.selectedAccount.value,
+                      account: walletService.selectedAccountInstance!,
+                    ),
+                  ],
+                ),
+              ],
             ),
-            OHOAccountChip(
-              accountKey: walletService.selectedAccount.value,
-              account: walletService.selectedAccountInstance!,
-            ),
-            const Divider(color: OHOColors.grey5),
-          ],
-        ),
+          ),
+          Divider(
+            height: 20.h,
+            color: OHOColors.grey5,
+          ),
+        ],
       ),
     );
   }

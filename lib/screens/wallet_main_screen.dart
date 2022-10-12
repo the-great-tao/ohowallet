@@ -15,14 +15,15 @@ class WalletMainScreen extends BaseWidget<WalletMainScreenController> {
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           elevation: 0.0,
-          toolbarHeight: 500.h,
+          toolbarHeight: 450.h,
           backgroundColor: Colors.transparent,
           automaticallyImplyLeading: false,
           flexibleSpace: SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 50.h,
-                horizontal: 50.w,
+              padding: EdgeInsets.only(
+                top: 50.h,
+                left: 50.w,
+                right: 50.w,
               ),
               child: OHOAppBar02(),
             ),
@@ -39,6 +40,7 @@ class WalletMainScreen extends BaseWidget<WalletMainScreenController> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  SizedBox(height: 50.h),
                   OHOHeaderText('Balance'),
                   SizedBox(height: 50.h),
                   OHOHeaderText('Tokens'),
