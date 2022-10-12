@@ -230,7 +230,7 @@ class AddNetworkScreen extends BaseWidget<AddNetworkScreenController> {
                           title: 'Remove Network',
                           onTap: () => controller.removeNetwork(),
                         ),
-                  SizedBox(height: 500.h),
+                  SizedBox(height: 1000.h),
                 ],
               ),
             ),
