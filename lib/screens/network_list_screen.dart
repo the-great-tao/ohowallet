@@ -40,8 +40,8 @@ class NetworkListItem extends BaseWidget<NetworkListItemController> {
       child: InkWell(
         highlightColor: themeService.listItemInkwellHighlightColor,
         splashColor: themeService.listItemInkwellSplashColor,
-        onTap: () {
-          walletService.setSelectedNetwork(networkKey);
+        onTap: () async {
+          await walletService.setSelectedNetwork(networkKey);
           if (getBackOnSelected) Get.back();
         },
         child: Padding(

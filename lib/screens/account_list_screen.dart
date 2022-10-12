@@ -38,8 +38,8 @@ class AccountListItem extends BaseWidget<AccountListItemController> {
       child: InkWell(
         highlightColor: themeService.listItemInkwellHighlightColor,
         splashColor: themeService.listItemInkwellSplashColor,
-        onTap: () {
-          walletService.setSelectedAccount(accountKey);
+        onTap: () async {
+          await walletService.setSelectedAccount(accountKey);
           if (getBackOnSelected) Get.back();
         },
         child: Padding(
