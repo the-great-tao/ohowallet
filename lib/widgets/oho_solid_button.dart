@@ -21,13 +21,8 @@ class OHOSolidButton extends BaseWidget<OHOSolidButtonController> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      focusColor: themeService.solidButtonHoverColor,
-      hoverColor: themeService.solidButtonHoverColor,
-      highlightColor: Colors.white10,
-      splashColor: Colors.white10,
+    return Material(
       borderRadius: BorderRadius.circular(9999),
-      onTap: onTap ?? () {},
       child: Ink(
         width: width ?? double.infinity,
         height: height ?? 140.h,
@@ -39,23 +34,31 @@ class OHOSolidButton extends BaseWidget<OHOSolidButtonController> {
           ),
           borderRadius: BorderRadius.circular(9999),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            icon ?? Container(),
-            icon != null ? SizedBox(width: 10.w) : Container(),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: themeService.solidButtonTextColor,
-                fontFamily: 'Outfit',
-                fontSize: 60.sp,
-                fontWeight: FontWeight.normal,
-                letterSpacing: 2.sp,
+        child: InkWell(
+          focusColor: themeService.solidButtonHoverColor,
+          hoverColor: themeService.solidButtonHoverColor,
+          highlightColor: Colors.white10,
+          splashColor: Colors.white10,
+          borderRadius: BorderRadius.circular(9999),
+          onTap: onTap ?? () {},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon ?? Container(),
+              icon != null ? SizedBox(width: 10.w) : Container(),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: themeService.solidButtonTextColor,
+                  fontFamily: 'Outfit',
+                  fontSize: 60.sp,
+                  fontWeight: FontWeight.normal,
+                  letterSpacing: 2.sp,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

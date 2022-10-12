@@ -99,39 +99,42 @@ class OHOGradients {
 class ThemeService extends GetxService {
   static const lightModeKey = 'appSettings-lightMode';
 
-  late FlutterSecureStorage secureStorage;
+  Box? appDataBox;
   var lightMode = true.obs;
 
   Future<ThemeService> init() async {
     final appDataService = Get.find<AppDataService>();
-    secureStorage = appDataService.secureStorage;
+    appDataBox = appDataService.appDataBox;
+    if (appDataBox == null) return this;
 
-    final lightMode_ = await secureStorage.read(key: lightModeKey);
-    if (lightMode_ == null) {
-      await storeSetting();
-      return this;
-    }
-
-    if (lightMode_.toLowerCase() == 'true') {
-      lightMode.value = true;
-    } else if (lightMode_.toLowerCase() == 'false') {
-      lightMode.value = false;
+    final lightMode_ = await appDataBox?.get(lightModeKey);
+    if (lightMode_ != null) {
+      lightMode.value = lightMode_;
+    } else {
+      await storeLightMode();
     }
 
     return this;
   }
 
-  Future<void> storeSetting() async {
-    await secureStorage.write(
-      key: lightModeKey,
-      value: lightMode.value.toString(),
-    );
+  Future<void> storeLightMode() async {
+    await appDataBox?.put(lightModeKey, lightMode.value);
   }
 
   Future<void> setLightMode(bool value) async {
     lightMode.value = value;
-    await storeSetting();
+    await storeLightMode();
   }
+
+  List<Color> get randomIconColors => [
+    OHOColors.gold,
+    OHOColors.blue,
+    OHOColors.purple,
+    OHOColors.violet,
+    OHOColors.pink,
+    OHOColors.peach,
+    OHOColors.green,
+  ];
 
   LinearGradient get screenBackgroundGradient => lightMode.value
       ? OHOGradients.lightScreenBackground
@@ -174,4 +177,10 @@ class ThemeService extends GetxService {
 
   Color get outlinedButtonHoverColor =>
       lightMode.value ? OHOColors.black10 : OHOColors.black10;
+
+  Color get networkListItemInkwellSplashColor =>
+      lightMode.value ? Colors.white10 : Colors.black12;
+
+  Color get networkListItemInkwellHighlightColor =>
+      lightMode.value ? Colors.white10 : Colors.black12;
 }

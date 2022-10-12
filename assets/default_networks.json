@@ -1,60 +1,53 @@
 {
-  "blockchainNetworks": [
-    {
-      "keyName": "ethereum",
-      "networkName": "Ethereum Mainnet",
+  "networks": {
+    "ethereum": {
+      "name": "Ethereum Mainnet",
       "rpcUrl": "https://mainnet.infura.io/v3/",
       "chainId": "1",
       "currencySymbol": "ETH",
       "blockExplorerUrl": "https://etherscan.io/"
     },
-    {
-      "keyName": "binance",
-      "networkName": "BNB Smart Chain Mainnet",
+    "binance": {
+      "name": "Binance Mainnet",
       "rpcUrl": "https://bsc-dataseed1.binance.org/",
       "chainId": "56",
       "currencySymbol": "BNB",
       "blockExplorerUrl": "https://bscscan.com/"
     },
-    {
-      "keyName": "polygon",
-      "networkName": "Polygon Mainnet",
+    "polygon": {
+      "name": "Polygon Mainnet",
       "rpcUrl": "https://polygon-rpc.com/",
       "chainId": "137",
       "currencySymbol": "MATIC",
       "blockExplorerUrl": "https://polygonscan.com/"
     },
-    {
-      "keyName": "fantom",
-      "networkName": "Fantom Opera",
+    "fantom": {
+      "name": "Fantom Mainnet",
       "rpcUrl": "https://rpcapi.fantom.network/",
       "chainId": "250",
       "currencySymbol": "FTM",
       "blockExplorerUrl": "https://ftmscan.com/"
     },
-    {
-      "keyName": "avalanche",
-      "networkName": "Avalanche Mainnet",
+    "avalanche": {
+      "name": "Avalanche Mainnet",
       "rpcUrl": "https://api.avax.network/ext/bc/C/rpc/",
       "chainId": "43114",
       "currencySymbol": "AVAX",
       "blockExplorerUrl": "https://snowtrace.io/"
     },
-    {
-      "keyName": "oho",
-      "networkName": "OHO Mainnet",
+    "oho": {
+      "name": "OHO Mainnet",
       "rpcUrl": "https://mainnet-rpc.ohoscan.com/",
       "chainId": "39815",
       "currencySymbol": "OHO",
       "blockExplorerUrl": "https://ohoscan.com/"
     },
-    {
-      "keyName": "hertz",
-      "networkName": "Hertz Mainnet",
+    "hertz": {
+      "name": "Hertz Mainnet",
       "rpcUrl": "https://mainnet-rpc.hertzscan.com",
       "chainId": "26600",
       "currencySymbol": "HTZ",
       "blockExplorerUrl": "https://hertzscan.com/"
     }
-  ]
+  }
 }

@@ -45,7 +45,7 @@ class WalletUnlockScreen extends BaseWidget<WalletUnlockScreenController> {
       ),
       child: Material(
         borderRadius: BorderRadius.all(Radius.circular(50.r)),
-        child: Ink(
+        child: SizedBox(
           width: double.infinity,
           height: double.infinity,
           child: Column(

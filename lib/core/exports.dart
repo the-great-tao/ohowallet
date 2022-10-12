@@ -37,6 +37,7 @@ export 'package:sentry/sentry.dart';
 export 'package:sentry_flutter/sentry_flutter.dart';
 export 'package:path_provider/path_provider.dart';
 export 'package:local_auth/local_auth.dart';
+export 'package:avatar_generator/avatar_generator.dart';
 
 export 'package:ohowallet/core/settings.dart';
 export 'package:ohowallet/services/biometric_service.dart';
@@ -64,4 +65,5 @@ export 'package:ohowallet/screens/create_wallet_03_screen.dart';
 export 'package:ohowallet/screens/create_wallet_04_screen.dart';
 export 'package:ohowallet/screens/import_wallet_screen.dart';
 export 'package:ohowallet/screens/add_network_screen.dart';
-export 'package:ohowallet/models/blockchain_network.dart';
+export 'package:ohowallet/screens/network_list_screen.dart';
+export 'package:ohowallet/models/network.dart';

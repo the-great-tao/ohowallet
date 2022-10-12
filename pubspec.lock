@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.9.0"
+  avatar_generator:
+    dependency: "direct main"
+    description:
+      name: avatar_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.5"
   bip39:
     dependency: "direct main"
     description:

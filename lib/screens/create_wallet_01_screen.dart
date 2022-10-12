@@ -55,7 +55,7 @@ class CreateWallet01Screen extends BaseWidget<CreateWallet01ScreenController> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Scaffold(
-        body: Ink(
+        body: Container(
           width: double.infinity,
           height: double.infinity,
           decoration: BoxDecoration(

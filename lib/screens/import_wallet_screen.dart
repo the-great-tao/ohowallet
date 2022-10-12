@@ -15,7 +15,7 @@ class ImportWalletScreen extends BaseWidget<ImportWalletScreenController> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Scaffold(
-        body: Ink(
+        body: Container(
           width: double.infinity,
           height: double.infinity,
           decoration: BoxDecoration(

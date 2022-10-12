@@ -100,7 +100,10 @@ class OHOTextFieldController extends BaseController {
   }
 
   void validate(String data) {
-    if (validators == null) return;
+    if (validators == null) {
+      valid = true;
+      return;
+    }
 
     OHOMessageController messageController = Get.find(tag: messageTag);
     for (var validator in validators!) {
