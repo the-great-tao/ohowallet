@@ -199,10 +199,9 @@ class AddAccountScreen extends BaseWidget<AddAccountScreenController> {
                           obscureText: true,
                           data: controller.account?.privateKey,
                         ),
-                  SizedBox(height: 100.h),
                   !controller.isEditing.value
                       ? Container()
-                      : SizedBox(height: 50.h),
+                      : SizedBox(height: 100.h),
                   !controller.isEditing.value
                       ? Container()
                       : OHOOutlinedButton(
