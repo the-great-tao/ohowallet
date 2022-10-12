@@ -360,6 +360,9 @@ class FAQScreen extends BaseWidget<FAQScreenController> {
                         ),
                       ),
                     ),
+                    SizedBox(
+                      height: 50.h,
+                    ),
                     Obx(
                       () => ListView.builder(
                         shrinkWrap: true,
@@ -429,9 +432,6 @@ class AskAnswerList extends BaseWidget<AskAnswerListController> {
       () {
         return Column(
           children: [
-            SizedBox(
-              height: 50.h,
-            ),
             Theme(
               data: ThemeData().copyWith(dividerColor: Colors.transparent),
               child: Container(
@@ -483,6 +483,9 @@ class AskAnswerList extends BaseWidget<AskAnswerListController> {
                   ],
                 ),
               ),
+            ),
+            SizedBox(
+              height: 50.h,
             ),
           ],
         );
