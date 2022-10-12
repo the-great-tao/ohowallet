@@ -20,7 +20,7 @@ class OHOAccountChip extends BaseWidget<OHOAccountChipController> {
         onTap: () => Get.to(() => AccountListScreen()),
         child: Container(
           width: 700.w,
-          height: 150.h,
+          height: 160.h,
           padding: EdgeInsets.all(20.r),
           decoration: BoxDecoration(
             color: themeService.textFieldBackgroundColor,

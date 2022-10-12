@@ -20,7 +20,7 @@ class OHONetworkChip extends BaseWidget<OHONetworkChipController> {
         onTap: () => Get.to(() => NetworkListScreen()),
         child: Container(
           width: 700.w,
-          height: 150.h,
+          height: 160.h,
           padding: EdgeInsets.all(20.r),
           decoration: BoxDecoration(
             color: themeService.textFieldBackgroundColor,
