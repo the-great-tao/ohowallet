@@ -22,6 +22,7 @@ class OHOSolidButton extends BaseWidget<OHOSolidButtonController> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.transparent,
       borderRadius: BorderRadius.circular(9999),
       child: Ink(
         width: width ?? double.infinity,

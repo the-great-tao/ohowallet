@@ -31,46 +31,49 @@ class NetworkListItem extends BaseWidget<NetworkListItemController> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      highlightColor: themeService.networkListItemInkwellHighlightColor,
-      splashColor: themeService.networkListItemInkwellSplashColor,
-      onTap: () => walletService.setSelectedNetwork(networkKey),
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(50.w, 25.h, 50.w, 25.h),
-        child: Row(
-          children: [
-            useRandomIcon
-                ? randomIcon
-                : SvgPicture.asset(
-                    'assets/icons/network-$networkKey.svg',
-                    width: 150.r,
-                    height: 150.r,
-                  ),
-            SizedBox(width: 50.w),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                OHOHeaderText(
-                  network.name,
-                  fontSize: 50.sp,
-                ),
-                OHOText(
-                  'Symbol: ${network.currencySymbol}',
-                  fontSize: 40.sp,
-                ),
-              ],
-            ),
-            Expanded(child: Container()),
-            Obx(
-              () => networkKey != walletService.selectedNetwork.value
-                  ? Container()
-                  : Icon(
-                      Icons.check,
-                      size: 100.sp,
-                      color: OHOColors.green3,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        highlightColor: themeService.networkListItemInkwellHighlightColor,
+        splashColor: themeService.networkListItemInkwellSplashColor,
+        onTap: () => walletService.setSelectedNetwork(networkKey),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(50.w, 25.h, 50.w, 25.h),
+          child: Row(
+            children: [
+              useRandomIcon
+                  ? randomIcon
+                  : SvgPicture.asset(
+                      'assets/icons/network-$networkKey.svg',
+                      width: 150.r,
+                      height: 150.r,
                     ),
-            ),
-          ],
+              SizedBox(width: 50.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  OHOHeaderText(
+                    network.name,
+                    fontSize: 50.sp,
+                  ),
+                  OHOText(
+                    'Symbol: ${network.currencySymbol}',
+                    fontSize: 40.sp,
+                  ),
+                ],
+              ),
+              Expanded(child: Container()),
+              Obx(
+                () => networkKey != walletService.selectedNetwork.value
+                    ? Container()
+                    : Icon(
+                        Icons.check,
+                        size: 100.sp,
+                        color: OHOColors.green3,
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     );
