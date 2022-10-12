@@ -58,12 +58,12 @@ class WalletService extends GetxService {
 
   var accounts = AccountList(accounts: {}).obs;
   var selectedAccount = ''.obs;
-  Account? _selectedAccount;
+  Account? selectedAccountInstance;
 
   var defaultNetworks = NetworkList(networks: {}).obs;
   var customNetworks = NetworkList(networks: {}).obs;
   var selectedNetwork = 'ethereum'.obs;
-  Network? _selectedNetwork;
+  Network? selectedNetworkInstance;
 
   OnUpdateTransaction? onUpdateTransaction;
 
@@ -118,16 +118,21 @@ class WalletService extends GetxService {
     return this;
   }
 
+  bool get isSelectedDefaultNetwork =>
+      selectedNetworkInstance ==
+      defaultNetworks.value.networks[selectedNetwork.value];
+
   Future<Account?> getSelectedAccount() async {
-    _selectedAccount = accounts.value.accounts[selectedAccount.value];
-    return _selectedAccount;
+    selectedAccountInstance = accounts.value.accounts[selectedAccount.value];
+    return selectedAccountInstance;
   }
 
   Future<Network?> getSelectedNetwork() async {
-    _selectedNetwork = defaultNetworks.value.networks[selectedNetwork.value] ??
-        customNetworks.value.networks[selectedNetwork.value];
-    print('selectedNetwork: ${_selectedNetwork?.toJson()}');
-    return _selectedNetwork;
+    selectedNetworkInstance =
+        defaultNetworks.value.networks[selectedNetwork.value] ??
+            customNetworks.value.networks[selectedNetwork.value];
+    print('selectedNetwork: ${selectedNetworkInstance?.toJson()}');
+    return selectedNetworkInstance;
   }
 
   Future<void> setSelectedAccount(String account) async {

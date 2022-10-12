@@ -4,15 +4,19 @@ class OHOHeaderTextController extends BaseController {}
 
 class OHOHeaderText extends BaseWidget<OHOHeaderTextController> {
   final String data;
+  final bool? softWrap;
   final double? fontSize;
   final double? letterSpacing;
+  final TextOverflow? overflow;
 
   OHOHeaderText(
     this.data, {
     super.key,
     super.tag,
+    this.softWrap,
     this.fontSize,
     this.letterSpacing,
+    this.overflow,
   }) : super(controller: OHOHeaderTextController());
 
   @override
@@ -20,12 +24,14 @@ class OHOHeaderText extends BaseWidget<OHOHeaderTextController> {
     return Text(
       data,
       textAlign: TextAlign.center,
+      softWrap: softWrap ?? true,
       style: TextStyle(
         color: themeService.headerTextColor,
         fontFamily: 'Outfit',
         fontSize: fontSize ?? 80.sp,
         fontWeight: FontWeight.normal,
         letterSpacing: letterSpacing ?? 3.sp,
+        overflow: overflow ?? TextOverflow.visible,
       ),
     );
   }

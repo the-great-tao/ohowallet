@@ -7,6 +7,7 @@ class NetworkListItem extends BaseWidget<NetworkListItemController> {
   final Network network;
   final bool useRandomIcon;
   final bool editable;
+  final bool getBackOnSelected;
 
   NetworkListItem({
     super.key,
@@ -15,6 +16,7 @@ class NetworkListItem extends BaseWidget<NetworkListItemController> {
     required this.network,
     this.useRandomIcon = false,
     this.editable = false,
+    this.getBackOnSelected = true,
   }) : super(controller: NetworkListItemController());
 
   Widget get randomIcon => ClipRRect(
@@ -38,7 +40,10 @@ class NetworkListItem extends BaseWidget<NetworkListItemController> {
       child: InkWell(
         highlightColor: themeService.listItemInkwellHighlightColor,
         splashColor: themeService.listItemInkwellSplashColor,
-        onTap: () => walletService.setSelectedNetwork(networkKey),
+        onTap: () {
+          walletService.setSelectedNetwork(networkKey);
+          if (getBackOnSelected) Get.back();
+        },
         child: Padding(
           padding: EdgeInsets.symmetric(
             vertical: 25.h,
@@ -107,9 +112,12 @@ class NetworkListScreenController extends BaseController {
 }
 
 class NetworkListScreen extends BaseWidget<NetworkListScreenController> {
+  final bool getBackOnSelected;
+
   NetworkListScreen({
     super.key,
     super.tag,
+    this.getBackOnSelected = true,
   }) : super(controller: NetworkListScreenController());
 
   Widget get defaultNetworks => Column(
@@ -120,6 +128,7 @@ class NetworkListScreen extends BaseWidget<NetworkListScreenController> {
               networkKey: networkKey,
               network:
                   walletService.defaultNetworks.value.networks[networkKey]!,
+              getBackOnSelected: getBackOnSelected,
             ),
         ],
       );
