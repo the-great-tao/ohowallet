@@ -1,7 +1,7 @@
 import 'package:ohowallet/core/exports.dart';
 
 class AddNetworkScreenController extends BaseController {
-  static const nameTag = 'network-name';
+  static const nameTag = 'name';
   static const rpcUrlTag = 'rpc-url';
   static const chainIdTag = 'chain-id';
   static const currencySymbolTag = 'currency-symbol';
@@ -144,12 +144,12 @@ class AddNetworkScreen extends BaseWidget<AddNetworkScreenController> {
             gradient: themeService.screenBackgroundGradient,
           ),
           child: SafeArea(
-            bottom: false,
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   OHOHeaderText(
-                      '${controller.isEditing.value ? 'Edit' : 'Add'} Network'),
+                    '${controller.isEditing.value ? 'Edit' : 'Add'} Network',
+                  ),
                   SizedBox(height: 50.h),
                   OHOTextField(
                     tag: AddNetworkScreenController.nameTag,

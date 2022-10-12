@@ -146,7 +146,6 @@ class AccountListScreen extends BaseWidget<AccountListScreenController> {
             gradient: themeService.screenBackgroundGradient,
           ),
           child: SafeArea(
-            bottom: false,
             child: SingleChildScrollView(
               child: Column(
                 children: [

@@ -165,7 +165,6 @@ class NetworkListScreen extends BaseWidget<NetworkListScreenController> {
             gradient: themeService.screenBackgroundGradient,
           ),
           child: SafeArea(
-            bottom: false,
             child: SingleChildScrollView(
               child: Column(
                 children: [

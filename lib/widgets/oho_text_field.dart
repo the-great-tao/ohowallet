@@ -137,6 +137,7 @@ class OHOTextField extends BaseWidget<OHOTextFieldController> {
   final bool? required;
   final bool? obscureText;
   final int? maxLines;
+  final bool? readOnly;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final List<OHOTextFieldValidator>? validators;
@@ -152,6 +153,7 @@ class OHOTextField extends BaseWidget<OHOTextFieldController> {
     this.required,
     this.obscureText,
     this.maxLines,
+    this.readOnly,
     this.keyboardType,
     this.inputFormatters,
     this.validators,
@@ -223,6 +225,7 @@ class OHOTextField extends BaseWidget<OHOTextFieldController> {
                           controller.isObscured.value
                       ? 1
                       : maxLines_,
+                  readOnly: readOnly ?? false,
                   obscureText: controller.isObscured.value,
                   autocorrect: false,
                   enableSuggestions: false,
@@ -232,7 +235,9 @@ class OHOTextField extends BaseWidget<OHOTextFieldController> {
                     fontFamily: 'Outfit',
                     fontSize: 50.sp,
                     fontWeight: FontWeight.normal,
-                    color: themeService.textColor,
+                    color: readOnly != null && readOnly!
+                        ? themeService.textFieldHintColor
+                        : themeService.textColor,
                   ),
                   decoration: InputDecoration(
                     filled: true,

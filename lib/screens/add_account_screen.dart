@@ -1,7 +1,10 @@
 import 'package:ohowallet/core/exports.dart';
 
 class AddAccountScreenController extends BaseController {
-  static const nameTag = 'account-name';
+  static const nameTag = 'name';
+  static const mnemonicTag = 'mnemonic';
+  static const privateKeyTag = 'private-key';
+  static const addressTag = 'address';
 
   var isEditing = true.obs;
   String? accountKey;
@@ -124,12 +127,12 @@ class AddAccountScreen extends BaseWidget<AddAccountScreenController> {
             gradient: themeService.screenBackgroundGradient,
           ),
           child: SafeArea(
-            bottom: false,
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   OHOHeaderText(
-                      '${controller.isEditing.value ? 'Edit' : 'Add'} Account'),
+                    '${controller.isEditing.value ? 'Edit' : 'Add'} Account',
+                  ),
                   SizedBox(height: 50.h),
                   OHOTextField(
                     tag: AddAccountScreenController.nameTag,
@@ -144,12 +147,59 @@ class AddAccountScreen extends BaseWidget<AddAccountScreenController> {
                       ),
                     ],
                   ),
+                  !controller.isEditing.value
+                      ? Container()
+                      : SizedBox(height: 50.h),
+                  !controller.isEditing.value
+                      ? Container()
+                      : OHOTextField(
+                          tag: AddAccountScreenController.addressTag,
+                          label: 'Address',
+                          readOnly: true,
+                          data: controller.account!.address.hexEip55,
+                        ),
                   SizedBox(height: 100.h),
                   OHOSolidButton(
                     title:
                         '${controller.isEditing.value ? 'Save' : 'Add'} Account',
                     onTap: () => controller.submit(),
                   ),
+                  !controller.isEditing.value
+                      ? Container()
+                      : SizedBox(height: 100.h),
+                  !controller.isEditing.value
+                      ? Container()
+                      : Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 50.w),
+                          child: OHOText(
+                            'Below are your account\'s Seed Phrase and Private Key. They can be used to recover your account. Copy them or write them down on a paper, and keep them in a safe place. Make sure that no one is watching your screen.',
+                          ),
+                        ),
+                  !controller.isEditing.value
+                      ? Container()
+                      : SizedBox(height: 100.h),
+                  !controller.isEditing.value
+                      ? Container()
+                      : OHOTextField(
+                          tag: AddAccountScreenController.mnemonicTag,
+                          label: 'Seed Phrase',
+                          readOnly: true,
+                          obscureText: true,
+                          data: controller.account?.mnemonic,
+                        ),
+                  !controller.isEditing.value
+                      ? Container()
+                      : SizedBox(height: 50.h),
+                  !controller.isEditing.value
+                      ? Container()
+                      : OHOTextField(
+                          tag: AddAccountScreenController.privateKeyTag,
+                          label: 'Private Key',
+                          readOnly: true,
+                          obscureText: true,
+                          data: controller.account?.privateKey,
+                        ),
+                  SizedBox(height: 100.h),
                   !controller.isEditing.value
                       ? Container()
                       : SizedBox(height: 50.h),
