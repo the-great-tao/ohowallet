@@ -15,7 +15,7 @@ class WalletMainScreen extends BaseWidget<WalletMainScreenController> {
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           elevation: 0.0,
-          toolbarHeight: 450.h,
+          toolbarHeight: 500.h,
           backgroundColor: Colors.transparent,
           automaticallyImplyLeading: false,
           flexibleSpace: SafeArea(

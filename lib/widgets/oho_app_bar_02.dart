@@ -15,7 +15,7 @@ class OHOAppBar02 extends BaseWidget<OHOAppBar02Controller> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox(
-            height: 380.h,
+            height: 400.h,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
