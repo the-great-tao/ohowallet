@@ -80,17 +80,20 @@ class OHOTextFieldController extends BaseController {
   var valid = false;
 
   OHOTextFieldController({
+    String? data,
     required this.required,
     required bool? obscureText,
     required this.messageTag,
     this.validators,
   }) : textEditingController = TextEditingController() {
+    this.data.value = data ?? '';
     isObscured.value = obscureText ?? false;
   }
 
   @override
   void onInit() {
     super.onInit();
+    textEditingController.text = data.value;
     ever(data, (String value) => validate(value));
   }
 
@@ -141,6 +144,7 @@ class OHOTextField extends BaseWidget<OHOTextFieldController> {
   OHOTextField({
     super.key,
     required super.tag,
+    String? data,
     this.width,
     this.label,
     this.hint,
@@ -153,6 +157,7 @@ class OHOTextField extends BaseWidget<OHOTextFieldController> {
     this.validators,
   }) : super(
           controller: OHOTextFieldController(
+            data: data,
             required: required ?? false,
             obscureText: obscureText,
             messageTag: const Uuid().v4(),

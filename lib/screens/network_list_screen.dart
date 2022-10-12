@@ -6,6 +6,7 @@ class NetworkListItem extends BaseWidget<NetworkListItemController> {
   final String networkKey;
   final Network network;
   final bool useRandomIcon;
+  final bool editable;
 
   NetworkListItem({
     super.key,
@@ -13,6 +14,7 @@ class NetworkListItem extends BaseWidget<NetworkListItemController> {
     required this.networkKey,
     required this.network,
     this.useRandomIcon = false,
+    this.editable = false,
   }) : super(controller: NetworkListItemController());
 
   Widget get randomIcon => ClipRRect(
@@ -64,14 +66,31 @@ class NetworkListItem extends BaseWidget<NetworkListItemController> {
               ),
               Expanded(child: Container()),
               Obx(
-                () => networkKey != walletService.selectedNetwork.value
-                    ? Container()
-                    : Icon(
-                        Icons.check,
-                        size: 100.sp,
-                        color: OHOColors.green3,
-                      ),
+                () => Icon(
+                  Icons.check,
+                  size: 100.sp,
+                  color: networkKey != walletService.selectedNetwork.value
+                      ? Colors.transparent
+                      : OHOColors.green3,
+                ),
               ),
+              !editable ? Container() : SizedBox(width: 10.w),
+              !editable
+                  ? Container()
+                  : GestureDetector(
+                      onTap: () => Get.to(
+                        () => AddNetworkScreen(
+                          isEditing: true,
+                          networkKey: networkKey,
+                          network: network,
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.edit,
+                        size: 60.sp,
+                        color: themeService.textColor,
+                      ),
+                    ),
             ],
           ),
         ),
@@ -80,7 +99,9 @@ class NetworkListItem extends BaseWidget<NetworkListItemController> {
   }
 }
 
-class NetworkListScreenController extends BaseController {}
+class NetworkListScreenController extends BaseController {
+  var editable = false.obs;
+}
 
 class NetworkListScreen extends BaseWidget<NetworkListScreenController> {
   NetworkListScreen({
@@ -108,6 +129,7 @@ class NetworkListScreen extends BaseWidget<NetworkListScreenController> {
               networkKey: networkKey,
               network: walletService.customNetworks.value.networks[networkKey]!,
               useRandomIcon: true,
+              editable: controller.editable.value,
             ),
         ],
       );
@@ -157,10 +179,30 @@ class NetworkListScreen extends BaseWidget<NetworkListScreenController> {
                   SizedBox(height: 50.h),
                   const Divider(color: OHOColors.grey5),
                   SizedBox(height: 50.h),
-                  OHOText(
-                    'Custom Networks',
-                    fontSize: 60.sp,
-                    fontWeight: FontWeight.normal,
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: OHOText(
+                          'Custom Networks',
+                          fontSize: 60.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      Positioned(
+                        right: 50.w,
+                        child: GestureDetector(
+                          onTap: () => controller.editable.value =
+                              !controller.editable.value,
+                          child: Icon(
+                            Icons.edit,
+                            size: 60.sp,
+                            color: themeService.textColor,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                   customNetworks,
                   SizedBox(height: 50.h),

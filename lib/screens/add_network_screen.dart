@@ -8,6 +8,16 @@ class AddNetworkScreenController extends BaseController {
   static const blockExplorerUrlTag = 'block-explorer-url';
 
   var isEditing = true.obs;
+  String? networkKey;
+  Network? network;
+
+  AddNetworkScreenController({
+    bool isEditing = false,
+    this.networkKey,
+    this.network,
+  }) : super() {
+    this.isEditing.value = isEditing;
+  }
 
   late OHOTextFieldController nameController;
   late OHOTextFieldController rpcUrlController;
@@ -43,17 +53,39 @@ class AddNetworkScreenController extends BaseController {
       return;
     }
 
-    final network = Network(
-      name: nameController.data.value,
-      rpcUrl: rpcUrlController.data.value,
-      chainId: BigInt.parse(chainIdController.data.value),
-      currencySymbol: currencySymbolController.data.value,
-      blockExplorerUrl: blockExplorerUrlController.data.value,
-    );
-    walletService.customNetworks.value.networks[const Uuid().v4()] = network;
-    walletService.storeCustomNetworks();
+    if (isEditing.value) {
+      network?.name = nameController.data.value;
+      network?.rpcUrl = rpcUrlController.data.value;
+      network?.chainId = BigInt.parse(chainIdController.data.value);
+      network?.currencySymbol = currencySymbolController.data.value;
+      network?.blockExplorerUrl = blockExplorerUrlController.data.value;
+    } else {
+      final network = Network(
+        name: nameController.data.value,
+        rpcUrl: rpcUrlController.data.value,
+        chainId: BigInt.parse(chainIdController.data.value),
+        currencySymbol: currencySymbolController.data.value,
+        blockExplorerUrl: blockExplorerUrlController.data.value,
+      );
+      walletService.customNetworks.value.networks[const Uuid().v4()] = network;
+    }
 
     walletService.customNetworks.refresh();
+    walletService.storeCustomNetworks();
+
+    Get.back();
+  }
+
+  Future<void> removeNetwork() async {
+    if (!isEditing.value || networkKey == null) return;
+
+    walletService.customNetworks.value.networks.remove(networkKey);
+    walletService.customNetworks.refresh();
+    walletService.storeCustomNetworks();
+    if (walletService.selectedNetwork.value == networkKey) {
+      walletService.setSelectedNetwork('ethereum');
+    }
+
     Get.back();
   }
 }
@@ -62,7 +94,16 @@ class AddNetworkScreen extends BaseWidget<AddNetworkScreenController> {
   AddNetworkScreen({
     super.key,
     super.tag,
-  }) : super(controller: AddNetworkScreenController());
+    bool isEditing = false,
+    String? networkKey,
+    Network? network,
+  }) : super(
+          controller: AddNetworkScreenController(
+            isEditing: isEditing,
+            networkKey: networkKey,
+            network: network,
+          ),
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +155,9 @@ class AddNetworkScreen extends BaseWidget<AddNetworkScreenController> {
                     tag: AddNetworkScreenController.nameTag,
                     label: 'Name',
                     required: true,
+                    data: controller.isEditing.value
+                        ? controller.network?.name
+                        : null,
                     validators: [
                       OHOTextFieldValidatorRequired(
                         errorMessage: 'Name is required',
@@ -125,6 +169,9 @@ class AddNetworkScreen extends BaseWidget<AddNetworkScreenController> {
                     tag: AddNetworkScreenController.rpcUrlTag,
                     label: 'RPC URL',
                     required: true,
+                    data: controller.isEditing.value
+                        ? controller.network?.rpcUrl
+                        : null,
                     validators: [
                       OHOTextFieldValidatorRequired(
                         errorMessage: 'RPC URL is required',
@@ -136,6 +183,9 @@ class AddNetworkScreen extends BaseWidget<AddNetworkScreenController> {
                     tag: AddNetworkScreenController.chainIdTag,
                     label: 'Chain ID',
                     required: true,
+                    data: controller.isEditing.value
+                        ? controller.network?.chainId.toString()
+                        : null,
                     validators: [
                       OHOTextFieldValidatorRequired(
                         errorMessage: 'Chain ID is required',
@@ -148,6 +198,9 @@ class AddNetworkScreen extends BaseWidget<AddNetworkScreenController> {
                     tag: AddNetworkScreenController.currencySymbolTag,
                     label: 'Currency Symbol',
                     required: true,
+                    data: controller.isEditing.value
+                        ? controller.network?.currencySymbol
+                        : null,
                     validators: [
                       OHOTextFieldValidatorRequired(
                         errorMessage: 'Currency Symbol is required',
@@ -158,6 +211,9 @@ class AddNetworkScreen extends BaseWidget<AddNetworkScreenController> {
                   OHOTextField(
                     tag: AddNetworkScreenController.blockExplorerUrlTag,
                     label: 'Block Explorer URL',
+                    data: controller.isEditing.value
+                        ? controller.network?.blockExplorerUrl
+                        : null,
                   ),
                   SizedBox(height: 200.h),
                   OHOSolidButton(
@@ -165,6 +221,15 @@ class AddNetworkScreen extends BaseWidget<AddNetworkScreenController> {
                         '${controller.isEditing.value ? 'Save' : 'Add'} Network',
                     onTap: () => controller.submit(),
                   ),
+                  !controller.isEditing.value
+                      ? Container()
+                      : SizedBox(height: 50.h),
+                  !controller.isEditing.value
+                      ? Container()
+                      : OHOOutlinedButton(
+                          title: 'Remove Network',
+                          onTap: () => controller.removeNetwork(),
+                        ),
                   SizedBox(height: 500.h),
                 ],
               ),

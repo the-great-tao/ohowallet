@@ -55,6 +55,7 @@ class WalletService extends GetxService {
   var defaultNetworks = NetworkList(networks: {}).obs;
   var customNetworks = NetworkList(networks: {}).obs;
   var selectedNetwork = 'ethereum'.obs;
+  Network? _selectedNetwork;
 
   String? _accountPrivateKey;
   EthereumAddress? accountAddress;
@@ -80,8 +81,8 @@ class WalletService extends GetxService {
     defaultNetworks.value =
         NetworkList.fromJson(jsonDecode(defaultNetworksJson));
 
-    customNetworks.value = NetworkList(networks: {});
-    storeCustomNetworks();
+    // customNetworks.value = NetworkList(networks: {});
+    // storeCustomNetworks();
 
     final customNetworksJson = await appDataBox?.get(
       customNetworksKey,
@@ -92,6 +93,7 @@ class WalletService extends GetxService {
     final selectedNetwork_ = await appDataBox?.get(selectedNetworkKey);
     if (selectedNetwork_ != null) {
       selectedNetwork.value = selectedNetwork_;
+      await getSelectedNetwork();
     } else {
       await storeSelectedNetwork();
     }
@@ -99,8 +101,16 @@ class WalletService extends GetxService {
     return this;
   }
 
+  Future<Network?> getSelectedNetwork() async {
+    _selectedNetwork = defaultNetworks.value.networks[selectedNetwork.value] ??
+        customNetworks.value.networks[selectedNetwork.value];
+    print('selectedNetwork: ${_selectedNetwork?.toJson()}');
+    return _selectedNetwork;
+  }
+
   Future<void> setSelectedNetwork(String network) async {
     selectedNetwork.value = network;
+    await getSelectedNetwork();
     await storeSelectedNetwork();
   }
 
