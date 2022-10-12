@@ -4,11 +4,13 @@ abstract class BaseController extends GetxController {
   late AppDataService appDataService;
   late WalletService walletService;
   late ThemeService themeService;
+  late OHOWalletService ohoWalletService;
 
   BaseController() {
     appDataService = Get.find<AppDataService>();
     walletService = Get.find<WalletService>();
     themeService = Get.find<ThemeService>();
+    ohoWalletService = Get.find<OHOWalletService>();
   }
 }
 
@@ -27,4 +29,6 @@ abstract class BaseWidget<T extends BaseController> extends StatelessWidget {
   WalletService get walletService => controller.walletService;
 
   ThemeService get themeService => controller.themeService;
+
+  OHOWalletService get ohoWalletService => controller.ohoWalletService;
 }

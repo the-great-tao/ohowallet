@@ -1,4 +1,5 @@
 import 'package:ohowallet/core/exports.dart';
+import 'package:ohowallet/screens/list_token_transfer_screen.dart';
 
 class WelcomeScreenController extends BaseController {}
 
@@ -45,7 +46,7 @@ class WelcomeScreen extends BaseWidget<WelcomeScreenController> {
                     children: [
                       OHOSolidButton(
                         title: 'Get Started',
-                        onTap: () => Get.to(() => WalletSetupScreen()),
+                        onTap: () => Get.to(() => ListTokenTransferScreen()),
                       ),
                       SizedBox(height: 200.r),
                     ],

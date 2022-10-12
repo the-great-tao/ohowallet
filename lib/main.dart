@@ -1,5 +1,7 @@
 import 'package:ohowallet/core/exports.dart';
+import 'package:ohowallet/screens/list_token_transfer_screen.dart';
 import 'package:ohowallet/services/app_data_service.dart';
+import 'package:ohowallet/services/oho_wallet_service.dart';
 
 const devicePreviewEnabled = false;
 
@@ -13,6 +15,7 @@ Future<void> setupMyApp() async {
 
   await Get.putAsync(() => AppDataService().init());
   await Get.putAsync(() => WalletService().init());
+  await Get.putAsync(() => OHOWalletService().init());
   await Get.putAsync(() => ThemeService().init());
 }
 
