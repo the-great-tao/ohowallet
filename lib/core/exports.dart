@@ -66,4 +66,5 @@ export 'package:ohowallet/screens/create_wallet_04_screen.dart';
 export 'package:ohowallet/screens/import_wallet_screen.dart';
 export 'package:ohowallet/screens/add_network_screen.dart';
 export 'package:ohowallet/screens/network_list_screen.dart';
+export 'package:ohowallet/models/account.dart';
 export 'package:ohowallet/models/network.dart';

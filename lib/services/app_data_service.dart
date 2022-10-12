@@ -11,6 +11,9 @@ class AppDataService extends GetxService {
   Future<AppDataService> init() async {
     secureStorage = const FlutterSecureStorage();
 
+    // reset();
+    // return this;
+
     appDataKey = await secureStorage.read(key: 'appDataKey');
     if (appDataKey == null) {
       return this;

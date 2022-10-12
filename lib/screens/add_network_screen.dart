@@ -215,7 +215,7 @@ class AddNetworkScreen extends BaseWidget<AddNetworkScreenController> {
                         ? controller.network?.blockExplorerUrl
                         : null,
                   ),
-                  SizedBox(height: 200.h),
+                  SizedBox(height: 100.h),
                   OHOSolidButton(
                     title:
                         '${controller.isEditing.value ? 'Save' : 'Add'} Network',

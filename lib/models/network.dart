@@ -1,4 +1,4 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:ohowallet/core/exports.dart';
 
 part 'network.g.dart';
 

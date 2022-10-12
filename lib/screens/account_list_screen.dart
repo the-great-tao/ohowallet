@@ -1,21 +1,19 @@
 import 'package:ohowallet/core/exports.dart';
 
-class NetworkListItemController extends BaseController {}
+class AccountListItemController extends BaseController {}
 
-class NetworkListItem extends BaseWidget<NetworkListItemController> {
-  final String networkKey;
-  final Network network;
-  final bool useRandomIcon;
+class AccountListItem extends BaseWidget<AccountListItemController> {
+  final String accountKey;
+  final Account account;
   final bool editable;
 
-  NetworkListItem({
+  AccountListItem({
     super.key,
     super.tag,
-    required this.networkKey,
-    required this.network,
-    this.useRandomIcon = false,
+    required this.accountKey,
+    required this.account,
     this.editable = false,
-  }) : super(controller: NetworkListItemController());
+  }) : super(controller: AccountListItemController());
 
   Widget get randomIcon => ClipRRect(
         borderRadius: BorderRadius.circular(9999),
@@ -23,7 +21,7 @@ class NetworkListItem extends BaseWidget<NetworkListItemController> {
           width: 150.r,
           height: 150.r,
           child: AvatarGenerator(
-            seed: networkKey,
+            seed: accountKey,
             colors: themeService.randomIconColors,
             verticalTileCount: 3,
             horizontalTileCount: 3,
@@ -38,7 +36,7 @@ class NetworkListItem extends BaseWidget<NetworkListItemController> {
       child: InkWell(
         highlightColor: themeService.listItemInkwellHighlightColor,
         splashColor: themeService.listItemInkwellSplashColor,
-        onTap: () => walletService.setSelectedNetwork(networkKey),
+        onTap: () => walletService.setSelectedAccount(accountKey),
         child: Padding(
           padding: EdgeInsets.symmetric(
             vertical: 25.h,
@@ -46,23 +44,20 @@ class NetworkListItem extends BaseWidget<NetworkListItemController> {
           ),
           child: Row(
             children: [
-              useRandomIcon
-                  ? randomIcon
-                  : SvgPicture.asset(
-                      'assets/icons/network-$networkKey.svg',
-                      width: 150.r,
-                      height: 150.r,
-                    ),
+              randomIcon,
               SizedBox(width: 50.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   OHOHeaderText(
-                    network.name,
+                    account.name,
                     fontSize: 50.sp,
                   ),
                   OHOText(
-                    'Symbol: ${network.currencySymbol}',
+                    WalletService.getShortHex(
+                      account.address.hexEip55,
+                      partLength: 8,
+                    ),
                     fontSize: 40.sp,
                   ),
                 ],
@@ -72,7 +67,7 @@ class NetworkListItem extends BaseWidget<NetworkListItemController> {
                 () => Icon(
                   Icons.check,
                   size: 100.sp,
-                  color: networkKey != walletService.selectedNetwork.value
+                  color: accountKey != walletService.selectedAccount.value
                       ? Colors.transparent
                       : OHOColors.green3,
                 ),
@@ -81,13 +76,7 @@ class NetworkListItem extends BaseWidget<NetworkListItemController> {
               !editable
                   ? Container()
                   : GestureDetector(
-                      onTap: () => Get.to(
-                        () => AddNetworkScreen(
-                          isEditing: true,
-                          networkKey: networkKey,
-                          network: network,
-                        ),
-                      ),
+                      onTap: () {},
                       child: Icon(
                         Icons.edit,
                         size: 60.sp,
@@ -102,36 +91,22 @@ class NetworkListItem extends BaseWidget<NetworkListItemController> {
   }
 }
 
-class NetworkListScreenController extends BaseController {
+class AccountListScreenController extends BaseController {
   var editable = false.obs;
 }
 
-class NetworkListScreen extends BaseWidget<NetworkListScreenController> {
-  NetworkListScreen({
+class AccountListScreen extends BaseWidget<AccountListScreenController> {
+  AccountListScreen({
     super.key,
     super.tag,
-  }) : super(controller: NetworkListScreenController());
+  }) : super(controller: AccountListScreenController());
 
-  Widget get defaultNetworks => Column(
+  Widget get accounts => Column(
         children: [
-          for (var networkKey
-              in walletService.defaultNetworks.value.networks.keys)
-            NetworkListItem(
-              networkKey: networkKey,
-              network:
-                  walletService.defaultNetworks.value.networks[networkKey]!,
-            ),
-        ],
-      );
-
-  Widget get customNetworks => Column(
-        children: [
-          for (var networkKey
-              in walletService.customNetworks.value.networks.keys)
-            NetworkListItem(
-              networkKey: networkKey,
-              network: walletService.customNetworks.value.networks[networkKey]!,
-              useRandomIcon: true,
+          for (var accountKey in walletService.accounts.value.accounts.keys)
+            AccountListItem(
+              accountKey: accountKey,
+              account: walletService.accounts.value.accounts[accountKey]!,
               editable: controller.editable.value,
             ),
         ],
@@ -169,29 +144,12 @@ class NetworkListScreen extends BaseWidget<NetworkListScreenController> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  OHOHeaderText('Networks'),
-                  SizedBox(height: 50.h),
-                  const Divider(color: OHOColors.grey5),
-                  SizedBox(height: 50.h),
-                  OHOText(
-                    'Default Networks',
-                    fontSize: 60.sp,
-                    fontWeight: FontWeight.normal,
-                  ),
-                  defaultNetworks,
-                  SizedBox(height: 50.h),
-                  const Divider(color: OHOColors.grey5),
-                  SizedBox(height: 50.h),
                   Stack(
                     alignment: Alignment.center,
                     children: [
                       SizedBox(
                         width: double.infinity,
-                        child: OHOText(
-                          'Custom Networks',
-                          fontSize: 60.sp,
-                          fontWeight: FontWeight.normal,
-                        ),
+                        child: OHOHeaderText('Accounts'),
                       ),
                       Positioned(
                         right: 50.w,
@@ -207,10 +165,10 @@ class NetworkListScreen extends BaseWidget<NetworkListScreenController> {
                       )
                     ],
                   ),
-                  customNetworks,
+                  accounts,
                   SizedBox(height: 50.h),
                   OHOSolidButton(
-                    title: 'Add Custom Network',
+                    title: 'Add Account',
                     onTap: () => Get.to(() => AddNetworkScreen()),
                   ),
                   SizedBox(height: 500.h),

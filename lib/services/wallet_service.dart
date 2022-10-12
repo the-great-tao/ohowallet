@@ -40,6 +40,9 @@ typedef OnUpdateTransaction = Future<void> Function({
 });
 
 class WalletService extends GetxService {
+  static const selectedAccountKey = 'appSettings-selectedAccount';
+  static const accountsKey = 'appSettings-accounts';
+
   static const selectedNetworkKey = 'appSettings-selectedNetwork';
   static const customNetworksKey = 'appSettings-customNetworks';
 
@@ -52,13 +55,16 @@ class WalletService extends GetxService {
   late List<String> setupSeedPhrase;
 
   Box? appDataBox;
+
+  var accounts = AccountList(accounts: {}).obs;
+  var selectedAccount = ''.obs;
+  Account? _selectedAccount;
+
   var defaultNetworks = NetworkList(networks: {}).obs;
   var customNetworks = NetworkList(networks: {}).obs;
   var selectedNetwork = 'ethereum'.obs;
   Network? _selectedNetwork;
 
-  String? _accountPrivateKey;
-  EthereumAddress? accountAddress;
   OnUpdateTransaction? onUpdateTransaction;
 
   final Web3Client web3client;
@@ -70,11 +76,22 @@ class WalletService extends GetxService {
     appDataBox = appDataService.appDataBox;
     if (appDataBox == null) return this;
 
-    _accountPrivateKey = appDataBox?.get('accountPrivateKey');
-    if (_accountPrivateKey == null) return this;
+    // accounts.value = AccountList(accounts: {});
+    // storeAccounts();
 
-    final privateKey = EthPrivateKey.fromHex(_accountPrivateKey!);
-    accountAddress = await privateKey.extractAddress();
+    final accountsJson = await appDataBox?.get(
+      accountsKey,
+      defaultValue: '{"accounts":{}}',
+    );
+    accounts.value = AccountList.fromJson(jsonDecode(accountsJson));
+
+    final selectedAccount_ = await appDataBox?.get(selectedAccountKey);
+    if (selectedAccount_ != null) {
+      selectedAccount.value = selectedAccount_;
+      await getSelectedAccount();
+    } else {
+      await storeSelectedAccount();
+    }
 
     final defaultNetworksJson =
         await rootBundle.loadString('assets/default_networks.json');
@@ -101,11 +118,23 @@ class WalletService extends GetxService {
     return this;
   }
 
+  Future<Account?> getSelectedAccount() async {
+    _selectedAccount = accounts.value.accounts[selectedAccount.value];
+    print('selectedAccount: ${_selectedAccount?.toJson()}');
+    return _selectedAccount;
+  }
+
   Future<Network?> getSelectedNetwork() async {
     _selectedNetwork = defaultNetworks.value.networks[selectedNetwork.value] ??
         customNetworks.value.networks[selectedNetwork.value];
     print('selectedNetwork: ${_selectedNetwork?.toJson()}');
     return _selectedNetwork;
+  }
+
+  Future<void> setSelectedAccount(String account) async {
+    selectedAccount.value = account;
+    await getSelectedAccount();
+    await storeSelectedAccount();
   }
 
   Future<void> setSelectedNetwork(String network) async {
@@ -114,8 +143,19 @@ class WalletService extends GetxService {
     await storeSelectedNetwork();
   }
 
+  Future<void> storeSelectedAccount() async {
+    await appDataBox?.put(selectedAccountKey, selectedAccount.value);
+  }
+
   Future<void> storeSelectedNetwork() async {
     await appDataBox?.put(selectedNetworkKey, selectedNetwork.value);
+  }
+
+  Future<void> storeAccounts() async {
+    await appDataBox?.put(
+      accountsKey,
+      jsonEncode(accounts.value.toJson()),
+    );
   }
 
   Future<void> storeCustomNetworks() async {
@@ -127,16 +167,26 @@ class WalletService extends GetxService {
 
   Future<void> setup() async {
     final appDataService = Get.find<AppDataService>();
-    final appDataBox = appDataService.appDataBox;
+    appDataBox = appDataService.appDataBox;
     if (appDataBox == null) return;
 
     if (setupSeedPhrase.isEmpty) return;
-    final accountMnemonic = setupSeedPhrase.join(' ');
-    await appDataBox.put('accountMnemonic', accountMnemonic);
 
-    final accountPrivateKey =
-        await WalletService.getPrivateKey(accountMnemonic);
-    await appDataBox.put('accountPrivateKey', accountPrivateKey);
+    final mnemonic = setupSeedPhrase.join(' ');
+    print('mnemonic: $mnemonic');
+    final privateKey = await WalletService.getPrivateKey(mnemonic);
+    print('privateKey: $privateKey');
+    final address = await WalletService.getPublicKey(privateKey);
+    print('address: $address');
+    final account = Account(
+      name: 'Account 1',
+      mnemonic: mnemonic,
+      privateKey: privateKey,
+      address: address,
+    );
+    accounts.value.accounts[account.address.hexEip55] = account;
+    await setSelectedAccount(account.address.hexEip55);
+    await storeAccounts();
 
     setupSeedPhrase = [];
   }

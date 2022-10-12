@@ -127,14 +127,14 @@ class ThemeService extends GetxService {
   }
 
   List<Color> get randomIconColors => [
-    OHOColors.gold,
-    OHOColors.blue,
-    OHOColors.purple,
-    OHOColors.violet,
-    OHOColors.pink,
-    OHOColors.peach,
-    OHOColors.green,
-  ];
+        OHOColors.gold,
+        OHOColors.blue,
+        OHOColors.purple,
+        OHOColors.violet,
+        OHOColors.pink,
+        OHOColors.peach,
+        OHOColors.green,
+      ];
 
   LinearGradient get screenBackgroundGradient => lightMode.value
       ? OHOGradients.lightScreenBackground
@@ -178,9 +178,9 @@ class ThemeService extends GetxService {
   Color get outlinedButtonHoverColor =>
       lightMode.value ? OHOColors.black10 : OHOColors.black10;
 
-  Color get networkListItemInkwellSplashColor =>
+  Color get listItemInkwellSplashColor =>
       lightMode.value ? Colors.white10 : Colors.black12;
 
-  Color get networkListItemInkwellHighlightColor =>
+  Color get listItemInkwellHighlightColor =>
       lightMode.value ? Colors.white10 : Colors.black12;
 }
