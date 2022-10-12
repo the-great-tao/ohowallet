@@ -21,13 +21,8 @@ class OHOOutlinedButton extends BaseWidget<OHOOutlinedButtonController> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      focusColor: themeService.outlinedButtonHoverColor,
-      hoverColor: themeService.outlinedButtonHoverColor,
-      highlightColor: OHOColors.black10,
-      splashColor: OHOColors.black10,
+    return Material(
       borderRadius: BorderRadius.circular(9999),
-      onTap: onTap ?? () {},
       child: Ink(
         width: width ?? double.infinity,
         height: height ?? 140.h,
@@ -39,23 +34,31 @@ class OHOOutlinedButton extends BaseWidget<OHOOutlinedButtonController> {
           ),
           borderRadius: BorderRadius.circular(9999),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            icon ?? Container(),
-            icon == null ? Container() : SizedBox(width: 10.w),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: themeService.outlinedButtonTextColor,
-                fontFamily: 'Outfit',
-                fontSize: 60.sp,
-                fontWeight: FontWeight.normal,
-                letterSpacing: 2.sp,
+        child: InkWell(
+          focusColor: themeService.outlinedButtonHoverColor,
+          hoverColor: themeService.outlinedButtonHoverColor,
+          highlightColor: OHOColors.black10,
+          splashColor: OHOColors.black10,
+          borderRadius: BorderRadius.circular(9999),
+          onTap: onTap ?? () {},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon ?? Container(),
+              icon == null ? Container() : SizedBox(width: 10.w),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: themeService.outlinedButtonTextColor,
+                  fontFamily: 'Outfit',
+                  fontSize: 60.sp,
+                  fontWeight: FontWeight.normal,
+                  letterSpacing: 2.sp,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

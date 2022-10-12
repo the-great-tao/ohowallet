@@ -40,6 +40,9 @@ typedef OnUpdateTransaction = Future<void> Function({
 });
 
 class WalletService extends GetxService {
+  static const selectedNetworkKey = 'appSettings-selectedNetwork';
+  static const customNetworksKey = 'appSettings-customNetworks';
+
   static const alchemyApiKey = 'OGQhAKlTDHBObj8ENGTjmUzWRVKLAeFJ';
   static const rpcUrl =
       'https://polygon-mainnet.g.alchemy.com/v2/$alchemyApiKey';
@@ -47,6 +50,12 @@ class WalletService extends GetxService {
       'https://polygon-mainnet.g.alchemyapi.io/nft/v2/$alchemyApiKey';
 
   late List<String> setupSeedPhrase;
+
+  Box? appDataBox;
+  var defaultNetworks = NetworkList(networks: {}).obs;
+  var customNetworks = NetworkList(networks: {}).obs;
+  var selectedNetwork = 'ethereum'.obs;
+
   String? _accountPrivateKey;
   EthereumAddress? accountAddress;
   OnUpdateTransaction? onUpdateTransaction;
@@ -57,23 +66,53 @@ class WalletService extends GetxService {
 
   Future<WalletService> init() async {
     final appDataService = Get.find<AppDataService>();
-    final appDataBox = appDataService.appDataBox;
+    appDataBox = appDataService.appDataBox;
     if (appDataBox == null) return this;
 
-    _accountPrivateKey = appDataBox.get('accountPrivateKey');
+    _accountPrivateKey = appDataBox?.get('accountPrivateKey');
     if (_accountPrivateKey == null) return this;
 
     final privateKey = EthPrivateKey.fromHex(_accountPrivateKey!);
     accountAddress = await privateKey.extractAddress();
-    print('accountAddress: $accountAddress');
 
     final defaultNetworksJson =
         await rootBundle.loadString('assets/default_networks.json');
-    final defaultNetworks =
-        BlockchainNetworkList.fromJson(jsonDecode(defaultNetworksJson));
-    print(defaultNetworks);
+    defaultNetworks.value =
+        NetworkList.fromJson(jsonDecode(defaultNetworksJson));
+
+    customNetworks.value = NetworkList(networks: {});
+    storeCustomNetworks();
+
+    final customNetworksJson = await appDataBox?.get(
+      customNetworksKey,
+      defaultValue: '{"networks":{}}',
+    );
+    customNetworks.value = NetworkList.fromJson(jsonDecode(customNetworksJson));
+
+    final selectedNetwork_ = await appDataBox?.get(selectedNetworkKey);
+    if (selectedNetwork_ != null) {
+      selectedNetwork.value = selectedNetwork_;
+    } else {
+      await storeSelectedNetwork();
+    }
 
     return this;
+  }
+
+  Future<void> setSelectedNetwork(String network) async {
+    selectedNetwork.value = network;
+    await storeSelectedNetwork();
+  }
+
+  Future<void> storeSelectedNetwork() async {
+    await appDataBox?.put(selectedNetworkKey, selectedNetwork.value);
+  }
+
+  Future<void> storeCustomNetworks() async {
+    await appDataBox?.put(
+      customNetworksKey,
+      jsonEncode(customNetworks.value.toJson()),
+    );
   }
 
   Future<void> setup() async {

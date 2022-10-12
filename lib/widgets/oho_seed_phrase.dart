@@ -130,7 +130,7 @@ class OHOSeedPhrase extends BaseWidget<OHOSeedPhraseController> {
                 ],
               ),
             )
-          : Ink(
+          : Container(
               width: double.infinity,
               height: 650.h,
               padding: EdgeInsets.all(30.r),
