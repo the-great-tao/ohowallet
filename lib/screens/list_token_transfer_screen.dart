@@ -329,22 +329,3 @@ class OHOListRowWithStick extends BaseWidget<OHOListRowWithStickController> {
     );
   }
 }
-
-class OHOGradients {
-  static const LinearGradient background = LinearGradient(
-    colors: [
-      Color(0xffc5d0d6),
-      Color(0xffeee1d8),
-    ],
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-  );
-
-  static const LinearGradient blue = LinearGradient(
-    colors: [
-      Color(0xFFD703FF),
-      Color(0xFF8200FF),
-      Color(0xFF0027FE),
-    ],
-  );
-}
