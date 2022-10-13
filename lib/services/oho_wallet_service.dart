@@ -18,6 +18,8 @@ class OHOWalletService extends GetxService{
   static const tokenMetadataApiUrl =
       'https://deep-index.moralis.io/api/v2/erc20';
 
+  static const transferNftApiUrl = 'https://deep-index.moralis.io/api/v2/$address';
+
   final options = CacheOptions(
     // A default store is required for interceptor.
     store: MemCacheStore(),
@@ -63,8 +65,17 @@ class OHOWalletService extends GetxService{
             apiURL = '$tokenMetadataApiUrl/metadata';
           }
           break;
+
+        case 'getWalletNFTs':
+          {
+            apiURL = '$transferNftApiUrl/nft';
+          }
+          break;
       }
+
+      //prepare params
       params['chain'] = 'polygon';
+
       final dio = Dio()..interceptors.add(DioCacheInterceptor(options: options));
 
       var response = await dio.get(
@@ -104,10 +115,7 @@ class OHOWalletService extends GetxService{
     if (cursor != null) {
       params['cursor'] = cursor;
     }
-
-    if (limit != null) {
-      params['limit'] = limit;
-    }
+    params['limit'] = limit ?? 10;
 
     return moralistApiCall(
       method: 'transfers',
@@ -126,6 +134,25 @@ class OHOWalletService extends GetxService{
 
     return moralistApiCall(
       method: 'metadata',
+      params: params,
+    );
+  }
+
+  Future<Map<String, dynamic>?> moralisGetWalletNFTs({
+    String? cursor,
+    int? limit,
+    String? format,
+  }) async {
+    final Map<String, dynamic> params = {};
+
+    if (cursor != null) {
+      params['cursor'] = cursor;
+    }
+    params['limit'] = limit ?? 10;
+    params['format'] = format ?? 'decimal';
+
+    return moralistApiCall(
+      method: 'getWalletNFTs',
       params: params,
     );
   }
