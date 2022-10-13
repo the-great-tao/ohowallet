@@ -294,7 +294,7 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         OHOSolidButton(
-                          width: 400.w,
+                          width: 350.w,
                           height: 120.h,
                           title: 'Send',
                           fontSize: 50.sp,
@@ -305,7 +305,7 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
                           ),
                         ),
                         OHOSolidButton(
-                          width: 400.w,
+                          width: 350.w,
                           height: 120.h,
                           title: 'Receive',
                           fontSize: 50.sp,
