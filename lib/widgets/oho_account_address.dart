@@ -13,14 +13,14 @@ class OHOAccountAddressController extends BaseController {
     final selectedNetwork = walletService.selectedNetworkInstance;
     if (selectedNetwork == null) return;
     final blockExplorerUrl = selectedNetwork.blockExplorerUrl;
-    if (blockExplorerUrl == '') return;
+    if (blockExplorerUrl.isEmpty) return;
     launchUrl(Uri.parse('$blockExplorerUrl/address/${address.value}'));
   }
 
   Future<void> copyAddress() async {
     await FlutterClipboard.copy(address.value);
     showToast(
-      message: 'Your account address was copied to clipboard.',
+      message: 'Account address was copied to clipboard.',
       backgroundColor: OHOColors.statusSuccess,
     );
   }
