@@ -16,7 +16,6 @@ class OHOAccountBalanceController extends BaseController {
     balance = await web3client.getBalance(
       walletService.selectedAccountInstance!.address,
     );
-    print(balance);
     symbol.value = walletService.selectedNetworkInstance!.currencySymbol;
     loading.value = false;
 
