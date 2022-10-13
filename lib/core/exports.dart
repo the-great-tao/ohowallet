@@ -38,6 +38,7 @@ export 'package:sentry_flutter/sentry_flutter.dart';
 export 'package:path_provider/path_provider.dart';
 export 'package:local_auth/local_auth.dart';
 export 'package:avatar_generator/avatar_generator.dart';
+export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 export 'package:ohowallet/core/settings.dart';
 export 'package:ohowallet/services/biometric_service.dart';

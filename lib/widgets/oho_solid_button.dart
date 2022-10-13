@@ -6,6 +6,7 @@ class OHOSolidButton extends BaseWidget<OHOSolidButtonController> {
   final double? width;
   final double? height;
   final String title;
+  final double? fontSize;
   final Widget? icon;
   final VoidCallback? onTap;
 
@@ -15,6 +16,7 @@ class OHOSolidButton extends BaseWidget<OHOSolidButtonController> {
     this.width,
     this.height,
     required this.title,
+    this.fontSize,
     this.icon,
     this.onTap,
   }) : super(controller: OHOSolidButtonController());
@@ -46,14 +48,14 @@ class OHOSolidButton extends BaseWidget<OHOSolidButtonController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               icon ?? Container(),
-              icon != null ? SizedBox(width: 10.w) : Container(),
+              icon != null ? SizedBox(width: 20.w) : Container(),
               Text(
                 title,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: themeService.solidButtonTextColor,
                   fontFamily: 'Outfit',
-                  fontSize: 60.sp,
+                  fontSize: fontSize ?? 60.sp,
                   fontWeight: FontWeight.normal,
                   letterSpacing: 2.sp,
                 ),

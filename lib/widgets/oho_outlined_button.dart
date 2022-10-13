@@ -6,6 +6,7 @@ class OHOOutlinedButton extends BaseWidget<OHOOutlinedButtonController> {
   final double? width;
   final double? height;
   final String title;
+  final double? fontSize;
   final Widget? icon;
   final VoidCallback? onTap;
 
@@ -15,6 +16,7 @@ class OHOOutlinedButton extends BaseWidget<OHOOutlinedButtonController> {
     this.width,
     this.height,
     required this.title,
+    this.fontSize,
     this.icon,
     this.onTap,
   }) : super(controller: OHOOutlinedButtonController());
@@ -53,7 +55,7 @@ class OHOOutlinedButton extends BaseWidget<OHOOutlinedButtonController> {
                 style: TextStyle(
                   color: themeService.outlinedButtonTextColor,
                   fontFamily: 'Outfit',
-                  fontSize: 60.sp,
+                  fontSize: fontSize ?? 60.sp,
                   fontWeight: FontWeight.normal,
                   letterSpacing: 2.sp,
                 ),

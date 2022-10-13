@@ -290,6 +290,34 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
                     SizedBox(height: 50.h),
                     getAccountAddress(),
                     SizedBox(height: 50.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        OHOSolidButton(
+                          width: 400.w,
+                          height: 120.h,
+                          title: 'Send',
+                          fontSize: 50.sp,
+                          icon: Icon(
+                            FontAwesomeIcons.solidPaperPlane,
+                            color: themeService.solidButtonTextColor,
+                            size: 50.sp,
+                          ),
+                        ),
+                        OHOSolidButton(
+                          width: 400.w,
+                          height: 120.h,
+                          title: 'Receive',
+                          fontSize: 50.sp,
+                          icon: Icon(
+                            FontAwesomeIcons.circleDollarToSlot,
+                            color: themeService.solidButtonTextColor,
+                            size: 50.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 50.h),
                     const Divider(color: OHOColors.grey5),
                     SizedBox(height: 50.h),
                     Stack(

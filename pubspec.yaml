@@ -68,6 +68,7 @@ dependencies:
   path_provider: ^2.0.11
   local_auth: ^2.1.2
   avatar_generator: ^0.0.5
+  font_awesome_flutter: ^10.2.1
 
 dev_dependencies:
   flutter_test:
