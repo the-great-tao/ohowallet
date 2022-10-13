@@ -20,9 +20,13 @@ class AddAccountScreenController extends BaseController {
 
   late OHOTextFieldController nameController;
 
-  bool isValid() {
+  @override
+  void onReady() {
+    super.onReady();
     nameController = Get.find<OHOTextFieldController>(tag: nameTag);
+  }
 
+  bool isValid() {
     var valid = true;
     valid &= nameController.isValid();
 

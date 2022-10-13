@@ -70,6 +70,21 @@ class OHOTextFieldValidatorEqual extends OHOTextFieldValidator {
   }
 }
 
+class OHOTextFieldValidatorEthereumAddress extends OHOTextFieldValidator {
+  OHOTextFieldValidatorEthereumAddress({required String errorMessage})
+      : super(errorMessage: errorMessage);
+
+  @override
+  bool isValid(String data) {
+    try {
+      EthereumAddress.fromHex(data);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+}
+
 class OHOTextFieldController extends BaseController {
   var data = ''.obs;
   final bool required;
@@ -141,6 +156,7 @@ class OHOTextField extends BaseWidget<OHOTextFieldController> {
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final List<OHOTextFieldValidator>? validators;
+  final Function? onChanged;
 
   OHOTextField({
     super.key,
@@ -157,6 +173,7 @@ class OHOTextField extends BaseWidget<OHOTextFieldController> {
     this.keyboardType,
     this.inputFormatters,
     this.validators,
+    this.onChanged,
   }) : super(
           controller: OHOTextFieldController(
             data: data,
@@ -274,7 +291,10 @@ class OHOTextField extends BaseWidget<OHOTextFieldController> {
                       borderRadius: BorderRadius.circular(borderRadius_),
                     ),
                   ),
-                  onChanged: (data) => controller.data.value = data,
+                  onChanged: (data) {
+                    controller.data.value = data;
+                    if (onChanged != null) onChanged!(data);
+                  },
                 ),
                 !obscureText_
                     ? Container()

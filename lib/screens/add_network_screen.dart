@@ -25,7 +25,9 @@ class AddNetworkScreenController extends BaseController {
   late OHOTextFieldController currencySymbolController;
   late OHOTextFieldController blockExplorerUrlController;
 
-  bool isValid() {
+  @override
+  void onReady() {
+    super.onReady();
     nameController = Get.find<OHOTextFieldController>(tag: nameTag);
     rpcUrlController = Get.find<OHOTextFieldController>(tag: rpcUrlTag);
     chainIdController = Get.find<OHOTextFieldController>(tag: chainIdTag);
@@ -33,7 +35,9 @@ class AddNetworkScreenController extends BaseController {
         Get.find<OHOTextFieldController>(tag: currencySymbolTag);
     blockExplorerUrlController =
         Get.find<OHOTextFieldController>(tag: blockExplorerUrlTag);
+  }
 
+  bool isValid() {
     var valid = true;
     valid &= nameController.isValid();
     valid &= rpcUrlController.isValid();
