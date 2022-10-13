@@ -241,7 +241,7 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
     final selectedNetwork = walletService.selectedNetwork.value;
     final selectedAccount = walletService.selectedAccount.value;
     final accountAddress = OHOAccountAddress(
-      tag: 'account-balance-$selectedNetwork-$selectedAccount',
+      tag: 'account-address-$selectedNetwork-$selectedAccount',
       address: selectedAccount,
     );
     return accountAddress;

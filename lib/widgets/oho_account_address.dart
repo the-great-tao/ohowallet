@@ -27,10 +27,15 @@ class OHOAccountAddressController extends BaseController {
 }
 
 class OHOAccountAddress extends BaseWidget<OHOAccountAddressController> {
+  final double? width;
+  final int partLength;
+
   OHOAccountAddress({
     super.key,
     super.tag,
     required String address,
+    this.width,
+    this.partLength = 10,
   }) : super(
           controller: OHOAccountAddressController(
             address: address,
@@ -41,8 +46,8 @@ class OHOAccountAddress extends BaseWidget<OHOAccountAddressController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Container(
-        width: 800.w,
-        height: 100.h,
+        width: width ?? 800.w,
+        height: 120.h,
         padding: EdgeInsets.symmetric(
           vertical: 20.h,
           horizontal: 30.w,
@@ -62,15 +67,18 @@ class OHOAccountAddress extends BaseWidget<OHOAccountAddressController> {
               onTap: () => controller.launchAddress(),
               child: SvgPicture.asset(
                 'assets/icons/search.svg',
-                width: 50.sp,
-                height: 50.sp,
+                width: 60.sp,
+                height: 60.sp,
                 color: themeService.textFieldBorderColor,
               ),
             ),
             SizedBox(
-              width: 600.w,
+              width: width == null ? 600.w : width! - 200.w,
               child: OHOText(
-                WalletService.getShortHex(controller.address.value),
+                WalletService.getShortHex(
+                  controller.address.value,
+                  partLength: partLength,
+                ),
                 softWrap: false,
                 fontSize: 40.sp,
                 overflow: TextOverflow.fade,
@@ -80,8 +88,8 @@ class OHOAccountAddress extends BaseWidget<OHOAccountAddressController> {
               onTap: () => controller.copyAddress(),
               child: SvgPicture.asset(
                 'assets/icons/copy.svg',
-                width: 50.sp,
-                height: 50.sp,
+                width: 60.sp,
+                height: 60.sp,
                 color: themeService.textFieldBorderColor,
               ),
             ),
