@@ -5,6 +5,7 @@ class TokenListItemController extends BaseController {
   final Token token;
   final bool getBackOnSelected;
   late ERC20 _token;
+  var editable = false.obs;
   var loading = false.obs;
   var decimals = BigInt.zero.obs;
   var balance = BigInt.zero.obs;
@@ -14,7 +15,10 @@ class TokenListItemController extends BaseController {
     required this.tokenKey,
     required this.token,
     this.getBackOnSelected = true,
-  }) : super();
+    bool editable = false,
+  }) : super() {
+    this.editable.value = editable;
+  }
 
   @override
   void onInit() {
@@ -30,6 +34,10 @@ class TokenListItemController extends BaseController {
   void onReady() {
     super.onReady();
     getTokenInfo();
+  }
+
+  Future<void> toggleEditable() async {
+    editable.value = !editable.value;
   }
 
   Future<void> getTokenInfo() async {
@@ -61,20 +69,20 @@ class TokenListItemController extends BaseController {
 class TokenListItem extends BaseWidget<TokenListItemController> {
   final String tokenKey;
   final Token token;
-  final bool editable;
 
   TokenListItem({
     super.key,
     super.tag,
     required this.tokenKey,
     required this.token,
-    this.editable = false,
+    bool editable = false,
     bool getBackOnSelected = true,
   }) : super(
           controller: TokenListItemController(
             tokenKey: tokenKey,
             token: token,
             getBackOnSelected: getBackOnSelected,
+            editable: editable,
           ),
         );
 
@@ -94,78 +102,82 @@ class TokenListItem extends BaseWidget<TokenListItemController> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        highlightColor: themeService.listItemInkwellHighlightColor,
-        splashColor: themeService.listItemInkwellSplashColor,
-        onTap: () => controller.onTap(),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: 25.h,
-            horizontal: 50.w,
-          ),
-          child: Row(
-            children: [
-              token.iconUrl == null || token.iconUrl!.isEmpty
-                  ? randomIcon
-                  : ClipRRect(
-                      borderRadius: BorderRadius.circular(9999),
-                      child: CachedNetworkImage(
-                        width: 150.r,
-                        height: 150.r,
-                        imageUrl: token.iconUrl!,
-                        placeholder: (context, url) => randomIcon,
-                        errorWidget: (context, url, error) => randomIcon,
-                      ),
-                    ),
-              SizedBox(width: 50.w),
-              SizedBox(
-                height: 150.r,
-                width: 650.w,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    OHOHeaderText(
-                      token.name,
-                      softWrap: false,
-                      fontSize: 50.sp,
-                      overflow: TextOverflow.fade,
-                    ),
-                    Obx(
-                      () => OHOText(
-                        controller.loading.value
-                            ? '${token.symbol} - Loading Balance...'
-                            : '${token.symbol} - ${controller.balanceString.value}',
-                        softWrap: false,
-                        fontSize: 40.sp,
-                        fontWeight: FontWeight.bold,
-                        overflow: TextOverflow.fade,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(child: Container()),
-              !editable ? Container() : SizedBox(width: 10.w),
-              !editable
-                  ? Container()
-                  : GestureDetector(
-                      onTap: () => Get.to(
-                        () => AddTokenScreen(
-                          isEditing: true,
-                          tokenKey: tokenKey,
-                          token: token,
+    return Obx(
+      () => Material(
+        color: Colors.transparent,
+        child: InkWell(
+          highlightColor: themeService.listItemInkwellHighlightColor,
+          splashColor: themeService.listItemInkwellSplashColor,
+          onTap: () => controller.onTap(),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 25.h,
+              horizontal: 50.w,
+            ),
+            child: Row(
+              children: [
+                token.iconUrl == null || token.iconUrl!.isEmpty
+                    ? randomIcon
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(9999),
+                        child: CachedNetworkImage(
+                          width: 150.r,
+                          height: 150.r,
+                          imageUrl: token.iconUrl!,
+                          placeholder: (context, url) => randomIcon,
+                          errorWidget: (context, url, error) => randomIcon,
                         ),
                       ),
-                      child: Icon(
-                        Icons.edit,
-                        size: 60.sp,
-                        color: themeService.textColor,
+                SizedBox(width: 50.w),
+                SizedBox(
+                  height: 150.r,
+                  width: 650.w,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      OHOHeaderText(
+                        token.name,
+                        softWrap: false,
+                        fontSize: 50.sp,
+                        overflow: TextOverflow.fade,
                       ),
-                    ),
-            ],
+                      Obx(
+                        () => OHOText(
+                          controller.loading.value
+                              ? '${token.symbol} ...'
+                              : '${token.symbol} - ${controller.balanceString.value}',
+                          softWrap: false,
+                          fontSize: 40.sp,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.fade,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(child: Container()),
+                !controller.editable.value
+                    ? Container()
+                    : SizedBox(width: 10.w),
+                !controller.editable.value
+                    ? Container()
+                    : GestureDetector(
+                        onTap: () => Get.to(
+                          () => AddTokenScreen(
+                            isEditing: true,
+                            tokenKey: tokenKey,
+                            token: token,
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.edit,
+                          size: 60.sp,
+                          color: themeService.textColor,
+                        ),
+                      ),
+              ],
+            ),
           ),
         ),
       ),
@@ -174,7 +186,18 @@ class TokenListItem extends BaseWidget<TokenListItemController> {
 }
 
 class TokenListScreenController extends BaseController {
-  var editable = false.obs;
+  Future<void> toggleEditable() async {
+    final tokens = walletService.tokens.value.tokens;
+    final selectedNetwork = walletService.selectedNetwork.value;
+    final networkTokens = tokens[selectedNetwork];
+    if (networkTokens == null) return;
+    for (var tokenKey in networkTokens.keys) {
+      var tokenListItemController = Get.find<TokenListItemController>(
+        tag: 'token-list-item-$selectedNetwork-$tokenKey',
+      );
+      tokenListItemController.toggleEditable();
+    }
+  }
 }
 
 class TokenListScreen extends BaseWidget<TokenListScreenController> {
@@ -188,18 +211,18 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
 
   Widget getTokens() {
     final tokens = walletService.tokens.value.tokens;
-    final networkTokens = tokens[walletService.selectedNetwork.value];
+    final selectedNetwork = walletService.selectedNetwork.value;
+    final networkTokens = tokens[selectedNetwork];
     if (networkTokens == null) return Container();
     return Column(
       children: [
         for (var tokenKey in networkTokens.keys)
           TokenListItem(
-            tag: 'token-list-item-$tokenKey',
+            tag: 'token-list-item-$selectedNetwork-$tokenKey',
             tokenKey: tokenKey,
             token: walletService.getTokenByAddress(tokenKey)!,
-            editable: controller.editable.value,
             getBackOnSelected: getBackOnSelected,
-          ),
+          )..controller.getTokenInfo(),
       ],
     );
   }
@@ -244,7 +267,11 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
           ),
           child: SafeArea(
             child: RefreshIndicator(
-              onRefresh: () async {},
+              color: themeService.textColor,
+              backgroundColor: themeService.textFieldBackgroundColor,
+              onRefresh: () async {
+                walletService.selectedAccount.refresh();
+              },
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -268,8 +295,7 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
                         Positioned(
                           right: 50.w,
                           child: GestureDetector(
-                            onTap: () => controller.editable.value =
-                                !controller.editable.value,
+                            onTap: () => controller.toggleEditable(),
                             child: Icon(
                               Icons.edit,
                               size: 60.sp,
@@ -279,8 +305,6 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
                         )
                       ],
                     ),
-                    SizedBox(height: 50.h),
-                    OHOText('Tap on a Token to reload balance.'),
                     SizedBox(height: 50.h),
                     getTokens(),
                     SizedBox(height: 50.h),
