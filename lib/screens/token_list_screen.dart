@@ -3,6 +3,7 @@ import 'package:ohowallet/core/exports.dart';
 class TokenListItemController extends BaseController {
   final String tokenKey;
   final Token token;
+  final bool getBackOnSelected;
   late ERC20 _token;
   var decimals = BigInt.zero.obs;
   var balance = BigInt.zero.obs;
@@ -12,6 +13,7 @@ class TokenListItemController extends BaseController {
   TokenListItemController({
     required this.tokenKey,
     required this.token,
+    this.getBackOnSelected = true,
   }) : super();
 
   @override
@@ -48,13 +50,18 @@ class TokenListItemController extends BaseController {
     balanceString.value =
         (balance_ / BigInt.from(10).pow(decimals_)).toStringAsFixed(decimals_);
   }
+
+  Future<void> onTap() async {
+    getTokenInfo();
+    await walletService.setSelectedToken(tokenKey);
+    if (getBackOnSelected) Get.back();
+  }
 }
 
 class TokenListItem extends BaseWidget<TokenListItemController> {
   final String tokenKey;
   final Token token;
   final bool editable;
-  final bool getBackOnSelected;
 
   TokenListItem({
     super.key,
@@ -62,11 +69,12 @@ class TokenListItem extends BaseWidget<TokenListItemController> {
     required this.tokenKey,
     required this.token,
     this.editable = false,
-    this.getBackOnSelected = true,
+    bool getBackOnSelected = true,
   }) : super(
           controller: TokenListItemController(
             tokenKey: tokenKey,
             token: token,
+            getBackOnSelected: getBackOnSelected,
           ),
         );
 
@@ -91,10 +99,7 @@ class TokenListItem extends BaseWidget<TokenListItemController> {
       child: InkWell(
         highlightColor: themeService.listItemInkwellHighlightColor,
         splashColor: themeService.listItemInkwellSplashColor,
-        onTap: () async {
-          await walletService.setSelectedToken(tokenKey);
-          if (getBackOnSelected) Get.back();
-        },
+        onTap: () => controller.onTap(),
         child: Padding(
           padding: EdgeInsets.symmetric(
             vertical: 25.h,
@@ -252,6 +257,9 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
                       )
                     ],
                   ),
+                  SizedBox(height: 50.h),
+                  OHOText('Tap on a Token to reload balance.'),
+                  SizedBox(height: 50.h),
                   getTokens(),
                   SizedBox(height: 50.h),
                   OHOSolidButton(
