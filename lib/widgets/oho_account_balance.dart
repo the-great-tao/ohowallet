@@ -41,14 +41,23 @@ class OHOAccountBalance extends BaseWidget<OHOAccountBalanceController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => OHOText(
-        controller.loading.value
-            ? '...'
-            : '${controller.balanceString.value} ${controller.symbol.value}',
-        softWrap: false,
-        fontSize: 70.sp,
-        fontWeight: FontWeight.bold,
-        overflow: TextOverflow.fade,
+      () => Column(
+        children: [
+          OHOHeaderText(
+            controller.loading.value ? '...' : controller.symbol.value,
+            softWrap: false,
+            fontSize: 80.sp,
+            fontWeight: FontWeight.bold,
+            overflow: TextOverflow.fade,
+          ),
+          OHOText(
+            controller.loading.value ? '...' : controller.balanceString.value,
+            softWrap: false,
+            fontSize: 80.sp,
+            fontWeight: FontWeight.bold,
+            overflow: TextOverflow.fade,
+          ),
+        ],
       ),
     );
   }

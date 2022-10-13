@@ -286,11 +286,6 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
                 child: Column(
                   children: [
                     SizedBox(height: 50.h),
-                    SizedBox(
-                      width: double.infinity,
-                      child: OHOHeaderText('Account'),
-                    ),
-                    SizedBox(height: 50.h),
                     getAccountBalance(),
                     SizedBox(height: 50.h),
                     getAccountAddress(),
