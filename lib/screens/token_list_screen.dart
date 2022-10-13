@@ -1,6 +1,54 @@
 import 'package:ohowallet/core/exports.dart';
 
-class TokenListItemController extends BaseController {}
+class TokenListItemController extends BaseController {
+  final String tokenKey;
+  final Token token;
+  late ERC20 _token;
+  var decimals = BigInt.zero.obs;
+  var balance = BigInt.zero.obs;
+  var balanceString = '0'.obs;
+  var loading = false.obs;
+
+  TokenListItemController({
+    required this.tokenKey,
+    required this.token,
+  }) : super();
+
+  @override
+  void onInit() {
+    super.onInit();
+    _token = WalletService.getERC20Token(
+      contractAddress: token.address,
+      rpcUrl: walletService.selectedNetworkInstance!.rpcUrl,
+      chainId: walletService.selectedNetworkInstance!.chainId.toInt(),
+    );
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    getTokenInfo();
+  }
+
+  Future<void> getTokenInfo() async {
+    loading.value = true;
+    decimals.value = await _token.decimals();
+    balance.value =
+        await _token.balanceOf(walletService.selectedAccountInstance!.address);
+    loading.value = false;
+
+    var decimals_ = decimals.value.toInt();
+    var balance_ = balance.value;
+
+    if (decimals_ > 12) {
+      balance_ = balance_ ~/ BigInt.from(10).pow(decimals_ - 12);
+      decimals_ = 12;
+    }
+
+    balanceString.value =
+        (balance_ / BigInt.from(10).pow(decimals_)).toStringAsFixed(decimals_);
+  }
+}
 
 class TokenListItem extends BaseWidget<TokenListItemController> {
   final String tokenKey;
@@ -15,7 +63,12 @@ class TokenListItem extends BaseWidget<TokenListItemController> {
     required this.token,
     this.editable = false,
     this.getBackOnSelected = true,
-  }) : super(controller: TokenListItemController());
+  }) : super(
+          controller: TokenListItemController(
+            tokenKey: tokenKey,
+            token: token,
+          ),
+        );
 
   Widget get randomIcon => ClipRRect(
         borderRadius: BorderRadius.circular(9999),
@@ -62,32 +115,33 @@ class TokenListItem extends BaseWidget<TokenListItemController> {
                       ),
                     ),
               SizedBox(width: 50.w),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  OHOHeaderText(
-                    token.name,
-                    fontSize: 50.sp,
-                  ),
-                  OHOText(
-                    WalletService.getShortHex(
-                      token.address.hexEip55,
-                      partLength: 8,
+              SizedBox(
+                height: 150.r,
+                width: 650.w,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    OHOHeaderText(
+                      token.name,
+                      softWrap: false,
+                      fontSize: 50.sp,
+                      overflow: TextOverflow.fade,
                     ),
-                    fontSize: 40.sp,
-                  ),
-                ],
-              ),
-              Expanded(child: Container()),
-              Obx(
-                () => Icon(
-                  Icons.check,
-                  size: 100.sp,
-                  color: tokenKey != walletService.selectedToken.value
-                      ? Colors.transparent
-                      : OHOColors.green3,
+                    Obx(
+                      () => OHOText(
+                        controller.loading.value
+                            ? '${token.symbol} - Loading Balance...'
+                            : '${token.symbol} - ${controller.balanceString}',
+                        softWrap: false,
+                        fontSize: 40.sp,
+                        overflow: TextOverflow.fade,
+                      ),
+                    ),
+                  ],
                 ),
               ),
+              Expanded(child: Container()),
               !editable ? Container() : SizedBox(width: 10.w),
               !editable
                   ? Container()
@@ -134,6 +188,7 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
       children: [
         for (var tokenKey in networkTokens.keys)
           TokenListItem(
+            tag: 'token-list-item-$tokenKey',
             tokenKey: tokenKey,
             token: walletService.getTokenByAddress(tokenKey)!,
             editable: controller.editable.value,

@@ -59,18 +59,27 @@ class NetworkListItem extends BaseWidget<NetworkListItemController> {
                       height: 150.r,
                     ),
               SizedBox(width: 50.w),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  OHOHeaderText(
-                    network.name,
-                    fontSize: 50.sp,
-                  ),
-                  OHOText(
-                    'Symbol: ${network.currencySymbol}',
-                    fontSize: 40.sp,
-                  ),
-                ],
+              SizedBox(
+                height: 150.r,
+                width: 550.w,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    OHOHeaderText(
+                      network.name,
+                      softWrap: false,
+                      fontSize: 50.sp,
+                      overflow: TextOverflow.fade,
+                    ),
+                    OHOText(
+                      'Symbol: ${network.currencySymbol}',
+                      softWrap: false,
+                      fontSize: 40.sp,
+                      overflow: TextOverflow.fade,
+                    ),
+                  ],
+                ),
               ),
               Expanded(child: Container()),
               Obx(

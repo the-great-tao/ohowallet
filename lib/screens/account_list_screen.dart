@@ -51,21 +51,30 @@ class AccountListItem extends BaseWidget<AccountListItemController> {
             children: [
               randomIcon,
               SizedBox(width: 50.w),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  OHOHeaderText(
-                    account.name,
-                    fontSize: 50.sp,
-                  ),
-                  OHOText(
-                    WalletService.getShortHex(
-                      account.address.hexEip55,
-                      partLength: 8,
+              SizedBox(
+                height: 150.r,
+                width: 550.w,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    OHOHeaderText(
+                      account.name,
+                      softWrap: false,
+                      fontSize: 50.sp,
+                      overflow: TextOverflow.fade,
                     ),
-                    fontSize: 40.sp,
-                  ),
-                ],
+                    OHOText(
+                      WalletService.getShortHex(
+                        account.address.hexEip55,
+                        partLength: 8,
+                      ),
+                      softWrap: false,
+                      fontSize: 40.sp,
+                      overflow: TextOverflow.fade,
+                    ),
+                  ],
+                ),
               ),
               Expanded(child: Container()),
               Obx(
