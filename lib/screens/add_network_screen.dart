@@ -57,19 +57,25 @@ class AddNetworkScreenController extends BaseController {
       return;
     }
 
+    final networkName = nameController.data.value;
+    final networkRpcUrl = rpcUrlController.data.value;
+    final networkChainId = BigInt.parse(chainIdController.data.value);
+    final networkCurrencySymbol = currencySymbolController.data.value;
+    final networkBlockExplorerUrl = blockExplorerUrlController.data.value;
+
     if (isEditing.value) {
-      network?.name = nameController.data.value;
-      network?.rpcUrl = rpcUrlController.data.value;
-      network?.chainId = BigInt.parse(chainIdController.data.value);
-      network?.currencySymbol = currencySymbolController.data.value;
-      network?.blockExplorerUrl = blockExplorerUrlController.data.value;
+      network?.name = networkName;
+      network?.rpcUrl = networkRpcUrl;
+      network?.chainId = networkChainId;
+      network?.currencySymbol = networkCurrencySymbol;
+      network?.blockExplorerUrl = networkBlockExplorerUrl;
     } else {
       final network = Network(
-        name: nameController.data.value,
-        rpcUrl: rpcUrlController.data.value,
-        chainId: BigInt.parse(chainIdController.data.value),
-        currencySymbol: currencySymbolController.data.value,
-        blockExplorerUrl: blockExplorerUrlController.data.value,
+        name: networkName,
+        rpcUrl: networkRpcUrl,
+        chainId: networkChainId,
+        currencySymbol: networkCurrencySymbol,
+        blockExplorerUrl: networkBlockExplorerUrl,
       );
       walletService.customNetworks.value.networks[const Uuid().v4()] = network;
     }
@@ -85,9 +91,9 @@ class AddNetworkScreenController extends BaseController {
 
     walletService.customNetworks.value.networks.remove(networkKey);
     walletService.customNetworks.refresh();
-    walletService.storeCustomNetworks();
+    await walletService.storeCustomNetworks();
     if (walletService.selectedNetwork.value == networkKey) {
-      walletService.setSelectedNetwork('ethereum');
+      await walletService.setSelectedNetwork('ethereum');
     }
 
     Get.back();

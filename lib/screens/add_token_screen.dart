@@ -73,7 +73,8 @@ class AddTokenScreenController extends BaseController {
     } catch (error) {
       clearTokenInfo();
       showToast(
-        message: 'Cannot get Token information. Please check your Network and Token configurations.',
+        message:
+            'Cannot get Token information. Please check your Network and Token configurations.',
         backgroundColor: OHOColors.statusError,
       );
     }
@@ -99,25 +100,38 @@ class AddTokenScreenController extends BaseController {
       return;
     }
 
-    // if (isEditing.value) {
-    //   token?.name = nameController.data.value;
-    //   token?.rpcUrl = rpcUrlController.data.value;
-    //   token?.chainId = BigInt.parse(chainIdController.data.value);
-    //   token?.currencySymbol = currencySymbolController.data.value;
-    //   token?.blockExplorerUrl = blockExplorerUrlController.data.value;
-    // } else {
-    //   final token = Token(
-    //     name: nameController.data.value,
-    //     rpcUrl: rpcUrlController.data.value,
-    //     chainId: BigInt.parse(chainIdController.data.value),
-    //     currencySymbol: currencySymbolController.data.value,
-    //     blockExplorerUrl: blockExplorerUrlController.data.value,
-    //   );
-    //   walletService.customTokens.value.tokens[const Uuid().v4()] = token;
-    // }
-    //
-    // walletService.customTokens.refresh();
-    // walletService.storeCustomTokens();
+    final tokenAddress = EthereumAddress.fromHex(addressController.data.value);
+    final tokenName = nameController.data.value;
+    final tokenSymbol = symbolController.data.value;
+    final tokenDecimals = int.parse(decimalsController.data.value);
+    final tokenIconUrl = iconUrlController.data.value;
+
+    if (isEditing.value) {
+      token?.address = tokenAddress;
+      token?.name = tokenName;
+      token?.symbol = tokenSymbol;
+      token?.decimals = tokenDecimals;
+      token?.iconUrl = tokenIconUrl;
+    } else {
+      final token = Token(
+        address: tokenAddress,
+        name: tokenName,
+        symbol: tokenSymbol,
+        decimals: tokenDecimals,
+        iconUrl: tokenIconUrl,
+      );
+      final tokens = walletService.tokens.value.tokens;
+      if (tokens[walletService.selectedNetwork.value] == null) {
+        tokens[walletService.selectedNetwork.value] = {};
+      }
+      final networkTokens = tokens[walletService.selectedNetwork.value];
+      if (networkTokens != null) {
+        networkTokens[tokenAddress.hexEip55] = token;
+      }
+    }
+
+    walletService.tokens.refresh();
+    walletService.storeTokens();
 
     Get.back();
   }
@@ -125,12 +139,16 @@ class AddTokenScreenController extends BaseController {
   Future<void> removeToken() async {
     if (!isEditing.value || tokenKey == null) return;
 
-    // walletService.customTokens.value.tokens.remove(tokenKey);
-    // walletService.customTokens.refresh();
-    // walletService.storeCustomTokens();
-    // if (walletService.selectedToken.value == tokenKey) {
-    //   walletService.setSelectedToken('ethereum');
-    // }
+    final tokens = walletService.tokens.value.tokens;
+    final networkTokens = tokens[walletService.selectedNetwork.value];
+    if (networkTokens != null) {
+      networkTokens.remove(tokenKey);
+      walletService.tokens.refresh();
+      await walletService.storeTokens();
+      if (walletService.selectedToken.value == tokenKey) {
+        await walletService.setSelectedToken('');
+      }
+    }
 
     Get.back();
   }
@@ -153,33 +171,21 @@ class AddTokenScreen extends BaseWidget<AddTokenScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    var numberFormatters = [
-      TextInputFormatter.withFunction((oldValue, newValue) {
-        try {
-          final text = newValue.text;
-          if (text.isNotEmpty) BigInt.parse(text);
-          return newValue;
-        } catch (error) {
-          return oldValue;
-        }
-      }),
-    ];
     return Obx(() {
       return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           elevation: 0.0,
-          toolbarHeight: 500.h,
+          toolbarHeight: 300.h,
           backgroundColor: Colors.transparent,
           automaticallyImplyLeading: false,
           flexibleSpace: SafeArea(
             child: Padding(
-              padding: EdgeInsets.only(
-                top: 50.h,
-                left: 50.w,
-                right: 50.w,
+              padding: EdgeInsets.symmetric(
+                vertical: 50.h,
+                horizontal: 50.w,
               ),
-              child: OHOAppBar02(),
+              child: OHOAppBar01(step: 0),
             ),
           ),
         ),
@@ -196,7 +202,7 @@ class AddTokenScreen extends BaseWidget<AddTokenScreenController> {
                 children: [
                   SizedBox(height: 50.h),
                   OHOHeaderText(
-                    '${controller.isEditing.value ? 'Edit' : 'Add'} Token',
+                    '${controller.isEditing.value ? 'Edit' : 'Import'} Token',
                   ),
                   SizedBox(height: 50.h),
                   OHOTextField(
@@ -223,7 +229,7 @@ class AddTokenScreen extends BaseWidget<AddTokenScreenController> {
                     required: true,
                     readOnly: true,
                     data: controller.isEditing.value
-                        ? controller.token?.symbol
+                        ? controller.token?.name
                         : null,
                     validators: [
                       OHOTextFieldValidatorRequired(
@@ -260,7 +266,6 @@ class AddTokenScreen extends BaseWidget<AddTokenScreenController> {
                         errorMessage: 'Decimals is required',
                       ),
                     ],
-                    inputFormatters: numberFormatters,
                   ),
                   SizedBox(height: 50.h),
                   OHOTextField(
@@ -273,7 +278,7 @@ class AddTokenScreen extends BaseWidget<AddTokenScreenController> {
                   SizedBox(height: 100.h),
                   OHOSolidButton(
                     title:
-                        '${controller.isEditing.value ? 'Save' : 'Add'} Token',
+                        '${controller.isEditing.value ? 'Save' : 'Import'} Token',
                     onTap: () => controller.submit(),
                   ),
                   !controller.isEditing.value

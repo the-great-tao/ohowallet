@@ -42,14 +42,16 @@ class AddAccountScreenController extends BaseController {
       return;
     }
 
+    final accountName = nameController.data.value;
+
     if (isEditing.value) {
-      account?.name = nameController.data.value;
+      account?.name = accountName;
     } else {
       final mnemonic = generateMnemonic();
       final privateKey = await WalletService.getPrivateKey(mnemonic);
       final address = await WalletService.getPublicKey(privateKey);
       final account = Account(
-        name: nameController.data.value,
+        name: accountName,
         mnemonic: mnemonic,
         privateKey: privateKey,
         address: address,
@@ -68,9 +70,9 @@ class AddAccountScreenController extends BaseController {
 
     walletService.accounts.value.accounts.remove(accountKey);
     walletService.accounts.refresh();
-    walletService.storeAccounts();
+    await walletService.storeAccounts();
     if (walletService.selectedAccount.value == accountKey) {
-      walletService.setSelectedAccount('');
+      await walletService.setSelectedAccount('');
     }
 
     Get.back();
@@ -94,17 +96,6 @@ class AddAccountScreen extends BaseWidget<AddAccountScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    var numberFormatters = [
-      TextInputFormatter.withFunction((oldValue, newValue) {
-        try {
-          final text = newValue.text;
-          if (text.isNotEmpty) BigInt.parse(text);
-          return newValue;
-        } catch (error) {
-          return oldValue;
-        }
-      }),
-    ];
     return Obx(() {
       return Scaffold(
         extendBodyBehindAppBar: true,

@@ -5,11 +5,11 @@ part 'token.g.dart';
 @JsonSerializable()
 class Token {
   @JsonKey(fromJson: _ethereumAddressFromJson, toJson: _ethereumAddressToJson)
-  final EthereumAddress address;
-  final String name;
-  final String symbol;
-  final int decimals;
-  final String? iconUrl;
+  EthereumAddress address;
+  String name;
+  String symbol;
+  int decimals;
+  String? iconUrl;
 
   Token({
     required this.address,

@@ -73,6 +73,7 @@ export 'package:ohowallet/screens/add_network_screen.dart';
 export 'package:ohowallet/screens/add_token_screen.dart';
 export 'package:ohowallet/screens/account_list_screen.dart';
 export 'package:ohowallet/screens/network_list_screen.dart';
+export 'package:ohowallet/screens/token_list_screen.dart';
 export 'package:ohowallet/models/account.dart';
 export 'package:ohowallet/models/network.dart';
 export 'package:ohowallet/models/token.dart';
