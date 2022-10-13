@@ -1,5 +1,4 @@
 import 'package:ohowallet/core/exports.dart';
-import 'package:ohowallet/services/app_data_service.dart';
 
 const devicePreviewEnabled = false;
 
