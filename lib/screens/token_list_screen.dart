@@ -5,10 +5,10 @@ class TokenListItemController extends BaseController {
   final Token token;
   final bool getBackOnSelected;
   late ERC20 _token;
+  var loading = false.obs;
   var decimals = BigInt.zero.obs;
   var balance = BigInt.zero.obs;
   var balanceString = '0'.obs;
-  var loading = false.obs;
 
   TokenListItemController({
     required this.tokenKey,
@@ -137,9 +137,10 @@ class TokenListItem extends BaseWidget<TokenListItemController> {
                       () => OHOText(
                         controller.loading.value
                             ? '${token.symbol} - Loading Balance...'
-                            : '${token.symbol} - ${controller.balanceString}',
+                            : '${token.symbol} - ${controller.balanceString.value}',
                         softWrap: false,
                         fontSize: 40.sp,
+                        fontWeight: FontWeight.bold,
                         overflow: TextOverflow.fade,
                       ),
                     ),
@@ -203,6 +204,16 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
     );
   }
 
+  Widget getAccountBalance() {
+    final selectedNetwork = walletService.selectedNetwork.value;
+    final selectedAccount = walletService.selectedAccount.value;
+    final accountBalance = OHOAccountBalance(
+      tag: 'account-balance-$selectedNetwork-$selectedAccount',
+    );
+    accountBalance.controller.getAccountInfo();
+    return accountBalance;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -232,42 +243,54 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
             gradient: themeService.screenBackgroundGradient,
           ),
           child: SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: 50.h),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      SizedBox(
-                        width: double.infinity,
-                        child: OHOHeaderText('Tokens'),
-                      ),
-                      Positioned(
-                        right: 50.w,
-                        child: GestureDetector(
-                          onTap: () => controller.editable.value =
-                              !controller.editable.value,
-                          child: Icon(
-                            Icons.edit,
-                            size: 60.sp,
-                            color: themeService.textColor,
-                          ),
+            child: RefreshIndicator(
+              onRefresh: () async {},
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 50.h),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OHOHeaderText('Account'),
+                    ),
+                    SizedBox(height: 50.h),
+                    getAccountBalance(),
+                    SizedBox(height: 50.h),
+                    const Divider(color: OHOColors.grey5),
+                    SizedBox(height: 50.h),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: OHOHeaderText('Tokens'),
                         ),
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 50.h),
-                  OHOText('Tap on a Token to reload balance.'),
-                  SizedBox(height: 50.h),
-                  getTokens(),
-                  SizedBox(height: 50.h),
-                  OHOSolidButton(
-                    title: 'Import Token',
-                    onTap: () => Get.to(() => AddTokenScreen()),
-                  ),
-                  SizedBox(height: 500.h),
-                ],
+                        Positioned(
+                          right: 50.w,
+                          child: GestureDetector(
+                            onTap: () => controller.editable.value =
+                                !controller.editable.value,
+                            child: Icon(
+                              Icons.edit,
+                              size: 60.sp,
+                              color: themeService.textColor,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 50.h),
+                    OHOText('Tap on a Token to reload balance.'),
+                    SizedBox(height: 50.h),
+                    getTokens(),
+                    SizedBox(height: 50.h),
+                    OHOSolidButton(
+                      title: 'Import Token',
+                      onTap: () => Get.to(() => AddTokenScreen()),
+                    ),
+                    SizedBox(height: 1000.h),
+                  ],
+                ),
               ),
             ),
           ),

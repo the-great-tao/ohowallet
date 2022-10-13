@@ -59,6 +59,7 @@ export 'package:ohowallet/widgets/oho_seed_phrase.dart';
 export 'package:ohowallet/widgets/oho_seed_phrase_chip.dart';
 export 'package:ohowallet/widgets/oho_account_chip.dart';
 export 'package:ohowallet/widgets/oho_network_chip.dart';
+export 'package:ohowallet/widgets/oho_account_balance.dart';
 export 'package:ohowallet/screens/welcome_screen.dart';
 export 'package:ohowallet/screens/wallet_setup_screen.dart';
 export 'package:ohowallet/screens/wallet_unlock_screen.dart';

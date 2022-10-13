@@ -194,7 +194,7 @@ class AccountListScreen extends BaseWidget<AccountListScreenController> {
                     title: 'Add Account',
                     onTap: () => Get.to(() => AddAccountScreen()),
                   ),
-                  SizedBox(height: 500.h),
+                  SizedBox(height: 1000.h),
                 ],
               ),
             ),

@@ -230,7 +230,7 @@ class NetworkListScreen extends BaseWidget<NetworkListScreenController> {
                     title: 'Add Custom Network',
                     onTap: () => Get.to(() => AddNetworkScreen()),
                   ),
-                  SizedBox(height: 500.h),
+                  SizedBox(height: 1000.h),
                 ],
               ),
             ),
