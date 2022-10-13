@@ -314,6 +314,11 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
                             color: themeService.solidButtonTextColor,
                             size: 50.sp,
                           ),
+                          onTap: () => Get.to(
+                                () => AccountReceiveScreen(
+                              account: walletService.selectedAccountInstance!,
+                            ),
+                          ),
                         ),
                       ],
                     ),
