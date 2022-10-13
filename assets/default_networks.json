@@ -5,49 +5,49 @@
       "rpcUrl": "https://rpc.ankr.com/eth",
       "chainId": "1",
       "currencySymbol": "ETH",
-      "blockExplorerUrl": "https://etherscan.io/"
+      "blockExplorerUrl": "https://etherscan.io"
     },
     "binance": {
       "name": "Binance Mainnet",
       "rpcUrl": "https://bsc-dataseed1.binance.org",
       "chainId": "56",
       "currencySymbol": "BNB",
-      "blockExplorerUrl": "https://bscscan.com/"
+      "blockExplorerUrl": "https://bscscan.com"
     },
     "polygon": {
       "name": "Polygon Mainnet",
       "rpcUrl": "https://polygon-rpc.com",
       "chainId": "137",
       "currencySymbol": "MATIC",
-      "blockExplorerUrl": "https://polygonscan.com/"
+      "blockExplorerUrl": "https://polygonscan.com"
     },
     "fantom": {
       "name": "Fantom Mainnet",
       "rpcUrl": "https://rpcapi.fantom.network",
       "chainId": "250",
       "currencySymbol": "FTM",
-      "blockExplorerUrl": "https://ftmscan.com/"
+      "blockExplorerUrl": "https://ftmscan.com"
     },
     "avalanche": {
       "name": "Avalanche Mainnet",
       "rpcUrl": "https://api.avax.network/ext/bc/C/rpc",
       "chainId": "43114",
       "currencySymbol": "AVAX",
-      "blockExplorerUrl": "https://snowtrace.io/"
+      "blockExplorerUrl": "https://snowtrace.io"
     },
     "oho": {
       "name": "OHO Mainnet",
       "rpcUrl": "https://mainnet-rpc.ohoscan.com",
       "chainId": "39815",
       "currencySymbol": "OHO",
-      "blockExplorerUrl": "https://ohoscan.com/"
+      "blockExplorerUrl": "https://ohoscan.com"
     },
     "hertz": {
       "name": "Hertz Mainnet",
       "rpcUrl": "https://mainnet-rpc.hertzscan.com",
       "chainId": "26600",
       "currencySymbol": "HTZ",
-      "blockExplorerUrl": "https://hertzscan.com/"
+      "blockExplorerUrl": "https://hertzscan.com"
     }
   }
 }

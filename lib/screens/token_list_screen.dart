@@ -237,6 +237,16 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
     return accountBalance;
   }
 
+  Widget getAccountAddress() {
+    final selectedNetwork = walletService.selectedNetwork.value;
+    final selectedAccount = walletService.selectedAccount.value;
+    final accountAddress = OHOAccountAddress(
+      tag: 'account-balance-$selectedNetwork-$selectedAccount',
+      address: selectedAccount,
+    );
+    return accountAddress;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -282,6 +292,8 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
                     ),
                     SizedBox(height: 50.h),
                     getAccountBalance(),
+                    SizedBox(height: 50.h),
+                    getAccountAddress(),
                     SizedBox(height: 50.h),
                     const Divider(color: OHOColors.grey5),
                     SizedBox(height: 50.h),
