@@ -6,6 +6,12 @@ class OHOAccountBalanceController extends BaseController {
   var balance = EtherAmount.zero();
   var balanceString = '0'.obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+    symbol.value = walletService.selectedNetworkInstance!.currencySymbol;
+  }
+
   Future<void> getAccountInfo() async {
     final web3client = Web3Client(
       walletService.selectedNetworkInstance!.rpcUrl,
@@ -16,7 +22,6 @@ class OHOAccountBalanceController extends BaseController {
     balance = await web3client.getBalance(
       walletService.selectedAccountInstance!.address,
     );
-    symbol.value = walletService.selectedNetworkInstance!.currencySymbol;
     loading.value = false;
 
     var decimals_ = 18;
@@ -44,7 +49,7 @@ class OHOAccountBalance extends BaseWidget<OHOAccountBalanceController> {
       () => Column(
         children: [
           OHOHeaderText(
-            controller.loading.value ? '...' : controller.symbol.value,
+            controller.symbol.value,
             softWrap: false,
             fontSize: 80.sp,
             fontWeight: FontWeight.bold,
