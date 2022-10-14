@@ -49,7 +49,7 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
                       network: walletService.selectedNetworkInstance!,
                     ),
                     SizedBox(height: 100.h),
-                    OHOTokenList(tag: 'token-list-2'),
+                    OHOTokenList(),
                     SizedBox(height: 1000.h),
                   ],
                 ),

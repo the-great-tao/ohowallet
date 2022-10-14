@@ -98,7 +98,7 @@ class WalletMainScreen extends BaseWidget<WalletMainScreenController> {
                     const Divider(color: OHOColors.grey5),
                     SizedBox(height: 50.h),
                     OHOTokenList(
-                      tag: 'token-list-1',
+                      tag: 'token-list-main',
                       getBackOnSelected: false,
                     ),
                     SizedBox(height: 1000.h),
