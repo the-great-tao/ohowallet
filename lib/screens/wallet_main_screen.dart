@@ -1,12 +1,12 @@
 import 'package:ohowallet/core/exports.dart';
 
-class TokenListScreenController extends BaseController {}
+class WalletMainScreenController extends BaseController {}
 
-class TokenListScreen extends BaseWidget<TokenListScreenController> {
-  TokenListScreen({
+class WalletMainScreen extends BaseWidget<WalletMainScreenController> {
+  WalletMainScreen({
     super.key,
     super.tag,
-  }) : super(controller: TokenListScreenController());
+  }) : super(controller: WalletMainScreenController());
 
   Widget getAccountBalance() {
     if (walletService.selectedNetwork.value.isEmpty ||
