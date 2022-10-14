@@ -63,6 +63,7 @@ export 'package:ohowallet/widgets/oho_network_chip.dart';
 export 'package:ohowallet/widgets/oho_account_balance.dart';
 export 'package:ohowallet/widgets/oho_account_address.dart';
 export 'package:ohowallet/widgets/oho_account_address_field.dart';
+export 'package:ohowallet/widgets/oho_token_list.dart';
 export 'package:ohowallet/screens/welcome_screen.dart';
 export 'package:ohowallet/screens/wallet_setup_screen.dart';
 export 'package:ohowallet/screens/wallet_unlock_screen.dart';
