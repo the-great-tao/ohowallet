@@ -16,13 +16,22 @@ class WalletUnlockScreenController extends BaseController {
       );
       return;
     }
+    Get.offAll(() => TokenListScreen(getBackOnSelected: false));
+  }
 
-    if (biometricService.hasBiometrics) {
-      biometricService.localAuthentication.authenticate(
-        localizedReason: 'Please authenticate to open your Wallet',
-        options: const AuthenticationOptions(biometricOnly: true),
+  Future<void> biometricAuthenticate() async {
+    if (!biometricService.hasBiometrics) return;
+    if (!await biometricService.localAuthentication.authenticate(
+      localizedReason: 'Please authenticate to open your Wallet',
+      options: const AuthenticationOptions(biometricOnly: true),
+    )) {
+      showToast(
+        message: 'Biometric authentication is failed.',
+        backgroundColor: OHOColors.statusError,
       );
+      return;
     }
+    Get.offAll(() => TokenListScreen(getBackOnSelected: false));
   }
 
   Future<void> eraseData() async {
@@ -77,23 +86,29 @@ class WalletUnlockScreen extends BaseWidget<WalletUnlockScreenController> {
     );
   }
 
-  Widget get faceIdButton => biometricService.hasFaceId
-      ? SvgPicture.asset(
-          'assets/icons/face-id.svg',
-          width: 120.r,
-          height: 120.r,
-          color: themeService.outlinedButtonTextColor,
-        )
-      : Container();
+  Widget get faceIdButton => !biometricService.hasFaceId
+      ? Container()
+      : GestureDetector(
+          onTap: () => controller.biometricAuthenticate(),
+          child: SvgPicture.asset(
+            'assets/icons/face-id.svg',
+            width: 120.r,
+            height: 120.r,
+            color: themeService.outlinedButtonTextColor,
+          ),
+        );
 
-  Widget get touchIdButton => biometricService.hasTouchId
-      ? SvgPicture.asset(
-          'assets/icons/touch-id.svg',
-          width: 120.r,
-          height: 120.r,
-          color: themeService.outlinedButtonTextColor,
-        )
-      : Container();
+  Widget get touchIdButton => !biometricService.hasTouchId
+      ? Container()
+      : GestureDetector(
+          onTap: () => controller.biometricAuthenticate(),
+          child: SvgPicture.asset(
+            'assets/icons/touch-id.svg',
+            width: 120.r,
+            height: 120.r,
+            color: themeService.outlinedButtonTextColor,
+          ),
+        );
 
   @override
   Widget build(BuildContext context) {

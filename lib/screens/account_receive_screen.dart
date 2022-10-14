@@ -53,16 +53,13 @@ class AccountReceiveScreen extends BaseWidget<AccountReceiveScreenController> {
                       QrImage(
                         size: 600.r,
                         padding: EdgeInsets.all(4.r),
-                        // backgroundColor: themeService.textFieldBackgroundColor,
                         foregroundColor: themeService.textColor,
                         version: QrVersions.auto,
                         errorCorrectionLevel: QrErrorCorrectLevel.Q,
                         data: account.address.hexEip55,
                       ),
                       SizedBox(height: 100.h),
-                      OHOAccountAddress(
-                        address: account.address.hexEip55,
-                      ),
+                      OHOAccountAddress(),
                     ],
                   ),
                 ),

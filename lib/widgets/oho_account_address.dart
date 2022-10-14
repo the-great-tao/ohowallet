@@ -3,10 +3,13 @@ import 'package:ohowallet/core/exports.dart';
 class OHOAccountAddressController extends BaseController {
   var address = ''.obs;
 
-  OHOAccountAddressController({
-    required String address,
-  }) : super() {
-    this.address.value = address;
+  Future<void> refreshAddress() async {
+    final selectedAccount = walletService.selectedAccountInstance;
+    if (selectedAccount == null) {
+      address.value = '';
+      return;
+    }
+    address.value = selectedAccount.address.hexEip55;
   }
 
   Future<void> launchAddress() async {
@@ -33,14 +36,9 @@ class OHOAccountAddress extends BaseWidget<OHOAccountAddressController> {
   OHOAccountAddress({
     super.key,
     super.tag,
-    required String address,
     this.width,
     this.partLength = 10,
-  }) : super(
-          controller: OHOAccountAddressController(
-            address: address,
-          ),
-        );
+  }) : super(controller: OHOAccountAddressController());
 
   @override
   Widget build(BuildContext context) {

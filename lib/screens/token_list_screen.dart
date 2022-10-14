@@ -4,12 +4,11 @@ class TokenListItemController extends BaseController {
   final String tokenKey;
   final Token token;
   final bool getBackOnSelected;
-  late ERC20 _token;
   var editable = false.obs;
   var loading = false.obs;
   var decimals = BigInt.zero.obs;
   var balance = BigInt.zero.obs;
-  var balanceString = '0'.obs;
+  var balanceString = '...'.obs;
 
   TokenListItemController({
     required this.tokenKey,
@@ -20,31 +19,27 @@ class TokenListItemController extends BaseController {
     this.editable.value = editable;
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    _token = WalletService.getERC20Token(
-      contractAddress: token.address,
-      rpcUrl: walletService.selectedNetworkInstance!.rpcUrl,
-      chainId: walletService.selectedNetworkInstance!.chainId.toInt(),
-    );
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-    getTokenInfo();
-  }
-
   Future<void> toggleEditable() async {
     editable.value = !editable.value;
   }
 
-  Future<void> getTokenInfo() async {
+  Future<void> refreshToken() async {
+    final selectedNetwork = walletService.selectedNetworkInstance;
+    final selectedAccount = walletService.selectedAccountInstance;
+    if (selectedNetwork == null || selectedAccount == null) {
+      balanceString.value = '...';
+      return;
+    }
+
+    final token_ = WalletService.getERC20Token(
+      contractAddress: token.address,
+      rpcUrl: selectedNetwork.rpcUrl,
+      chainId: selectedNetwork.chainId.toInt(),
+    );
+
     loading.value = true;
-    decimals.value = await _token.decimals();
-    balance.value =
-        await _token.balanceOf(walletService.selectedAccountInstance!.address);
+    decimals.value = await token_.decimals();
+    balance.value = await token_.balanceOf(selectedAccount.address);
     loading.value = false;
 
     var decimals_ = decimals.value.toInt();
@@ -60,7 +55,7 @@ class TokenListItemController extends BaseController {
   }
 
   Future<void> onTap() async {
-    getTokenInfo();
+    refreshToken();
     await walletService.setSelectedToken(tokenKey);
     if (getBackOnSelected) Get.back();
   }
@@ -193,7 +188,7 @@ class TokenListScreenController extends BaseController {
     if (networkTokens == null) return;
     for (var tokenKey in networkTokens.keys) {
       var tokenListItemController = Get.find<TokenListItemController>(
-        tag: 'token-list-item-$selectedNetwork-$tokenKey',
+        tag: 'token-$selectedNetwork-$tokenKey',
       );
       tokenListItemController.toggleEditable();
     }
@@ -218,34 +213,22 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
       children: [
         for (var tokenKey in networkTokens.keys)
           TokenListItem(
-            tag: 'token-list-item-$selectedNetwork-$tokenKey',
+            tag: 'token-$selectedNetwork-$tokenKey',
             tokenKey: tokenKey,
             token: walletService.getTokenByAddress(tokenKey)!,
             getBackOnSelected: getBackOnSelected,
-          )..controller.getTokenInfo(),
+          )..controller.refreshToken(),
       ],
     );
   }
 
-  Widget getAccountBalance() {
-    final selectedNetwork = walletService.selectedNetwork.value;
-    final selectedAccount = walletService.selectedAccount.value;
-    final accountBalance = OHOAccountBalance(
-      tag: 'account-balance-$selectedNetwork-$selectedAccount',
-    );
-    accountBalance.controller.getAccountInfo();
-    return accountBalance;
-  }
+  Widget get accountBalance => walletService.selectedAccount.value.isEmpty
+      ? Container()
+      : (OHOAccountBalance()..controller.refreshBalance());
 
-  Widget getAccountAddress() {
-    final selectedNetwork = walletService.selectedNetwork.value;
-    final selectedAccount = walletService.selectedAccount.value;
-    final accountAddress = OHOAccountAddress(
-      tag: 'account-address-$selectedNetwork-$selectedAccount',
-      address: selectedAccount,
-    );
-    return accountAddress;
-  }
+  Widget get accountAddress => walletService.selectedAccount.value.isEmpty
+      ? Container()
+      : (OHOAccountAddress()..controller.refreshAddress());
 
   @override
   Widget build(BuildContext context) {
@@ -279,16 +262,14 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
             child: RefreshIndicator(
               color: themeService.textColor,
               backgroundColor: themeService.textFieldBackgroundColor,
-              onRefresh: () async {
-                walletService.selectedAccount.refresh();
-              },
+              onRefresh: () async => walletService.selectedAccount.refresh(),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     SizedBox(height: 50.h),
-                    getAccountBalance(),
+                    accountBalance,
                     SizedBox(height: 50.h),
-                    getAccountAddress(),
+                    accountAddress,
                     SizedBox(height: 50.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -315,7 +296,7 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
                             size: 50.sp,
                           ),
                           onTap: () => Get.to(
-                                () => AccountReceiveScreen(
+                            () => AccountReceiveScreen(
                               account: walletService.selectedAccountInstance!,
                             ),
                           ),

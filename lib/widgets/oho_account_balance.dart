@@ -2,26 +2,25 @@ import 'package:ohowallet/core/exports.dart';
 
 class OHOAccountBalanceController extends BaseController {
   var loading = false.obs;
-  var symbol = ''.obs;
+  var symbol = '...'.obs;
   var balance = EtherAmount.zero();
-  var balanceString = '0'.obs;
+  var balanceString = '...'.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    symbol.value = walletService.selectedNetworkInstance!.currencySymbol;
-  }
+  Future<void> refreshBalance() async {
+    final selectedNetwork = walletService.selectedNetworkInstance;
+    final selectedAccount = walletService.selectedAccountInstance;
+    if (selectedNetwork == null || selectedAccount == null) {
+      symbol.value = '...';
+      balanceString.value = '...';
+      return;
+    }
 
-  Future<void> getAccountInfo() async {
-    final web3client = Web3Client(
-      walletService.selectedNetworkInstance!.rpcUrl,
-      Client(),
-    );
+    final web3client = Web3Client(selectedNetwork.rpcUrl, Client());
+
+    symbol.value = selectedNetwork.currencySymbol;
 
     loading.value = true;
-    balance = await web3client.getBalance(
-      walletService.selectedAccountInstance!.address,
-    );
+    balance = await web3client.getBalance(selectedAccount.address);
     loading.value = false;
 
     var decimals_ = 18;
