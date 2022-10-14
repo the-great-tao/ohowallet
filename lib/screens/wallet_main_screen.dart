@@ -1,4 +1,5 @@
 import 'package:ohowallet/core/exports.dart';
+import 'package:ohowallet/screens/token_list_screen.dart';
 
 class WalletMainScreenController extends BaseController {}
 
@@ -73,6 +74,7 @@ class WalletMainScreen extends BaseWidget<WalletMainScreenController> {
                             color: themeService.solidButtonTextColor,
                             size: 50.sp,
                           ),
+                          onTap: () => Get.to(() => TokenListScreen()),
                         ),
                         OHOSolidButton(
                           width: 350.w,
@@ -95,7 +97,10 @@ class WalletMainScreen extends BaseWidget<WalletMainScreenController> {
                     SizedBox(height: 50.h),
                     const Divider(color: OHOColors.grey5),
                     SizedBox(height: 50.h),
-                    OHOTokenList(getBackOnSelected: false),
+                    OHOTokenList(
+                      tag: 'token-list-1',
+                      getBackOnSelected: false,
+                    ),
                     SizedBox(height: 1000.h),
                   ],
                 ),

@@ -209,11 +209,12 @@ class OHOTokenList extends BaseWidget<OHOTokenListController> {
     final selectedNetwork = walletService.selectedNetwork.value;
     final networkTokens = tokens[selectedNetwork];
     if (networkTokens == null) return Container();
+    final prefix = tag == null ? '' : '${tag!}-';
     return Column(
       children: [
         for (var tokenKey in networkTokens.keys)
           OHOTokenListItem(
-            tag: 'token-$selectedNetwork-$tokenKey',
+            tag: '${prefix}token-$selectedNetwork-$tokenKey',
             tokenKey: tokenKey,
             token: walletService.getTokenByAddress(tokenKey)!,
             getBackOnSelected: getBackOnSelected,
