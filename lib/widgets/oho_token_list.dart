@@ -107,8 +107,8 @@ class OHOTokenListItem extends BaseWidget<OHOTokenListItemController> {
     return token.address.hexEip55 == OHOSettings.nativeTokenAddress
         ? SvgPicture.asset(
             'assets/icons/network-$selectedNetwork.svg',
-            width: 120.h,
-            height: 120.h,
+            width: 150.r,
+            height: 150.r,
           )
         : ClipRRect(
             borderRadius: BorderRadius.circular(9999),
@@ -239,7 +239,7 @@ class OHOTokenList extends BaseWidget<OHOTokenListController> {
           OHOTokenListItem(
             tag: '${prefix}token-$selectedNetwork-$tokenKey',
             tokenKey: tokenKey,
-            token: walletService.getTokenByAddress(tokenKey)!,
+            token: networkTokens[tokenKey]!,
             getBackOnSelected: getBackOnSelected,
           )..controller.refreshToken(),
       ],
