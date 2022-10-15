@@ -9,7 +9,6 @@ class Account {
   final String privateKey;
   @JsonKey(fromJson: _ethereumAddressFromJson, toJson: _ethereumAddressToJson)
   final EthereumAddress address;
-  @JsonKey(ignore: true)
   final bool removable;
 
   Account({
