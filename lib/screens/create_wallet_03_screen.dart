@@ -31,6 +31,8 @@ class CreateWallet03ScreenController extends BaseController {
     }
 
     await appDataService.setup();
+
+    await walletService.init();
     await walletService.setup();
 
     Get.to(() => CreateWallet04Screen());

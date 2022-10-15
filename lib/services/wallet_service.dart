@@ -257,8 +257,6 @@ class WalletService extends GetxService {
       tokens_[networkKey] = tokens;
     }
     await storeTokens();
-
-    await init();
   }
 
   static Future<String> getPrivateKey(String mnemonic) async {
