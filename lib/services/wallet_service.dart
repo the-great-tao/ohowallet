@@ -235,7 +235,7 @@ class WalletService extends GetxService {
     await setSelectedAccount(account.address.hexEip55);
     await storeAccounts();
 
-    await setSelectedNetwork(selectedNetwork.value);
+    await setSelectedNetwork(OHOSettings.defaultNetworkKey);
     await storeCustomNetworks();
 
     setupSeedPhrase = [];

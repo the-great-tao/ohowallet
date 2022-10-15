@@ -93,7 +93,7 @@ class AddNetworkScreenController extends BaseController {
     walletService.customNetworks.refresh();
     await walletService.storeCustomNetworks();
     if (walletService.selectedNetwork.value == networkKey) {
-      await walletService.setSelectedNetwork('ethereum');
+      await walletService.setSelectedNetwork(OHOSettings.defaultNetworkKey);
     }
 
     Get.back();
