@@ -68,6 +68,14 @@ class AddAccountScreenController extends BaseController {
   Future<void> removeAccount() async {
     if (!isEditing.value || accountKey == null) return;
 
+    if (!account!.removable) {
+      showToast(
+        message: 'You cannot remove Default Account.',
+        backgroundColor: OHOColors.statusError,
+      );
+      return;
+    }
+
     walletService.accounts.value.accounts.remove(accountKey);
     walletService.accounts.refresh();
     await walletService.storeAccounts();
@@ -194,10 +202,10 @@ class AddAccountScreen extends BaseWidget<AddAccountScreenController> {
                           obscureText: true,
                           data: controller.account?.privateKey,
                         ),
-                  !controller.isEditing.value
+                  !controller.isEditing.value || !controller.account!.removable
                       ? Container()
                       : SizedBox(height: 100.h),
-                  !controller.isEditing.value
+                  !controller.isEditing.value || !controller.account!.removable
                       ? Container()
                       : OHOOutlinedButton(
                           title: 'Remove Account',
