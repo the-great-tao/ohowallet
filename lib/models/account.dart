@@ -9,12 +9,15 @@ class Account {
   final String privateKey;
   @JsonKey(fromJson: _ethereumAddressFromJson, toJson: _ethereumAddressToJson)
   final EthereumAddress address;
+  @JsonKey(ignore: true)
+  final bool removable;
 
   Account({
     required this.name,
     required this.mnemonic,
     required this.privateKey,
     required this.address,
+    this.removable = true,
   });
 
   factory Account.fromJson(Map<String, dynamic> json) =>

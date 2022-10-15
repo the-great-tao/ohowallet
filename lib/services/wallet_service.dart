@@ -229,7 +229,10 @@ class WalletService extends GetxService {
       mnemonic: mnemonic,
       privateKey: privateKey,
       address: address,
+      removable: false,
     );
+
+    setupSeedPhrase = [];
     accounts.value.accounts[account.address.hexEip55] = account;
 
     await setSelectedAccount(account.address.hexEip55);
@@ -238,7 +241,22 @@ class WalletService extends GetxService {
     await setSelectedNetwork(OHOSettings.defaultNetworkKey);
     await storeCustomNetworks();
 
-    setupSeedPhrase = [];
+    final tokens_ = tokens.value.tokens;
+    final defaultNetworks_ = defaultNetworks.value.networks;
+    for (var networkKey in defaultNetworks_.keys) {
+      final network = defaultNetworks_[networkKey]!;
+      final tokens = {
+        OHOSettings.nativeTokenAddress: Token(
+          address: EthereumAddress.fromHex(OHOSettings.nativeTokenAddress),
+          name: '${network.currencySymbol} Native Token',
+          symbol: network.currencySymbol,
+          decimals: OHOSettings.nativeTokenDecimals,
+          iconUrl: OHOSettings.nativeTokenAddress,
+        ),
+      };
+      tokens_[networkKey] = tokens;
+    }
+    await storeTokens();
   }
 
   static Future<String> getPrivateKey(String mnemonic) async {

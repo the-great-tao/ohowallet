@@ -100,6 +100,14 @@ class AddTokenScreenController extends BaseController {
       return;
     }
 
+    if (token?.address.hexEip55 == OHOSettings.nativeTokenAddress) {
+      showToast(
+        message: 'You cannot edit Native Token.',
+        backgroundColor: OHOColors.statusError,
+      );
+      return;
+    }
+
     final tokenAddress = EthereumAddress.fromHex(addressController.data.value);
     final tokenName = nameController.data.value;
     final tokenSymbol = symbolController.data.value;
@@ -138,6 +146,14 @@ class AddTokenScreenController extends BaseController {
 
   Future<void> removeToken() async {
     if (!isEditing.value || tokenKey == null) return;
+
+    if (token?.address.hexEip55 == OHOSettings.nativeTokenAddress) {
+      showToast(
+        message: 'You cannot remove Native Token.',
+        backgroundColor: OHOColors.statusError,
+      );
+      return;
+    }
 
     final tokens = walletService.tokens.value.tokens;
     final networkTokens = tokens[walletService.selectedNetwork.value];

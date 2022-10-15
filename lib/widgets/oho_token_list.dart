@@ -31,15 +31,21 @@ class OHOTokenListItemController extends BaseController {
       return;
     }
 
-    final token_ = WalletService.getERC20Token(
-      contractAddress: token.address,
-      rpcUrl: selectedNetwork.rpcUrl,
-      chainId: selectedNetwork.chainId.toInt(),
-    );
-
     loading.value = true;
-    decimals.value = await token_.decimals();
-    balance.value = await token_.balanceOf(selectedAccount.address);
+    if (token.address.hexEip55 == OHOSettings.nativeTokenAddress) {
+      final web3Client = Web3Client(selectedNetwork.rpcUrl, Client());
+      decimals.value = BigInt.from(OHOSettings.nativeTokenDecimals);
+      balance.value =
+          (await web3Client.getBalance(selectedAccount.address)).getInWei;
+    } else {
+      final token_ = WalletService.getERC20Token(
+        contractAddress: token.address,
+        rpcUrl: selectedNetwork.rpcUrl,
+        chainId: selectedNetwork.chainId.toInt(),
+      );
+      decimals.value = await token_.decimals();
+      balance.value = await token_.balanceOf(selectedAccount.address);
+    }
     loading.value = false;
 
     var decimals_ = decimals.value.toInt();
@@ -95,6 +101,27 @@ class OHOTokenListItem extends BaseWidget<OHOTokenListItemController> {
         ),
       );
 
+  Widget getTokenIcon() {
+    final selectedNetwork = walletService.selectedNetwork.value;
+    // print('assets/icons/network-$selectedNetwork.svg');
+    return token.address.hexEip55 == OHOSettings.nativeTokenAddress
+        ? SvgPicture.asset(
+            'assets/icons/network-$selectedNetwork.svg',
+            width: 120.h,
+            height: 120.h,
+          )
+        : ClipRRect(
+            borderRadius: BorderRadius.circular(9999),
+            child: CachedNetworkImage(
+              width: 150.r,
+              height: 150.r,
+              imageUrl: token.iconUrl!,
+              placeholder: (context, url) => randomIcon,
+              errorWidget: (context, url, error) => randomIcon,
+            ),
+          );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -113,16 +140,7 @@ class OHOTokenListItem extends BaseWidget<OHOTokenListItemController> {
               children: [
                 token.iconUrl == null || token.iconUrl!.isEmpty
                     ? randomIcon
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(9999),
-                        child: CachedNetworkImage(
-                          width: 150.r,
-                          height: 150.r,
-                          imageUrl: token.iconUrl!,
-                          placeholder: (context, url) => randomIcon,
-                          errorWidget: (context, url, error) => randomIcon,
-                        ),
-                      ),
+                    : getTokenIcon(),
                 SizedBox(width: 50.w),
                 SizedBox(
                   height: 150.r,
@@ -152,10 +170,12 @@ class OHOTokenListItem extends BaseWidget<OHOTokenListItemController> {
                   ),
                 ),
                 Expanded(child: Container()),
-                !controller.editable.value
+                !controller.editable.value ||
+                        token.address.hexEip55 == OHOSettings.nativeTokenAddress
                     ? Container()
                     : SizedBox(width: 10.w),
-                !controller.editable.value
+                !controller.editable.value ||
+                        token.address.hexEip55 == OHOSettings.nativeTokenAddress
                     ? Container()
                     : GestureDetector(
                         onTap: () => Get.to(
@@ -181,14 +201,17 @@ class OHOTokenListItem extends BaseWidget<OHOTokenListItemController> {
 }
 
 class OHOTokenListController extends BaseController {
-  Future<void> toggleEditable() async {
+  Future<void> toggleEditable({
+    String? tag,
+  }) async {
     final tokens = walletService.tokens.value.tokens;
     final selectedNetwork = walletService.selectedNetwork.value;
     final networkTokens = tokens[selectedNetwork];
     if (networkTokens == null) return;
+    final prefix = tag == null ? '' : '$tag-';
     for (var tokenKey in networkTokens.keys) {
       var tokenListItemController = Get.find<OHOTokenListItemController>(
-        tag: 'token-$selectedNetwork-$tokenKey',
+        tag: '${prefix}token-$selectedNetwork-$tokenKey',
       );
       tokenListItemController.toggleEditable();
     }
@@ -209,7 +232,7 @@ class OHOTokenList extends BaseWidget<OHOTokenListController> {
     final selectedNetwork = walletService.selectedNetwork.value;
     final networkTokens = tokens[selectedNetwork];
     if (networkTokens == null) return Container();
-    final prefix = tag == null ? '' : '${tag!}-';
+    final prefix = tag == null ? '' : '$tag-';
     return Column(
       children: [
         for (var tokenKey in networkTokens.keys)
@@ -238,7 +261,7 @@ class OHOTokenList extends BaseWidget<OHOTokenListController> {
               Positioned(
                 right: 50.w,
                 child: GestureDetector(
-                  onTap: () => controller.toggleEditable(),
+                  onTap: () => controller.toggleEditable(tag: tag),
                   child: Icon(
                     Icons.edit,
                     size: 60.sp,
