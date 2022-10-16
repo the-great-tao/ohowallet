@@ -1,5 +1,4 @@
 import 'package:ohowallet/core/exports.dart';
-import 'package:ohowallet/screens/token_list_screen.dart';
 
 class WalletMainScreenController extends BaseController {}
 

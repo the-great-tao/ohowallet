@@ -1,35 +1,36 @@
 import 'package:ohowallet/core/exports.dart';
 
 class OHOTokenChipController extends BaseController {
-  final String tokenKey;
-  final Token token;
+  Token? token;
   var loading = false.obs;
   var decimals = BigInt.zero.obs;
   var balance = BigInt.zero.obs;
   var balanceString = '...'.obs;
 
   OHOTokenChipController({
-    required this.tokenKey,
-    required this.token,
+    this.token,
   }) : super();
 
+  void setToken(Token? token) {
+    this.token = token;
+  }
+
   Future<void> refreshToken() async {
-    final network = walletService.getNetworkByKey(token.networkKey);
+    if (token == null) return;
+    final network = walletService.getNetworkByKey(token!.networkKey);
     final selectedAccount = walletService.selectedAccountInstance;
-    if (network == null || selectedAccount == null) {
-      return;
-    }
+    if (network == null || selectedAccount == null) return;
 
     balanceString.value = '...';
     loading.value = true;
-    if (token.address.hexEip55 == OHOSettings.nativeTokenAddress) {
+    if (token!.address.hexEip55 == OHOSettings.nativeTokenAddress) {
       final web3Client = Web3Client(network.rpcUrl, Client());
       decimals.value = BigInt.from(OHOSettings.nativeTokenDecimals);
       balance.value =
           (await web3Client.getBalance(selectedAccount.address)).getInWei;
     } else {
       final token_ = WalletService.getERC20Token(
-        contractAddress: token.address,
+        contractAddress: token!.address,
         rpcUrl: network.rpcUrl,
         chainId: network.chainId.toInt(),
       );
@@ -53,19 +54,14 @@ class OHOTokenChipController extends BaseController {
 
 class OHOTokenChip extends BaseWidget<OHOTokenChipController> {
   final String tokenKey;
-  final Token token;
+  final Token? token;
 
   OHOTokenChip({
     super.key,
     super.tag,
     required this.tokenKey,
-    required this.token,
-  }) : super(
-          controller: OHOTokenChipController(
-            tokenKey: tokenKey,
-            token: token,
-          ),
-        );
+    this.token,
+  }) : super(controller: OHOTokenChipController(token: token));
 
   Widget get randomIcon => ClipRRect(
         borderRadius: BorderRadius.circular(9999),
@@ -82,22 +78,42 @@ class OHOTokenChip extends BaseWidget<OHOTokenChipController> {
       );
 
   Widget getTokenIcon() {
-    return token.address.hexEip55 == OHOSettings.nativeTokenAddress
-        ? SvgPicture.asset(
-            'assets/icons/network-${token.networkKey}.svg',
-            width: 120.r,
-            height: 120.r,
-          )
-        : ClipRRect(
-            borderRadius: BorderRadius.circular(9999),
-            child: CachedNetworkImage(
-              width: 120.r,
-              height: 120.r,
-              imageUrl: token.iconUrl!,
-              placeholder: (context, url) => randomIcon,
-              errorWidget: (context, url, error) => randomIcon,
-            ),
-          );
+    if (token == null) {
+      return Container(
+        width: 120.r,
+        height: 120.r,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            width: 5.r,
+            color: themeService.textFieldBorderColor,
+          ),
+        ),
+      );
+    }
+
+    if (token!.address.hexEip55 == OHOSettings.nativeTokenAddress) {
+      return SvgPicture.asset(
+        'assets/icons/network-${token!.networkKey}.svg',
+        width: 120.r,
+        height: 120.r,
+      );
+    }
+
+    if (token!.iconUrl == null || token!.iconUrl!.isEmpty) {
+      return randomIcon;
+    }
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(9999),
+      child: CachedNetworkImage(
+        width: 120.r,
+        height: 120.r,
+        imageUrl: token!.iconUrl!,
+        placeholder: (context, url) => randomIcon,
+        errorWidget: (context, url, error) => randomIcon,
+      ),
+    );
   }
 
   @override
@@ -120,9 +136,7 @@ class OHOTokenChip extends BaseWidget<OHOTokenChipController> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              token.iconUrl == null || token.iconUrl!.isEmpty
-                  ? randomIcon
-                  : getTokenIcon(),
+              getTokenIcon(),
               SizedBox(width: 20.w),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -130,7 +144,7 @@ class OHOTokenChip extends BaseWidget<OHOTokenChipController> {
                   SizedBox(
                     width: 400.w,
                     child: OHOHeaderText(
-                      token.name,
+                      token == null ? 'Select Token' : token!.name,
                       softWrap: false,
                       fontSize: 40.sp,
                       overflow: TextOverflow.fade,
@@ -147,7 +161,6 @@ class OHOTokenChip extends BaseWidget<OHOTokenChipController> {
                   ),
                 ],
               ),
-              // SizedBox(width: 20.r),
               Icon(
                 Icons.arrow_drop_down,
                 size: 100.sp,
