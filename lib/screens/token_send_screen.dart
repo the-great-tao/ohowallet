@@ -2,6 +2,7 @@ import 'package:ohowallet/core/exports.dart';
 
 class TokenSendScreenController extends BaseController {
   static const receivingAddressTag = 'receiving-address';
+  static const tokenTag = 'token';
   static const tokenAmountTag = 'token-amount';
 
   var accountKey = ''.obs;
@@ -12,7 +13,11 @@ class TokenSendScreenController extends BaseController {
 
   bool tokenRefreshing = false;
 
+  var transactionType = OHOTransactionType.sendToken;
+
   late OHOAccountAddressFieldController receivingAddressController;
+  late OHOTokenChipController tokenController;
+  late OHOTextFieldController tokenAmountController;
 
   final tokenAmountFormatters = [
     TextInputFormatter.withFunction((oldValue, newValue) {
@@ -38,6 +43,9 @@ class TokenSendScreenController extends BaseController {
     super.onReady();
     receivingAddressController =
         Get.find<OHOAccountAddressFieldController>(tag: receivingAddressTag);
+    tokenController = Get.find<OHOTokenChipController>(tag: tokenTag);
+    tokenAmountController =
+        Get.find<OHOTextFieldController>(tag: tokenAmountTag);
   }
 
   void onSelectedToken(String tokenKey, Token token) {
@@ -55,7 +63,92 @@ class TokenSendScreenController extends BaseController {
       );
       return;
     }
-    receivingAddressController.selectFromAccounts(account!.address.hexEip55);
+    receivingAddressController.selectFromAccounts(account.address.hexEip55);
+  }
+
+  Future<void> openTransactionDetailsScreen() async {
+    Get.dialog(
+      Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: EdgeInsets.symmetric(
+          vertical: 250.h,
+          horizontal: 50.w,
+        ),
+        child: TransactionDetailsScreen()..controller.resetData(),
+      ),
+    );
+  }
+
+  bool isValid() {
+    var valid = true;
+    valid &= tokenAmountController.isValid();
+
+    return valid;
+  }
+
+  Future<void> submit() async {
+    if (receivingAddressController.address.value.isEmpty) {
+      showToast(
+        message: 'Please enter Receiving Address.',
+        backgroundColor: OHOColors.statusError,
+      );
+      return;
+    }
+
+    if (receivingAddressController.address.value ==
+        walletService.selectedAccountInstance!.address.hexEip55) {
+      showToast(
+        message: 'You cannot send Token to your current selected Account',
+        backgroundColor: OHOColors.statusError,
+      );
+      return;
+    }
+
+    if (tokenController.token == null) {
+      showToast(
+        message: 'Please select Token.',
+        backgroundColor: OHOColors.statusError,
+      );
+      return;
+    }
+
+    if (!isValid()) {
+      showToast(
+        message: 'Please check your input data.',
+        backgroundColor: OHOColors.statusError,
+      );
+      return;
+    }
+
+    final from = walletService.selectedAccountInstance!.address.hexEip55;
+    final to = receivingAddressController.address.value;
+
+    await tokenController.refreshToken(true);
+    final tokenDecimals = tokenController.decimals.value.toInt();
+    final tokenBalance = tokenController.balance.value.toInt();
+    final tokenMultiplier = BigInt.from(10).pow(tokenDecimals).toInt();
+
+    final tokenAmount_ = tokenAmountController.data.value;
+    var tokenAmount = double.parse(tokenAmount_) * tokenMultiplier ~/ 1;
+    if (tokenAmount > tokenBalance) {
+      showToast(
+        message: 'Token Balance is insufficient.',
+        backgroundColor: OHOColors.statusError,
+      );
+      return;
+    }
+
+    openTransactionDetailsScreen();
+
+    walletService.updateTransaction(
+      status: OHOTransactionStatus.sending,
+      type: transactionType,
+      from: from,
+      to: to,
+      tokenAmount: double.parse(tokenAmount_),
+      tokenDecimals: tokenDecimals > 12 ? 12 : tokenDecimals,
+      tokenName: tokenController.token!.symbol,
+    );
   }
 }
 
@@ -81,6 +174,7 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
     final tokenRefreshing = controller.tokenRefreshing;
     if (tokenRefreshing) controller.tokenRefreshing = !tokenRefreshing;
     return OHOTokenChip(
+      tag: TokenSendScreenController.tokenTag,
       tokenKey: controller.tokenKey.value,
       token: controller.token,
       getBackOnSelected: controller.onSelectedToken,
@@ -195,7 +289,33 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                     width: 700.w,
                     label: 'Token Amount',
                     required: true,
+                    validators: [
+                      OHOTextFieldValidatorRequired(
+                        errorMessage: 'Token Amount is required',
+                      ),
+                    ],
                     inputFormatters: controller.tokenAmountFormatters,
+                  ),
+                  SizedBox(height: 100.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      OHOOutlinedButton(
+                        width: 450.w,
+                        title: 'Cancel',
+                        onTap: () => Get.back(),
+                      ),
+                      OHOSolidButton(
+                        width: 450.w,
+                        title: 'Send',
+                        icon: Icon(
+                          FontAwesomeIcons.solidPaperPlane,
+                          color: themeService.solidButtonTextColor,
+                          size: 60.sp,
+                        ),
+                        onTap: () => controller.submit(),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 1000.h),
                 ],

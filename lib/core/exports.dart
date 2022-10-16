@@ -1,6 +1,7 @@
 export 'dart:io';
 export 'dart:async';
 export 'dart:convert';
+export 'package:intl/intl.dart' show NumberFormat, DateFormat;
 export 'package:flutter/foundation.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter/services.dart';
@@ -83,6 +84,7 @@ export 'package:ohowallet/screens/token_list_screen.dart';
 export 'package:ohowallet/screens/token_send_screen.dart';
 export 'package:ohowallet/screens/token_receive_screen.dart';
 export 'package:ohowallet/screens/mobile_scanner_screen.dart';
+export 'package:ohowallet/screens/transaction_details_screen.dart';
 export 'package:ohowallet/models/account.dart';
 export 'package:ohowallet/models/network.dart';
 export 'package:ohowallet/models/token.dart';

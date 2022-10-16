@@ -315,6 +315,7 @@ class WalletService extends GetxService {
     DateTime? date,
     BigInt? gasUsed,
     double? feeCharged,
+    Network? network,
   }) async {
     if (onUpdateTransaction == null) return;
     onUpdateTransaction!(

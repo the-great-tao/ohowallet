@@ -52,8 +52,11 @@ class WalletUnlockScreen extends BaseWidget<WalletUnlockScreenController> {
         vertical: 850.h,
         horizontal: 50.w,
       ),
-      child: Material(
-        borderRadius: BorderRadius.all(Radius.circular(50.r)),
+      child: Ink(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50.r),
+          gradient: themeService.screenBackgroundGradient,
+        ),
         child: SizedBox(
           width: double.infinity,
           height: double.infinity,
@@ -62,7 +65,7 @@ class WalletUnlockScreen extends BaseWidget<WalletUnlockScreenController> {
             children: [
               OHOText(
                 'Are you sure to erase\nall of your data?',
-                color: OHOColors.blue3,
+                color: themeService.textColor,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
