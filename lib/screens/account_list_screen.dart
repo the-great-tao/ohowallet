@@ -6,7 +6,7 @@ class AccountListItem extends BaseWidget<AccountListItemController> {
   final String accountKey;
   final Account account;
   final bool editable;
-  final bool getBackOnSelected;
+  final Function getBackOnSelected;
 
   AccountListItem({
     super.key,
@@ -14,7 +14,7 @@ class AccountListItem extends BaseWidget<AccountListItemController> {
     required this.accountKey,
     required this.account,
     this.editable = false,
-    this.getBackOnSelected = true,
+    required this.getBackOnSelected,
   }) : super(controller: AccountListItemController());
 
   Widget get randomIcon => ClipRRect(
@@ -39,8 +39,8 @@ class AccountListItem extends BaseWidget<AccountListItemController> {
         highlightColor: themeService.listItemInkwellHighlightColor,
         splashColor: themeService.listItemInkwellSplashColor,
         onTap: () async {
-          await walletService.setSelectedAccount(accountKey);
-          if (getBackOnSelected) Get.back();
+          getBackOnSelected(accountKey, account);
+          Get.back();
         },
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -116,12 +116,12 @@ class AccountListScreenController extends BaseController {
 }
 
 class AccountListScreen extends BaseWidget<AccountListScreenController> {
-  final bool getBackOnSelected;
+  final Function getBackOnSelected;
 
   AccountListScreen({
     super.key,
     super.tag,
-    this.getBackOnSelected = true,
+    required this.getBackOnSelected,
   }) : super(controller: AccountListScreenController());
 
   Widget get accounts => Column(

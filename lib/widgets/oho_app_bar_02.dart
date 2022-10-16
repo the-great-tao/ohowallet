@@ -33,6 +33,8 @@ class OHOAppBar02 extends BaseWidget<OHOAppBar02Controller> {
                     OHOAccountChip(
                       accountKey: walletService.selectedAccount.value,
                       account: walletService.selectedAccountInstance!,
+                      getBackOnSelected: (accountKey, account) =>
+                          walletService.setSelectedAccount(accountKey),
                     ),
                   ],
                 ),

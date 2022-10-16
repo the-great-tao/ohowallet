@@ -73,7 +73,7 @@ class WalletMainScreen extends BaseWidget<WalletMainScreenController> {
                             color: themeService.solidButtonTextColor,
                             size: 50.sp,
                           ),
-                          onTap: () => Get.to(() => TokenListScreen()),
+                          onTap: () => Get.to(() => TokenSendScreen()),
                         ),
                         OHOSolidButton(
                           width: 350.w,
@@ -98,7 +98,8 @@ class WalletMainScreen extends BaseWidget<WalletMainScreenController> {
                     SizedBox(height: 50.h),
                     OHOTokenList(
                       tag: 'token-list-main',
-                      getBackOnSelected: false,
+                      getBackOnSelected: (tokenKey, token) =>
+                          walletService.setSelectedToken(tokenKey),
                     ),
                     SizedBox(height: 1000.h),
                   ],

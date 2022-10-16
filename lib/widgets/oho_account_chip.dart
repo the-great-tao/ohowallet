@@ -5,19 +5,23 @@ class OHOAccountChipController extends BaseController {}
 class OHOAccountChip extends BaseWidget<OHOAccountChipController> {
   final String accountKey;
   final Account account;
+  final Function getBackOnSelected;
 
   OHOAccountChip({
     super.key,
     super.tag,
     required this.accountKey,
     required this.account,
+    required this.getBackOnSelected,
   }) : super(controller: OHOAccountChipController());
 
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => GestureDetector(
-        onTap: () => Get.to(() => AccountListScreen()),
+        onTap: () => Get.to(
+          () => AccountListScreen(getBackOnSelected: getBackOnSelected),
+        ),
         child: Container(
           width: 700.w,
           height: 160.h,

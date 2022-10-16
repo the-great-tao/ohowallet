@@ -11,17 +11,16 @@ class OHOTokenChipController extends BaseController {
     this.token,
   }) : super();
 
-  void setToken(Token? token) {
-    this.token = token;
-  }
+  Future<void> refreshToken(bool tokenRefreshing) async {
+    if (!tokenRefreshing) return;
 
-  Future<void> refreshToken() async {
+    balanceString.value = '...';
+
     if (token == null) return;
     final network = walletService.getNetworkByKey(token!.networkKey);
     final selectedAccount = walletService.selectedAccountInstance;
     if (network == null || selectedAccount == null) return;
 
-    balanceString.value = '...';
     loading.value = true;
     if (token!.address.hexEip55 == OHOSettings.nativeTokenAddress) {
       final web3Client = Web3Client(network.rpcUrl, Client());
@@ -55,12 +54,14 @@ class OHOTokenChipController extends BaseController {
 class OHOTokenChip extends BaseWidget<OHOTokenChipController> {
   final String tokenKey;
   final Token? token;
+  final Function getBackOnSelected;
 
   OHOTokenChip({
     super.key,
     super.tag,
     required this.tokenKey,
     this.token,
+    required this.getBackOnSelected,
   }) : super(controller: OHOTokenChipController(token: token));
 
   Widget get randomIcon => ClipRRect(
@@ -120,7 +121,9 @@ class OHOTokenChip extends BaseWidget<OHOTokenChipController> {
   Widget build(BuildContext context) {
     return Obx(
       () => GestureDetector(
-        onTap: () => Get.to(() => TokenListScreen()),
+        onTap: () => Get.to(
+          () => TokenListScreen(getBackOnSelected: getBackOnSelected),
+        ),
         child: Container(
           width: 700.w,
           height: 160.h,

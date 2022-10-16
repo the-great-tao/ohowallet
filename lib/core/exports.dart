@@ -80,6 +80,7 @@ export 'package:ohowallet/screens/add_token_screen.dart';
 export 'package:ohowallet/screens/account_list_screen.dart';
 export 'package:ohowallet/screens/network_list_screen.dart';
 export 'package:ohowallet/screens/token_list_screen.dart';
+export 'package:ohowallet/screens/token_send_screen.dart';
 export 'package:ohowallet/screens/token_receive_screen.dart';
 export 'package:ohowallet/screens/mobile_scanner_screen.dart';
 export 'package:ohowallet/models/account.dart';

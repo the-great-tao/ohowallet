@@ -3,9 +3,12 @@ import 'package:ohowallet/core/exports.dart';
 class TokenListScreenController extends BaseController {}
 
 class TokenListScreen extends BaseWidget<TokenListScreenController> {
+  final Function getBackOnSelected;
+
   TokenListScreen({
     super.key,
     super.tag,
+    required this.getBackOnSelected,
   }) : super(controller: TokenListScreenController());
 
   @override
@@ -43,7 +46,7 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    OHOTokenList(),
+                    OHOTokenList(getBackOnSelected: getBackOnSelected),
                     SizedBox(height: 1000.h),
                   ],
                 ),

@@ -3,7 +3,7 @@ import 'package:ohowallet/core/exports.dart';
 class OHOTokenListItemController extends BaseController {
   final String tokenKey;
   final Token token;
-  final bool getBackOnSelected;
+  final Function getBackOnSelected;
   var editable = false.obs;
   var loading = false.obs;
   var decimals = BigInt.zero.obs;
@@ -13,7 +13,7 @@ class OHOTokenListItemController extends BaseController {
   OHOTokenListItemController({
     required this.tokenKey,
     required this.token,
-    this.getBackOnSelected = true,
+    required this.getBackOnSelected,
     bool editable = false,
   }) : super() {
     this.editable.value = editable;
@@ -62,22 +62,23 @@ class OHOTokenListItemController extends BaseController {
 
   Future<void> onTap() async {
     refreshToken();
-    await walletService.setSelectedToken(tokenKey);
-    if (getBackOnSelected) Get.back();
+    getBackOnSelected(tokenKey, token);
+    Get.back();
   }
 }
 
 class OHOTokenListItem extends BaseWidget<OHOTokenListItemController> {
   final String tokenKey;
   final Token token;
+  final Function getBackOnSelected;
 
   OHOTokenListItem({
     super.key,
     super.tag,
     required this.tokenKey,
     required this.token,
+    required this.getBackOnSelected,
     bool editable = false,
-    bool getBackOnSelected = true,
   }) : super(
           controller: OHOTokenListItemController(
             tokenKey: tokenKey,
@@ -218,12 +219,12 @@ class OHOTokenListController extends BaseController {
 }
 
 class OHOTokenList extends BaseWidget<OHOTokenListController> {
-  final bool getBackOnSelected;
+  final Function getBackOnSelected;
 
   OHOTokenList({
     super.key,
     super.tag,
-    this.getBackOnSelected = true,
+    required this.getBackOnSelected,
   }) : super(controller: OHOTokenListController());
 
   Widget getTokens() {
