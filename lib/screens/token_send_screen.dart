@@ -14,6 +14,18 @@ class TokenSendScreenController extends BaseController {
 
   late OHOAccountAddressFieldController receivingAddressController;
 
+  final tokenAmountFormatters = [
+    TextInputFormatter.withFunction((oldValue, newValue) {
+      try {
+        final text = newValue.text;
+        if (text.isNotEmpty) double.parse(text);
+        return newValue;
+      } catch (error) {
+        return oldValue;
+      }
+    }),
+  ];
+
   @override
   void onInit() {
     super.onInit();
@@ -79,17 +91,6 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    var numberFormatters = [
-      TextInputFormatter.withFunction((oldValue, newValue) {
-        try {
-          final text = newValue.text;
-          if (text.isNotEmpty) double.parse(text);
-          return newValue;
-        } catch (error) {
-          return oldValue;
-        }
-      }),
-    ];
     return Obx(() {
       return Scaffold(
         extendBodyBehindAppBar: true,
@@ -194,7 +195,7 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                     width: 700.w,
                     label: 'Token Amount',
                     required: true,
-                    inputFormatters: numberFormatters,
+                    inputFormatters: controller.tokenAmountFormatters,
                   ),
                   SizedBox(height: 1000.h),
                 ],
