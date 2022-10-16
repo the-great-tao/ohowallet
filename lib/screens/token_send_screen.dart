@@ -7,9 +7,6 @@ class TokenSendScreenController extends BaseController {
   var accountKey = ''.obs;
   Account? account;
 
-  var receivingAccountKey = ''.obs;
-  Account? receivingAccount;
-
   var tokenKey = ''.obs;
   Token? token;
 
@@ -46,10 +43,7 @@ class TokenSendScreenController extends BaseController {
       );
       return;
     }
-    receivingAccountKey.value = accountKey;
-    receivingAccount = account;
-    receivingAddressController
-        .selectFromAccounts(receivingAccount!.address.hexEip55);
+    receivingAddressController.selectFromAccounts(account!.address.hexEip55);
   }
 }
 
@@ -63,6 +57,7 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
     if (controller.accountKey.value != walletService.selectedAccount.value) {
       controller.accountKey.value = walletService.selectedAccount.value;
       controller.account = walletService.selectedAccountInstance;
+      controller.receivingAddressController.address.value = '';
       controller.tokenRefreshing = true;
     }
     if (controller.token != null &&
