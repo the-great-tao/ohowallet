@@ -44,11 +44,6 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
                 child: Column(
                   children: [
                     SizedBox(height: 50.h),
-                    OHONetworkChip(
-                      networkKey: walletService.selectedNetwork.value,
-                      network: walletService.selectedNetworkInstance!,
-                    ),
-                    SizedBox(height: 100.h),
                     OHOTokenList(),
                     SizedBox(height: 1000.h),
                   ],
