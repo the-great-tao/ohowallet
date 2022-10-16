@@ -86,7 +86,7 @@ class WalletMainScreen extends BaseWidget<WalletMainScreenController> {
                             size: 50.sp,
                           ),
                           onTap: () => Get.to(
-                            () => AccountReceiveScreen(
+                            () => TokenReceiveScreen(
                               account: walletService.selectedAccountInstance!,
                             ),
                           ),

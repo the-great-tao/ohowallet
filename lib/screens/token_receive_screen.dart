@@ -1,15 +1,15 @@
 import 'package:ohowallet/core/exports.dart';
 
-class AccountReceiveScreenController extends BaseController {}
+class TokenReceiveScreenController extends BaseController {}
 
-class AccountReceiveScreen extends BaseWidget<AccountReceiveScreenController> {
+class TokenReceiveScreen extends BaseWidget<TokenReceiveScreenController> {
   final Account account;
 
-  AccountReceiveScreen({
+  TokenReceiveScreen({
     super.key,
     super.tag,
     required this.account,
-  }) : super(controller: AccountReceiveScreenController());
+  }) : super(controller: TokenReceiveScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class AccountReceiveScreen extends BaseWidget<AccountReceiveScreenController> {
           child: SafeArea(
             child: Column(
               children: [
-                OHOHeaderText('Receive'),
+                OHOHeaderText('Token Receive'),
                 SizedBox(height: 200.h),
                 OHOText(
                   'Scan or copy account address\nto receive coin or token.',
