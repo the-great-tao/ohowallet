@@ -4,12 +4,23 @@ class TokenSendScreenController extends BaseController {
   static const receivingAddressTag = 'receiving-address';
   static const tokenAmountTag = 'token-amount';
 
+  var accountKey = ''.obs;
+  Account? account;
+
   var receivingAccountKey = ''.obs;
   Account? receivingAccount;
 
   var tokenKey = ''.obs;
   Token? token;
+
   bool tokenRefreshing = false;
+
+  @override
+  void onInit() {
+    super.onInit();
+    accountKey.value = walletService.selectedAccount.value;
+    account = walletService.selectedAccountInstance;
+  }
 
   void onSelectedToken(String tokenKey, Token token) {
     this.tokenKey.value = tokenKey;
@@ -25,6 +36,11 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
   }) : super(controller: TokenSendScreenController());
 
   Widget getTokenChip() {
+    if (controller.accountKey.value != walletService.selectedAccount.value) {
+      controller.accountKey.value = walletService.selectedAccount.value;
+      controller.account = walletService.selectedAccountInstance;
+      controller.tokenRefreshing = true;
+    }
     if (controller.token != null &&
         controller.token!.networkKey != walletService.selectedNetwork.value) {
       controller.tokenKey.value = '';
