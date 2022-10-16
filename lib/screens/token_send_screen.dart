@@ -15,6 +15,8 @@ class TokenSendScreenController extends BaseController {
 
   bool tokenRefreshing = false;
 
+  late OHOAccountAddressFieldController receivingAddressController;
+
   @override
   void onInit() {
     super.onInit();
@@ -22,10 +24,32 @@ class TokenSendScreenController extends BaseController {
     account = walletService.selectedAccountInstance;
   }
 
+  @override
+  void onReady() {
+    super.onReady();
+    receivingAddressController =
+        Get.find<OHOAccountAddressFieldController>(tag: receivingAddressTag);
+  }
+
   void onSelectedToken(String tokenKey, Token token) {
     this.tokenKey.value = tokenKey;
     this.token = token;
     tokenRefreshing = true;
+  }
+
+  void onSelectedReceivingAccount(String accountKey, Account account) {
+    if (account.address.hexEip55 ==
+        walletService.selectedAccountInstance!.address.hexEip55) {
+      showToast(
+        message: 'You cannot send Token to your current selected Account',
+        backgroundColor: OHOColors.statusError,
+      );
+      return;
+    }
+    receivingAccountKey.value = accountKey;
+    receivingAccount = account;
+    receivingAddressController
+        .selectFromAccounts(receivingAccount!.address.hexEip55);
   }
 }
 
@@ -136,6 +160,12 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                     height: 120.h,
                     title: 'Select from my Accounts',
                     fontSize: 50.sp,
+                    onTap: () => Get.to(
+                      () => AccountListScreen(
+                        getBackOnSelected:
+                            controller.onSelectedReceivingAccount,
+                      ),
+                    ),
                   ),
                   SizedBox(height: 20.h),
                   OHOSolidButton(
@@ -169,7 +199,7 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                     width: 700.w,
                     label: 'Token Amount',
                     required: true,
-                    // inputFormatters: numberFormatters,
+                    inputFormatters: numberFormatters,
                   ),
                   SizedBox(height: 1000.h),
                 ],

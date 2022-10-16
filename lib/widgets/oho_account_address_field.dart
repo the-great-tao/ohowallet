@@ -4,6 +4,8 @@ enum OHOAccountAddressFieldAction {
   none,
   scan,
   paste,
+  selectFromAccounts,
+  selectFromContacts
 }
 
 class OHOAccountAddressFieldController extends BaseController {
@@ -30,17 +32,29 @@ class OHOAccountAddressFieldController extends BaseController {
       return;
     }
 
-    if (action.value == OHOAccountAddressFieldAction.scan) {
-      showToast(
-        message: 'Account address was scanned from QR code.',
-        backgroundColor: OHOColors.statusSuccess,
-      );
-    } else if (action.value == OHOAccountAddressFieldAction.paste) {
-      showToast(
-        message: 'Account address was pasted from clipboard.',
-        backgroundColor: OHOColors.statusSuccess,
-      );
+    var message = '';
+    switch (action.value) {
+      case OHOAccountAddressFieldAction.none:
+        // TODO: Handle this case.
+        break;
+      case OHOAccountAddressFieldAction.scan:
+        message = 'Account Address was scanned from QR code.';
+        break;
+      case OHOAccountAddressFieldAction.paste:
+        message = 'Account Address was pasted from clipboard.';
+        break;
+      case OHOAccountAddressFieldAction.selectFromAccounts:
+        message = 'Account Address was selected from your Accounts.';
+        break;
+      case OHOAccountAddressFieldAction.selectFromContacts:
+        message = 'Account Address was selected from your Contacts.';
+        break;
     }
+
+    showToast(
+      message: message,
+      backgroundColor: OHOColors.statusSuccess,
+    );
   }
 
   Future<void> scanAddress() async {
@@ -51,6 +65,16 @@ class OHOAccountAddressFieldController extends BaseController {
   Future<void> pasteAddress() async {
     action.value = OHOAccountAddressFieldAction.paste;
     address.value = await FlutterClipboard.paste();
+  }
+
+  Future<void> selectFromAccounts(String address) async {
+    action.value = OHOAccountAddressFieldAction.selectFromAccounts;
+    this.address.value = address;
+  }
+
+  Future<void> selectFromContacts(String address) async {
+    action.value = OHOAccountAddressFieldAction.selectFromContacts;
+    this.address.value = address;
   }
 }
 
