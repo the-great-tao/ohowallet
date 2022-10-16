@@ -121,7 +121,10 @@ class AddTokenScreenController extends BaseController {
       token?.decimals = tokenDecimals;
       token?.iconUrl = tokenIconUrl;
     } else {
+      final networkKey = walletService.selectedNetwork.value;
+      final tokenKey = '$networkKey-${tokenAddress.hexEip55}';
       final token = Token(
+        networkKey: networkKey,
         address: tokenAddress,
         name: tokenName,
         symbol: tokenSymbol,
@@ -129,13 +132,9 @@ class AddTokenScreenController extends BaseController {
         iconUrl: tokenIconUrl,
       );
       final tokens = walletService.tokens.value.tokens;
-      if (tokens[walletService.selectedNetwork.value] == null) {
-        tokens[walletService.selectedNetwork.value] = {};
-      }
-      final networkTokens = tokens[walletService.selectedNetwork.value];
-      if (networkTokens != null) {
-        networkTokens[tokenAddress.hexEip55] = token;
-      }
+      if (tokens[networkKey] == null) tokens[networkKey] = {};
+      final networkTokens = tokens[networkKey];
+      networkTokens![tokenKey] = token;
     }
 
     walletService.tokens.refresh();

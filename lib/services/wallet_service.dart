@@ -145,7 +145,7 @@ class WalletService extends GetxService {
     selectedNetworkInstance =
         defaultNetworks.value.networks[selectedNetwork.value] ??
             customNetworks.value.networks[selectedNetwork.value];
-    print('selectedNetwork: ${selectedNetworkInstance?.toJson()}');
+    print('selectedNetworkInstance: ${selectedNetworkInstance?.toJson()}');
     return selectedNetworkInstance;
   }
 
@@ -157,10 +157,10 @@ class WalletService extends GetxService {
     return selectedTokenInstance;
   }
 
-  Token? getTokenByAddress(String address) {
-    final networkTokens = tokens.value.tokens[selectedNetwork.value];
-    if (networkTokens == null) return null;
-    return networkTokens[address];
+  Network? getNetworkByKey(String networkKey) {
+    final network = defaultNetworks.value.networks[networkKey] ??
+        customNetworks.value.networks[networkKey];
+    return network;
   }
 
   Future<void> setSelectedAccount(String account) async {
@@ -245,9 +245,12 @@ class WalletService extends GetxService {
     final defaultNetworks_ = defaultNetworks.value.networks;
     for (var networkKey in defaultNetworks_.keys) {
       final network = defaultNetworks_[networkKey]!;
+      const tokenAddress = OHOSettings.nativeTokenAddress;
+      final tokenKey = '$networkKey-$tokenAddress';
       final tokens = {
-        OHOSettings.nativeTokenAddress: Token(
-          address: EthereumAddress.fromHex(OHOSettings.nativeTokenAddress),
+        tokenKey: Token(
+          networkKey: networkKey,
+          address: EthereumAddress.fromHex(tokenAddress),
           name: '${network.currencySymbol} Native Token',
           symbol: network.currencySymbol,
           decimals: OHOSettings.nativeTokenDecimals,

@@ -4,6 +4,7 @@ part 'token.g.dart';
 
 @JsonSerializable()
 class Token {
+  String networkKey;
   @JsonKey(fromJson: _ethereumAddressFromJson, toJson: _ethereumAddressToJson)
   EthereumAddress address;
   String name;
@@ -12,6 +13,7 @@ class Token {
   String? iconUrl;
 
   Token({
+    required this.networkKey,
     required this.address,
     required this.name,
     required this.symbol,

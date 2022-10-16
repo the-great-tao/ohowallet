@@ -7,6 +7,7 @@ part of 'token.dart';
 // **************************************************************************
 
 Token _$TokenFromJson(Map<String, dynamic> json) => Token(
+      networkKey: json['networkKey'] as String,
       address: Token._ethereumAddressFromJson(json['address'] as String),
       name: json['name'] as String,
       symbol: json['symbol'] as String,
@@ -15,6 +16,7 @@ Token _$TokenFromJson(Map<String, dynamic> json) => Token(
     );
 
 Map<String, dynamic> _$TokenToJson(Token instance) => <String, dynamic>{
+      'networkKey': instance.networkKey,
       'address': Token._ethereumAddressToJson(instance.address),
       'name': instance.name,
       'symbol': instance.symbol,

@@ -103,7 +103,6 @@ class OHOTokenListItem extends BaseWidget<OHOTokenListItemController> {
 
   Widget getTokenIcon() {
     final selectedNetwork = walletService.selectedNetwork.value;
-    // print('assets/icons/network-$selectedNetwork.svg');
     return token.address.hexEip55 == OHOSettings.nativeTokenAddress
         ? SvgPicture.asset(
             'assets/icons/network-$selectedNetwork.svg',
