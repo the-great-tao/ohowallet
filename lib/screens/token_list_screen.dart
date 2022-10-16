@@ -43,7 +43,6 @@ class TokenListScreen extends BaseWidget<TokenListScreenController> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    SizedBox(height: 50.h),
                     OHOTokenList(),
                     SizedBox(height: 1000.h),
                   ],
