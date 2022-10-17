@@ -10,10 +10,15 @@ class TokenSendScreenController extends BaseController {
 
   var tokenKey = ''.obs;
   Token? token;
-
   bool tokenRefreshing = false;
 
-  var transactionType = OHOTransactionType.sendToken;
+  var estimated = false.obs;
+  var estimating = false.obs;
+  var canSend = true.obs;
+  EtherAmount gasPrice = EtherAmount.zero();
+  BigInt estimatedGas = BigInt.zero;
+  double estimatedFee = 0.0;
+  String errorMessage = '';
 
   late OHOAccountAddressFieldController receivingAddressController;
   late OHOTokenChipController tokenController;
@@ -86,6 +91,8 @@ class TokenSendScreenController extends BaseController {
     return valid;
   }
 
+  Future<void> estimate() async {}
+
   Future<void> submit() async {
     if (receivingAddressController.address.value.isEmpty) {
       showToast(
@@ -120,34 +127,116 @@ class TokenSendScreenController extends BaseController {
       return;
     }
 
+    final networkKey = walletService.selectedNetwork.value;
+    final network = walletService.selectedNetworkInstance!;
+    final chainId = network.chainId.toInt();
+    final token = tokenController.token!;
+    final tokenName = token.symbol;
+
     final from = walletService.selectedAccountInstance!.address.hexEip55;
     final to = receivingAddressController.address.value;
+    final fromAddress = EthereumAddress.fromHex(from);
+    final toAddress = EthereumAddress.fromHex(to);
 
     await tokenController.refreshToken(true);
     final tokenDecimals = tokenController.decimals.value.toInt();
-    final tokenBalance = tokenController.balance.value.toInt();
-    final tokenMultiplier = BigInt.from(10).pow(tokenDecimals).toInt();
+    final tokenBalance = tokenController.balance.value;
+    final tokenMultiplier = BigInt.from(10).pow(tokenDecimals);
 
     final tokenAmount_ = tokenAmountController.data.value;
-    var tokenAmount = double.parse(tokenAmount_) * tokenMultiplier ~/ 1;
-    if (tokenAmount > tokenBalance) {
-      showToast(
-        message: 'Token Balance is insufficient.',
-        backgroundColor: OHOColors.statusError,
-      );
+    final tokenAmountParts = tokenAmountController.data.value.split('.');
+    BigInt tokenAmountPartA = BigInt.zero;
+    BigInt tokenAmountPartB = BigInt.zero;
+    tokenAmountPartA = BigInt.parse(tokenAmountParts[0]) * tokenMultiplier;
+    if (tokenAmountParts.length > 1) {
+      final tokenAmountPartBLength = tokenAmountParts[1].length;
+      if (tokenDecimals <= tokenAmountPartBLength) {
+        tokenAmountPartB =
+            BigInt.parse(tokenAmountParts[1].substring(0, tokenDecimals));
+      } else {
+        tokenAmountPartB = BigInt.parse(tokenAmountParts[1]) *
+            BigInt.from(10).pow(tokenDecimals - tokenAmountPartBLength);
+      }
+    }
+
+    final tokenAmount = tokenAmountPartA + tokenAmountPartB;
+    final sendAmount = EtherAmount.fromUnitAndValue(EtherUnit.wei, tokenAmount);
+    final privateKey = EthPrivateKey.fromHex(account!.privateKey);
+    final web3Client = Web3Client(network.rpcUrl, Client());
+    final erc20 = WalletService.getERC20Token(
+      contractAddress: token.address,
+      rpcUrl: network.rpcUrl,
+      chainId: chainId,
+    );
+
+    gasPrice = await web3Client.getGasPrice();
+
+    if (!canSend.value) estimated.value = false;
+    if (!estimated.value) {
+      estimating.value = true;
+      canSend.value = true;
+      try {
+        if (token.address.hexEip55 == OHOSettings.nativeTokenAddress) {
+          estimatedGas = await web3Client.estimateGas(
+            sender: fromAddress,
+            to: toAddress,
+            value: sendAmount,
+          );
+        } else {
+          final transferData = erc20.self.function('transfer').encodeCall([
+            toAddress,
+            sendAmount.getInWei,
+          ]);
+          estimatedGas = await web3Client.estimateGas(
+            sender: fromAddress,
+            to: toAddress,
+            data: transferData,
+          );
+        }
+      } catch (error) {
+        canSend.value = false;
+        errorMessage = 'Token Balance is insufficient';
+      }
+
+      final estimatedFee_ = gasPrice.getInWei * estimatedGas;
+      estimatedFee = estimatedFee_ / BigInt.from(10).pow(18);
+
+      estimating.value = false;
+      estimated.value = true;
       return;
     }
+
+    // final hash = await web3Client.sendTransaction(
+    //   privateKey,
+    //   Transaction(
+    //     from: fromAddress,
+    //     to: toAddress,
+    //     value: sendAmount,
+    //     gasPrice: gasPrice,
+    //   ),
+    //   chainId: chainId,
+    // );
+
+    // final hash = await erc20.transfer(
+    //   toAddress,
+    //   sendAmount.getInWei,
+    //   credentials: privateKey,
+    //   transaction: Transaction(gasPrice: gasPrice),
+    // );
+
+    // print(hash);
 
     openTransactionDetailsScreen();
 
     walletService.updateTransaction(
       status: OHOTransactionStatus.sending,
-      type: transactionType,
+      type: OHOTransactionType.sendToken,
       from: from,
       to: to,
       tokenAmount: double.parse(tokenAmount_),
       tokenDecimals: tokenDecimals > 12 ? 12 : tokenDecimals,
-      tokenName: tokenController.token!.symbol,
+      tokenName: tokenName,
+      network: network,
     );
   }
 }
@@ -181,6 +270,13 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
     )
       ..controller.token = controller.token
       ..controller.refreshToken(tokenRefreshing);
+  }
+
+  Widget get spinKitFadingCircle {
+    return SpinKitFadingCircle(
+      size: 100.sp,
+      color: themeService.textColor,
+    );
   }
 
   @override
@@ -295,7 +391,71 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                       ),
                     ],
                     inputFormatters: controller.tokenAmountFormatters,
+                    onChanged: (data) {
+                      if (!controller.estimated.value) return;
+                      controller.estimated.value = false;
+                    },
                   ),
+                  !controller.estimating.value
+                      ? Container()
+                      : SizedBox(height: 100.h),
+                  !controller.estimating.value
+                      ? Container()
+                      : spinKitFadingCircle,
+                  !controller.estimated.value || !controller.canSend.value
+                      ? Container()
+                      : SizedBox(height: 100.h),
+                  !controller.estimated.value || !controller.canSend.value
+                      ? Container()
+                      : Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 0.w),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  OHOText('Gas Price:'),
+                                  OHOText(
+                                    '${controller.gasPrice.getValueInUnit(EtherUnit.gwei).toStringAsFixed(6)} Gwei',
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 20.h),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  OHOText('Estimated Gas:'),
+                                  OHOText(controller.estimatedGas.toString()),
+                                ],
+                              ),
+                              SizedBox(height: 20.h),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  OHOText('Estimated Fee:'),
+                                  OHOText(
+                                    '${controller.estimatedFee.toStringAsFixed(6)} ${walletService.selectedNetworkInstance!.currencySymbol}',
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                  controller.canSend.value
+                      ? Container()
+                      : SizedBox(height: 50.h),
+                  controller.canSend.value
+                      ? Container()
+                      : SizedBox(
+                    width: 700.w,
+                        child: OHOMessage(
+                            type: OHOMessageType.error,
+                            message: controller.errorMessage,
+                          )..controller.message.value = controller.errorMessage,
+                      ),
                   SizedBox(height: 100.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -307,7 +467,10 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                       ),
                       OHOSolidButton(
                         width: 450.w,
-                        title: 'Send',
+                        title: !controller.estimated.value ||
+                                !controller.canSend.value
+                            ? 'Send'
+                            : 'Confirm',
                         icon: Icon(
                           FontAwesomeIcons.solidPaperPlane,
                           color: themeService.solidButtonTextColor,
