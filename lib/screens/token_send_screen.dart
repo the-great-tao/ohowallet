@@ -606,7 +606,7 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                     children: [
                       OHOOutlinedButton(
                         width: 500.w,
-                        title: 'Cancel',
+                        title: 'Back',
                         onTap: () => Get.back(),
                       ),
                       OHOSolidButton(
