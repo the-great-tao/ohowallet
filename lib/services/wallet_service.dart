@@ -4,6 +4,7 @@ enum OHOTransactionStatus {
   none,
   sending,
   pending,
+  pendingHistory,
   successful,
   failed,
 }
@@ -121,8 +122,8 @@ class WalletService extends GetxService {
     );
     tokens.value = TokenList.fromJson(jsonDecode(tokensJson));
 
-    contacts.value = ContactList(contacts: {});
-    storeContacts();
+    // contacts.value = ContactList(contacts: {});
+    // storeContacts();
 
     final contactsJson = await appDataBox?.get(
       contactsKey,

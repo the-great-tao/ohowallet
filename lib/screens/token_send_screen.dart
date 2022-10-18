@@ -102,7 +102,7 @@ class TokenSendScreenController extends BaseController {
       Dialog(
         backgroundColor: Colors.transparent,
         insetPadding: EdgeInsets.symmetric(
-          vertical: 350.h,
+          vertical: 300.h,
           horizontal: 50.w,
         ),
         child: TransactionDetailsScreen()..controller.resetData(),
@@ -309,13 +309,22 @@ class TokenSendScreenController extends BaseController {
     try {
       TransactionReceipt? txReceipt;
 
+      var count = 0;
       while (true) {
+        count++;
+        if (count > 12) {
+          walletService.updateTransaction(
+            status: OHOTransactionStatus.pendingHistory,
+          );
+          return;
+        }
+
         print("[ $hash ] Getting transaction receipt...");
 
         txReceipt = await web3Client.getTransactionReceipt(hash);
         if (txReceipt != null) break;
 
-        await Future.delayed(const Duration(seconds: 10));
+        await Future.delayed(const Duration(seconds: 5));
       }
 
       print('[ $hash ] Transaction status: ${txReceipt.status}');

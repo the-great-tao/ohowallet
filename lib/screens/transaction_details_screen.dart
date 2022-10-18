@@ -54,6 +54,7 @@ class TransactionDetailsScreenController extends BaseController {
         statusSpinKit.value = true;
         break;
       case OHOTransactionStatus.pending:
+      case OHOTransactionStatus.pendingHistory:
         statusText.value = 'Pending';
         statusColor = themeService.textColor;
         statusSpinKit.value = true;
@@ -228,7 +229,6 @@ class TransactionDetailsScreen
           OHOHeaderText('Transaction Details'),
           Column(
             children: [
-              SizedBox(height: 20.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -457,8 +457,16 @@ class TransactionDetailsScreen
                   ),
                 ],
               ),
-              SizedBox(height: 20.h),
             ],
+          ),
+          Obx(
+            () =>
+                controller.status_.value != OHOTransactionStatus.pendingHistory
+                    ? Container()
+                    : OHOMessage(
+                        type: OHOMessageType.warning,
+                        message: 'Please check Transaction History later.',
+                      ),
           ),
           OHOSolidButton(
             title: 'OK',
