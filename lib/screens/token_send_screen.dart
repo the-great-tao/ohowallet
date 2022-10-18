@@ -301,17 +301,18 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
       controller.account = walletService.selectedAccountInstance;
       controller.receivingAddressController.address.value = '';
       controller.tokenRefreshing = true;
-      controller.clearEstimation();
     }
     if (controller.token != null &&
         controller.token!.networkKey != walletService.selectedNetwork.value) {
       controller.tokenKey.value = '';
       controller.token = null;
       controller.tokenRefreshing = true;
-      controller.clearEstimation();
     }
     final tokenRefreshing = controller.tokenRefreshing;
-    if (tokenRefreshing) controller.tokenRefreshing = !tokenRefreshing;
+    if (tokenRefreshing) {
+      controller.tokenRefreshing = false;
+      controller.clearEstimation();
+    }
     return OHOTokenChip(
       tag: TokenSendScreenController.tokenTag,
       tokenKey: controller.tokenKey.value,
