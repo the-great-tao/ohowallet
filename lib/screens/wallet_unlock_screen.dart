@@ -156,10 +156,12 @@ class WalletUnlockScreen extends BaseWidget<WalletUnlockScreenController> {
                         title: 'Unlock',
                         onTap: () => controller.submit(),
                       ),
-                      !biometricService.hasBiometrics
+                      !biometricService.hasBiometrics ||
+                              !biometricService.useBiometrics.value
                           ? Container()
                           : SizedBox(height: 20.r),
-                      !biometricService.hasBiometrics
+                      !biometricService.hasBiometrics ||
+                              !biometricService.useBiometrics.value
                           ? Container()
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.center,

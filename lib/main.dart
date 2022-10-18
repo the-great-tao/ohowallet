@@ -10,10 +10,10 @@ Future<void> setupMyApp() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  await Get.putAsync(() => BiometricService().init());
   await Get.putAsync(() => AppDataService().init());
   await Get.putAsync(() => WalletService().init());
   await Get.putAsync(() => ThemeService().init());
+  await Get.putAsync(() => BiometricService().init());
 }
 
 void runMyApp() {

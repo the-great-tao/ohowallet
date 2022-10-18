@@ -35,6 +35,8 @@ class CreateWallet03ScreenController extends BaseController {
     await walletService.init();
     await walletService.setup();
 
+    await biometricService.storeUseBiometrics();
+
     Get.to(() => CreateWallet04Screen());
   }
 }

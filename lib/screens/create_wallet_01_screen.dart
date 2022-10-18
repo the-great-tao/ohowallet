@@ -4,7 +4,7 @@ class CreateWallet01ScreenController extends BaseController {
   static const passwordTag = 'new-password';
   static const passwordConfirmationTag = 'confirm-new-password';
 
-  var biometrics = true.obs;
+  var useBiometrics = true.obs;
   var understood = false.obs;
 
   late OHOTextFieldController passwordController;
@@ -41,6 +41,7 @@ class CreateWallet01ScreenController extends BaseController {
 
     appDataService.setupPassword = passwordController.data.value;
     walletService.setupSeedPhrase = generateMnemonic().split(' ');
+    biometricService.useBiometrics.value = useBiometrics.value;
 
     Get.to(() => CreateWallet02Screen());
   }
@@ -125,9 +126,9 @@ class CreateWallet01Screen extends BaseWidget<CreateWallet01ScreenController> {
                             FlutterSwitch(
                               activeColor:
                                   themeService.solidButtonBackgroundColor,
-                              value: controller.biometrics.value,
+                              value: controller.useBiometrics.value,
                               onToggle: (value) =>
-                                  controller.biometrics.value = value,
+                                  controller.useBiometrics.value = value,
                             ),
                           ],
                         ),

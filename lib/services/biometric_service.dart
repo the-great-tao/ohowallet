@@ -1,9 +1,14 @@
 import 'package:ohowallet/core/exports.dart';
 
 class BiometricService extends GetxService {
+  static const useBiometricsKey = 'appSettings-useBiometrics';
+
   late LocalAuthentication localAuthentication;
-  bool hasBiometrics = false;
   List<BiometricType> availableBiometrics = [];
+  bool hasBiometrics = false;
+
+  Box? appDataBox;
+  var useBiometrics = false.obs;
 
   bool get hasFaceId => availableBiometrics.contains(BiometricType.face);
 
@@ -27,6 +32,21 @@ class BiometricService extends GetxService {
       print(exception);
     }
 
+    final appDataService = Get.find<AppDataService>();
+    appDataBox = appDataService.appDataBox;
+    if (appDataBox == null) return this;
+
+    final useBiometrics_ = await appDataBox?.get(useBiometricsKey);
+    if (useBiometrics_ != null) {
+      useBiometrics.value = useBiometrics_;
+    } else {
+      await storeUseBiometrics();
+    }
+
     return this;
+  }
+
+  Future<void> storeUseBiometrics() async {
+    await appDataBox?.put(useBiometricsKey, useBiometrics.value);
   }
 }
