@@ -88,4 +88,5 @@ export 'package:ohowallet/screens/transaction_details_screen.dart';
 export 'package:ohowallet/models/account.dart';
 export 'package:ohowallet/models/network.dart';
 export 'package:ohowallet/models/token.dart';
+export 'package:ohowallet/models/contact.dart';
 export 'package:ohowallet/ERC20.g.dart';

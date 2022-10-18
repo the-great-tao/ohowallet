@@ -160,9 +160,6 @@ class AddTokenScreenController extends BaseController {
       networkTokens.remove(tokenKey);
       walletService.tokens.refresh();
       await walletService.storeTokens();
-      if (walletService.selectedToken.value == tokenKey) {
-        await walletService.setSelectedToken('');
-      }
     }
 
     Get.back();

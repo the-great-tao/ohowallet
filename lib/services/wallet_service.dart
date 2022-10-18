@@ -46,8 +46,8 @@ class WalletService extends GetxService {
   static const selectedNetworkKey = 'appSettings-selectedNetwork';
   static const customNetworksKey = 'appSettings-customNetworks';
 
-  static const selectedTokenKey = 'appSettings-selectedToken';
   static const tokensKey = 'appSettings-tokens';
+  static const contactsKey = 'appSettings-contacts';
 
   late List<String> setupSeedPhrase;
 
@@ -63,8 +63,7 @@ class WalletService extends GetxService {
   Network? selectedNetworkInstance;
 
   var tokens = TokenList(tokens: {}).obs;
-  var selectedToken = ''.obs;
-  Token? selectedTokenInstance;
+  var contacts = ContactList(contacts: {}).obs;
 
   OnUpdateTransaction? onUpdateTransaction;
 
@@ -121,13 +120,14 @@ class WalletService extends GetxService {
     );
     tokens.value = TokenList.fromJson(jsonDecode(tokensJson));
 
-    final selectedToken_ = await appDataBox?.get(selectedTokenKey);
-    if (selectedToken_ != null) {
-      selectedToken.value = selectedToken_;
-      await getSelectedToken();
-    } else {
-      await storeSelectedToken();
-    }
+    contacts.value = ContactList(contacts: {});
+    storeContacts();
+
+    final contactsJson = await appDataBox?.get(
+      contactsKey,
+      defaultValue: '{"contacts":{}}',
+    );
+    contacts.value = ContactList.fromJson(jsonDecode(contactsJson));
 
     return this;
   }
@@ -149,14 +149,6 @@ class WalletService extends GetxService {
     return selectedNetworkInstance;
   }
 
-  Future<Token?> getSelectedToken() async {
-    final networkTokens = tokens.value.tokens[selectedNetwork.value];
-    if (networkTokens == null) return null;
-    selectedTokenInstance = networkTokens[selectedToken.value];
-    print('selectedTokenInstance: ${selectedTokenInstance?.toJson()}');
-    return selectedTokenInstance;
-  }
-
   Network? getNetworkByKey(String networkKey) {
     final network = defaultNetworks.value.networks[networkKey] ??
         customNetworks.value.networks[networkKey];
@@ -175,22 +167,12 @@ class WalletService extends GetxService {
     await storeSelectedNetwork();
   }
 
-  Future<void> setSelectedToken(String token) async {
-    selectedToken.value = token;
-    await getSelectedToken();
-    await storeSelectedToken();
-  }
-
   Future<void> storeSelectedAccount() async {
     await appDataBox?.put(selectedAccountKey, selectedAccount.value);
   }
 
   Future<void> storeSelectedNetwork() async {
     await appDataBox?.put(selectedNetworkKey, selectedNetwork.value);
-  }
-
-  Future<void> storeSelectedToken() async {
-    await appDataBox?.put(selectedTokenKey, selectedToken.value);
   }
 
   Future<void> storeAccounts() async {
@@ -211,6 +193,13 @@ class WalletService extends GetxService {
     await appDataBox?.put(
       tokensKey,
       jsonEncode(tokens.value.toJson()),
+    );
+  }
+
+  Future<void> storeContacts() async {
+    await appDataBox?.put(
+      contactsKey,
+      jsonEncode(contacts.value.toJson()),
     );
   }
 

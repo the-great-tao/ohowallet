@@ -98,8 +98,7 @@ class WalletMainScreen extends BaseWidget<WalletMainScreenController> {
                     SizedBox(height: 50.h),
                     OHOTokenList(
                       tag: 'token-list-main',
-                      getBackOnSelected: (tokenKey, token) =>
-                          walletService.setSelectedToken(tokenKey),
+                      getBackOnSelected: (tokenKey, token) {},
                     ),
                     SizedBox(height: 1000.h),
                   ],
