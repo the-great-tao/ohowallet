@@ -98,7 +98,7 @@ class TokenSendScreenController extends BaseController {
       Dialog(
         backgroundColor: Colors.transparent,
         insetPadding: EdgeInsets.symmetric(
-          vertical: 250.h,
+          vertical: 350.h,
           horizontal: 50.w,
         ),
         child: TransactionDetailsScreen()..controller.resetData(),
@@ -217,6 +217,7 @@ class TokenSendScreenController extends BaseController {
           );
         }
       } catch (error) {
+        print(error);
         canSend.value = false;
       }
 
@@ -285,7 +286,7 @@ class TokenSendScreenController extends BaseController {
       from: from,
       to: to,
       tokenAmount: double.parse(tokenAmount_),
-      tokenDecimals: tokenDecimals > 12 ? 12 : tokenDecimals,
+      tokenDecimals: tokenDecimals > 6 ? 6 : tokenDecimals,
       tokenName: tokenName,
       network: network,
     );

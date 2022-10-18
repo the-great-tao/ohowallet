@@ -212,7 +212,7 @@ class TransactionDetailsScreen
           OHOHeaderText('Transaction Details'),
           Column(
             children: [
-              SizedBox(height: 50.h),
+              SizedBox(height: 20.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -252,7 +252,7 @@ class TransactionDetailsScreen
                   ),
                 ],
               ),
-              SizedBox(height: 50.h),
+              SizedBox(height: 20.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -289,7 +289,7 @@ class TransactionDetailsScreen
                   }),
                 ],
               ),
-              SizedBox(height: 50.h),
+              SizedBox(height: 20.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -323,7 +323,7 @@ class TransactionDetailsScreen
                   ),
                 ],
               ),
-              SizedBox(height: 50.h),
+              SizedBox(height: 20.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -393,7 +393,7 @@ class TransactionDetailsScreen
                   ),
                 ],
               ),
-              SizedBox(height: 50.h),
+              SizedBox(height: 20.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -409,7 +409,7 @@ class TransactionDetailsScreen
                   ),
                 ],
               ),
-              SizedBox(height: 50.h),
+              SizedBox(height: 20.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -425,7 +425,7 @@ class TransactionDetailsScreen
                   ),
                 ],
               ),
-              SizedBox(height: 50.h),
+              SizedBox(height: 20.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -441,7 +441,7 @@ class TransactionDetailsScreen
                   ),
                 ],
               ),
-              SizedBox(height: 50.h),
+              SizedBox(height: 20.h),
             ],
           ),
           OHOSolidButton(
