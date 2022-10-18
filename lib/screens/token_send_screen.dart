@@ -474,6 +474,7 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                                   OHOText('Gas Price:'),
                                   OHOText(
                                     '${controller.gasPrice.getValueInUnit(EtherUnit.gwei).toStringAsFixed(6)} Gwei',
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ],
                               ),
@@ -483,7 +484,10 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   OHOText('Estimated Gas:'),
-                                  OHOText(controller.estimatedGas.toString()),
+                                  OHOText(
+                                    controller.estimatedGas.toString(),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ],
                               ),
                               SizedBox(height: 20.h),
@@ -494,6 +498,7 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                                   OHOText('Estimated Fee:'),
                                   OHOText(
                                     '${controller.estimatedFee.toStringAsFixed(6)} ${walletService.selectedNetworkInstance!.currencySymbol}',
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ],
                               ),
@@ -510,10 +515,12 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                                   ? Container()
                                   : OHOText(
                                       '${controller.tokenAmount.toStringAsFixed(6)} ${controller.token!.symbol}',
+                                      fontWeight: FontWeight.w500,
                                     ),
                               SizedBox(height: 20.h),
                               OHOText(
                                 '${controller.nativeTokenAmount.toStringAsFixed(6)} ${walletService.selectedNetworkInstance!.currencySymbol}',
+                                fontWeight: FontWeight.w500,
                               ),
                             ],
                           ),
