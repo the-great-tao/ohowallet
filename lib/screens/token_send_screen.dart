@@ -61,6 +61,7 @@ class TokenSendScreenController extends BaseController {
     this.tokenKey.value = tokenKey;
     this.token = token;
     tokenRefreshing = true;
+    clearEstimation();
   }
 
   void onSelectedReceivingAccount(String accountKey, Account account) {
@@ -73,6 +74,13 @@ class TokenSendScreenController extends BaseController {
       return;
     }
     receivingAddressController.selectFromAccounts(account.address.hexEip55);
+  }
+
+  void clearEstimation() {
+    estimated.value = false;
+    estimating.value = false;
+    showEstimation.value = false;
+    canSend.value = true;
   }
 
   Future<void> openTransactionDetailsScreen() async {
@@ -293,6 +301,7 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
       controller.account = walletService.selectedAccountInstance;
       controller.receivingAddressController.address.value = '';
       controller.tokenRefreshing = true;
+      controller.clearEstimation();
     }
     if (controller.token != null &&
         controller.token!.networkKey != walletService.selectedNetwork.value) {
@@ -439,11 +448,7 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                       ),
                     ],
                     inputFormatters: controller.tokenAmountFormatters,
-                    onChanged: (data) {
-                      controller.canSend.value = true;
-                      if (!controller.estimated.value) return;
-                      controller.estimated.value = false;
-                    },
+                    onChanged: (data) => controller.clearEstimation(),
                   ),
                   !controller.estimating.value
                       ? Container()
