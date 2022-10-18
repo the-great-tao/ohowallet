@@ -142,7 +142,9 @@ class OHOTokenChip extends BaseWidget<OHOTokenChipController> {
               getTokenIcon(),
               SizedBox(width: 20.w),
               Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: token == null
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.spaceEvenly,
                 children: [
                   SizedBox(
                     width: 400.w,
@@ -153,15 +155,17 @@ class OHOTokenChip extends BaseWidget<OHOTokenChipController> {
                       overflow: TextOverflow.fade,
                     ),
                   ),
-                  SizedBox(
-                    width: 400.w,
-                    child: OHOText(
-                      controller.balanceString.value,
-                      softWrap: false,
-                      fontSize: 40.sp,
-                      overflow: TextOverflow.fade,
-                    ),
-                  ),
+                  token == null
+                      ? Container()
+                      : SizedBox(
+                          width: 400.w,
+                          child: OHOText(
+                            controller.balanceString.value,
+                            softWrap: false,
+                            fontSize: 40.sp,
+                            overflow: TextOverflow.fade,
+                          ),
+                        ),
                 ],
               ),
               Icon(
