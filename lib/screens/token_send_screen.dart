@@ -247,8 +247,6 @@ class TokenSendScreenController extends BaseController {
       return;
     }
 
-    print('estimated.value ${estimated.value}');
-    print('canSend.value ${canSend.value}');
     if (!estimated.value || !canSend.value) {
       estimated.value = false;
       return;
