@@ -14,6 +14,7 @@ class TokenSendScreenController extends BaseController {
 
   var estimated = false.obs;
   var estimating = false.obs;
+  var showEstimation = false.obs;
   var canSend = true.obs;
 
   late EtherAmount gasPrice;
@@ -94,8 +95,6 @@ class TokenSendScreenController extends BaseController {
     return valid;
   }
 
-  Future<void> estimate() async {}
-
   Future<void> submit() async {
     if (receivingAddressController.address.value.isEmpty) {
       showToast(
@@ -130,7 +129,7 @@ class TokenSendScreenController extends BaseController {
       return;
     }
 
-    estimated.value = false;
+    showEstimation.value = false;
     canSend.value = true;
 
     final network = walletService.selectedNetworkInstance!;
@@ -164,7 +163,6 @@ class TokenSendScreenController extends BaseController {
       }
     }
     final tokenAmount = tokenAmountPartA + tokenAmountPartB;
-    print(tokenAmount);
     if (tokenAmount > tokenBalance) {
       canSend.value = false;
       errorMessage = 'Token Balance is insufficient';
@@ -231,10 +229,20 @@ class TokenSendScreenController extends BaseController {
       this.nativeTokenAmount = nativeTokenAmount / BigInt.from(10).pow(18);
       this.tokenAmount = tokenAmount / BigInt.from(10).pow(tokenDecimals);
 
-      if (!canSend.value) errorMessage = 'Token Balance is insufficient';
-
+      if (!canSend.value) {
+        errorMessage = 'Token Balance is insufficient';
+      } else {
+        estimated.value = true;
+      }
       estimating.value = false;
-      estimated.value = true;
+      showEstimation.value = true;
+      return;
+    }
+
+    print('estimated.value ${estimated.value}');
+    print('canSend.value ${canSend.value}');
+    if (!estimated.value || !canSend.value) {
+      estimated.value = false;
       return;
     }
 
@@ -443,10 +451,10 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                   !controller.estimating.value
                       ? Container()
                       : spinKitFadingCircle,
-                  !controller.estimated.value
+                  !controller.showEstimation.value
                       ? Container()
                       : SizedBox(height: 100.h),
-                  !controller.estimated.value
+                  !controller.showEstimation.value
                       ? Container()
                       : Padding(
                           padding: EdgeInsets.symmetric(horizontal: 0.w),
