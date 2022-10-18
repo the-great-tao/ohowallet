@@ -80,7 +80,9 @@ class AddAccountScreenController extends BaseController {
     walletService.accounts.refresh();
     await walletService.storeAccounts();
     if (walletService.selectedAccount.value == accountKey) {
-      await walletService.setSelectedAccount('');
+      await walletService.setSelectedAccount(
+        walletService.defaultAccount.value,
+      );
     }
 
     Get.back();

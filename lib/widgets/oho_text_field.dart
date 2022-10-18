@@ -92,7 +92,7 @@ class OHOTextFieldValidatorSeedPhrase extends OHOTextFieldValidator {
   @override
   bool isValid(String data) {
     try {
-      return data.split(' ').length == 12;
+      return data.split(RegExp(r'\s+')).length == 12;
     } catch (error) {
       return false;
     }

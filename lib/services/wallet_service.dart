@@ -42,11 +42,12 @@ typedef OnUpdateTransaction = Future<void> Function({
 });
 
 class WalletService extends GetxService {
-  static const selectedAccountKey = 'appSettings-selectedAccount';
   static const accountsKey = 'appSettings-accounts';
+  static const defaultAccountKey = 'appSettings-defaultAccount';
+  static const selectedAccountKey = 'appSettings-selectedAccount';
 
-  static const selectedNetworkKey = 'appSettings-selectedNetwork';
   static const customNetworksKey = 'appSettings-customNetworks';
+  static const selectedNetworkKey = 'appSettings-selectedNetwork';
 
   static const tokensKey = 'appSettings-tokens';
   static const contactsKey = 'appSettings-contacts';
@@ -56,6 +57,7 @@ class WalletService extends GetxService {
   Box? appDataBox;
 
   var accounts = AccountList(accounts: {}).obs;
+  var defaultAccount = ''.obs;
   var selectedAccount = ''.obs;
   Account? selectedAccountInstance;
 
@@ -82,6 +84,13 @@ class WalletService extends GetxService {
       defaultValue: '{"accounts":{}}',
     );
     accounts.value = AccountList.fromJson(jsonDecode(accountsJson));
+
+    final defaultAccount_ = await appDataBox?.get(defaultAccountKey);
+    if (defaultAccount_ != null) {
+      defaultAccount.value = defaultAccount_;
+    } else {
+      await storeDefaultAccount();
+    }
 
     final selectedAccount_ = await appDataBox?.get(selectedAccountKey);
     if (selectedAccount_ != null) {
@@ -157,6 +166,11 @@ class WalletService extends GetxService {
     return network;
   }
 
+  Future<void> setDefaultAccount(String account) async {
+    defaultAccount.value = account;
+    await storeDefaultAccount();
+  }
+
   Future<void> setSelectedAccount(String account) async {
     selectedAccount.value = account;
     await getSelectedAccount();
@@ -167,6 +181,10 @@ class WalletService extends GetxService {
     selectedNetwork.value = network;
     await getSelectedNetwork();
     await storeSelectedNetwork();
+  }
+
+  Future<void> storeDefaultAccount() async {
+    await appDataBox?.put(defaultAccountKey, defaultAccount.value);
   }
 
   Future<void> storeSelectedAccount() async {
@@ -222,11 +240,13 @@ class WalletService extends GetxService {
       address: address,
       removable: false,
     );
+    final accountKey = address.hexEip55;
 
     setupSeedPhrase = [];
-    accounts.value.accounts[account.address.hexEip55] = account;
+    accounts.value.accounts[accountKey] = account;
 
-    await setSelectedAccount(account.address.hexEip55);
+    await setDefaultAccount(accountKey);
+    await setSelectedAccount(accountKey);
     await storeAccounts();
 
     await setSelectedNetwork(OHOSettings.defaultNetworkKey);

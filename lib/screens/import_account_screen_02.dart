@@ -42,16 +42,17 @@ class ImportAccountScreen02Controller extends BaseController {
       privateKey: privateKey,
       address: address,
     );
+    final accountKey = address.hexEip55;
 
     final accounts = walletService.accounts.value.accounts;
-    if (accounts.containsKey(account.address.hexEip55)) {
+    if (accounts.containsKey(accountKey)) {
       showToast(
         message: 'Account already exists.',
         backgroundColor: OHOColors.statusError,
       );
       return;
     }
-    accounts[account.address.hexEip55] = account;
+    accounts[accountKey] = account;
 
     walletService.accounts.refresh();
     walletService.storeAccounts();
