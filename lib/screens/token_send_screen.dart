@@ -40,6 +40,9 @@ class TokenSendScreenController extends BaseController {
     }),
   ];
 
+  bool get sendNativeToken =>
+      token?.address.hexEip55 == OHOSettings.nativeTokenAddress;
+
   @override
   void onInit() {
     super.onInit();
@@ -76,6 +79,13 @@ class TokenSendScreenController extends BaseController {
     receivingAddressController.selectFromAccounts(account.address.hexEip55);
   }
 
+  bool isValid() {
+    var valid = true;
+    valid &= tokenAmountController.isValid();
+
+    return valid;
+  }
+
   void clearEstimation() {
     estimated.value = false;
     estimating.value = false;
@@ -94,13 +104,6 @@ class TokenSendScreenController extends BaseController {
         child: TransactionDetailsScreen()..controller.resetData(),
       ),
     );
-  }
-
-  bool isValid() {
-    var valid = true;
-    valid &= tokenAmountController.isValid();
-
-    return valid;
   }
 
   Future<void> submit() async {
@@ -196,7 +199,7 @@ class TokenSendScreenController extends BaseController {
       errorMessage = '';
 
       try {
-        if (token.address.hexEip55 == OHOSettings.nativeTokenAddress) {
+        if (sendNativeToken) {
           estimatedGas = await web3Client.estimateGas(
             sender: fromAddress,
             to: toAddress,
@@ -222,7 +225,7 @@ class TokenSendScreenController extends BaseController {
 
       var nativeTokenAmount = BigInt.zero;
       if (canSend.value) {
-        if (token.address.hexEip55 == OHOSettings.nativeTokenAddress) {
+        if (sendNativeToken) {
           nativeTokenAmount = tokenAmount + estimatedFee;
         } else {
           nativeTokenAmount = estimatedFee;
@@ -506,12 +509,10 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                               lineSeparator,
                               SizedBox(height: 50.h),
                               OHOText('Estimated Total Amount & Fee:'),
-                              controller.token!.address.hexEip55 ==
-                                      OHOSettings.nativeTokenAddress
+                              controller.sendNativeToken
                                   ? Container()
                                   : SizedBox(height: 20.h),
-                              controller.token!.address.hexEip55 ==
-                                      OHOSettings.nativeTokenAddress
+                              controller.sendNativeToken
                                   ? Container()
                                   : OHOText(
                                       '${controller.tokenAmount.toStringAsFixed(6)} ${controller.token!.symbol}',
