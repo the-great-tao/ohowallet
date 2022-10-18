@@ -80,7 +80,7 @@ class TokenSendScreenController extends BaseController {
   }
 
   void onSelectedFromContacts(String contactKey, Contact contact) {
-    receivingAddressController.selectFromAccounts(contact.address.hexEip55);
+    receivingAddressController.selectFromContacts(contact.address.hexEip55);
   }
 
   bool isValid() {
