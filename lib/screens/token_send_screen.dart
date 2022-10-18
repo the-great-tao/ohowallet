@@ -252,6 +252,8 @@ class TokenSendScreenController extends BaseController {
       return;
     }
 
+    clearEstimation();
+
     // final hash = await web3Client.sendTransaction(
     //   privateKey,
     //   Transaction(
@@ -306,6 +308,7 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
       controller.tokenKey.value = '';
       controller.token = null;
       controller.tokenRefreshing = true;
+      controller.clearEstimation();
     }
     final tokenRefreshing = controller.tokenRefreshing;
     if (tokenRefreshing) controller.tokenRefreshing = !tokenRefreshing;
