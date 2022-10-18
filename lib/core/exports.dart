@@ -75,6 +75,7 @@ export 'package:ohowallet/screens/create_wallet_02_screen.dart';
 export 'package:ohowallet/screens/create_wallet_03_screen.dart';
 export 'package:ohowallet/screens/create_wallet_04_screen.dart';
 export 'package:ohowallet/screens/import_wallet_screen.dart';
+export 'package:ohowallet/screens/import_account_screen_02.dart';
 export 'package:ohowallet/screens/add_account_screen.dart';
 export 'package:ohowallet/screens/add_contact_screen.dart';
 export 'package:ohowallet/screens/add_network_screen.dart';

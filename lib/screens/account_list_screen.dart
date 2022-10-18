@@ -194,6 +194,11 @@ class AccountListScreen extends BaseWidget<AccountListScreenController> {
                     title: 'Add Account',
                     onTap: () => Get.to(() => AddAccountScreen()),
                   ),
+                  SizedBox(height: 50.h),
+                  OHOOutlinedButton(
+                    title: 'Import Account',
+                    onTap: () => Get.to(() => ImportAccountScreen02()),
+                  ),
                   SizedBox(height: 1000.h),
                 ],
               ),

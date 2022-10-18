@@ -85,6 +85,20 @@ class OHOTextFieldValidatorEthereumAddress extends OHOTextFieldValidator {
   }
 }
 
+class OHOTextFieldValidatorSeedPhrase extends OHOTextFieldValidator {
+  OHOTextFieldValidatorSeedPhrase({required String errorMessage})
+      : super(errorMessage: errorMessage);
+
+  @override
+  bool isValid(String data) {
+    try {
+      return data.split(' ').length == 12;
+    } catch (error) {
+      return false;
+    }
+  }
+}
+
 class OHOTextFieldController extends BaseController {
   var data = ''.obs;
   final bool required;
