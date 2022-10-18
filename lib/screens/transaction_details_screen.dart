@@ -175,6 +175,13 @@ class TransactionDetailsScreen
     );
   }
 
+  Widget get spinKitFadingCircle {
+    return SpinKitFadingCircle(
+      size: 60.sp,
+      color: themeService.textColor,
+    );
+  }
+
   Widget get launchUrlIcon {
     return Icon(
       FontAwesomeIcons.arrowUpRightFromSquare,
@@ -183,19 +190,28 @@ class TransactionDetailsScreen
     );
   }
 
-  Widget get spinKitFadingCircle {
-    return SpinKitFadingCircle(
-      size: 60.sp,
+  Widget get copyIcon {
+    return Icon(
+      FontAwesomeIcons.copy,
+      size: 50.sp,
       color: themeService.textColor,
     );
   }
 
-  void launchAddressUrl(String address) {
-    launchUrl(Uri.parse('https://polygonscan.com/tokentxns?a=$address'));
+  Future<void> launchAddress(String address) async {
+    final selectedNetwork = walletService.selectedNetworkInstance;
+    if (selectedNetwork == null) return;
+    final blockExplorerUrl = selectedNetwork.blockExplorerUrl;
+    if (blockExplorerUrl.isEmpty) return;
+    launchUrl(Uri.parse('$blockExplorerUrl/address/$address'));
   }
 
-  void launchTransactionUrl(String transactionHash) {
-    launchUrl(Uri.parse('https://polygonscan.com/tx/$transactionHash'));
+  Future<void> copyAddress(String address) async {
+    await FlutterClipboard.copy(address);
+    showToast(
+      message: 'Account address was copied to clipboard.',
+      backgroundColor: OHOColors.statusSuccess,
+    );
   }
 
   @override
@@ -313,7 +329,7 @@ class TransactionDetailsScreen
                         controller.from_.value == ''
                             ? Container()
                             : GestureDetector(
-                                onTap: () => launchAddressUrl(
+                                onTap: () => launchAddress(
                                   controller.from_.value,
                                 ),
                                 child: launchUrlIcon,
@@ -347,7 +363,7 @@ class TransactionDetailsScreen
                         controller.to_.value == ''
                             ? Container()
                             : GestureDetector(
-                                onTap: () => launchAddressUrl(
+                                onTap: () => launchAddress(
                                   controller.to_.value,
                                 ),
                                 child: launchUrlIcon,
@@ -383,10 +399,10 @@ class TransactionDetailsScreen
                         controller.hash_.value == ''
                             ? Container()
                             : GestureDetector(
-                                onTap: () => launchTransactionUrl(
+                                onTap: () => copyAddress(
                                   controller.hash_.value,
                                 ),
-                                child: launchUrlIcon,
+                                child: copyIcon,
                               ),
                       ],
                     ),

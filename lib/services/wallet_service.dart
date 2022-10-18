@@ -37,6 +37,7 @@ typedef OnUpdateTransaction = Future<void> Function({
   DateTime? date,
   BigInt? gasUsed,
   double? feeCharged,
+  Network? network,
 });
 
 class WalletService extends GetxService {
@@ -320,6 +321,7 @@ class WalletService extends GetxService {
       date: date,
       gasUsed: gasUsed,
       feeCharged: feeCharged,
+      network: network,
     );
   }
 

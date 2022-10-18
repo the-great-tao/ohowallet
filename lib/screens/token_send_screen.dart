@@ -262,26 +262,6 @@ class TokenSendScreenController extends BaseController {
 
     clearEstimation();
 
-    // final hash = await web3Client.sendTransaction(
-    //   privateKey,
-    //   Transaction(
-    //     from: fromAddress,
-    //     to: toAddress,
-    //     value: sendAmount,
-    //     gasPrice: gasPrice,
-    //   ),
-    //   chainId: chainId,
-    // );
-
-    // final hash = await erc20.transfer(
-    //   toAddress,
-    //   sendAmount.getInWei,
-    //   credentials: privateKey,
-    //   transaction: Transaction(gasPrice: gasPrice),
-    // );
-
-    // print(hash);
-
     openTransactionDetailsScreen();
 
     walletService.updateTransaction(
@@ -294,6 +274,73 @@ class TokenSendScreenController extends BaseController {
       tokenName: tokenName,
       network: network,
     );
+
+    String? hash;
+    try {
+      if (sendNativeToken) {
+        hash = await web3Client.sendTransaction(
+          privateKey,
+          Transaction(
+            from: fromAddress,
+            to: toAddress,
+            value: sendAmount,
+            gasPrice: gasPrice,
+          ),
+          chainId: chainId,
+        );
+      } else {
+        hash = await erc20.transfer(
+          toAddress,
+          sendAmount.getInWei,
+          credentials: privateKey,
+          transaction: Transaction(gasPrice: gasPrice),
+        );
+      }
+      walletService.updateTransaction(
+        status: OHOTransactionStatus.pending,
+        hash: hash,
+      );
+    } catch (error) {
+      print(error);
+      walletService.updateTransaction(status: OHOTransactionStatus.failed);
+      return;
+    }
+
+    try {
+      TransactionReceipt? txReceipt;
+
+      while (true) {
+        print("[ $hash ] Getting transaction receipt...");
+
+        txReceipt = await web3Client.getTransactionReceipt(hash);
+        if (txReceipt != null) break;
+
+        await Future.delayed(const Duration(seconds: 10));
+      }
+
+      print('[ $hash ] Transaction status: ${txReceipt.status}');
+
+      final blockNum = txReceipt.blockNumber.blockNum;
+      final blockNumHex = '0x${blockNum.toRadixString(16)}';
+      final blockInformation =
+          await web3Client.getBlockInformation(blockNumber: blockNumHex);
+      final blockTimestamp = blockInformation.timestamp;
+      final gasUsed = txReceipt.gasUsed!;
+      final effectiveGasPrice = txReceipt.effectiveGasPrice!.getInWei;
+      final feeCharged = gasUsed * effectiveGasPrice / BigInt.from(10).pow(18);
+
+      walletService.updateTransaction(
+        status: txReceipt.status!
+            ? OHOTransactionStatus.successful
+            : OHOTransactionStatus.failed,
+        date: blockTimestamp,
+        gasUsed: gasUsed,
+        feeCharged: feeCharged,
+        network: network,
+      );
+    } catch (error) {
+      print(error);
+    }
   }
 }
 
