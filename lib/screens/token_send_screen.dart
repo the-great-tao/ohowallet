@@ -67,7 +67,7 @@ class TokenSendScreenController extends BaseController {
     clearEstimation();
   }
 
-  void onSelectedReceivingAccount(String accountKey, Account account) {
+  void onSelectedFromAccounts(String accountKey, Account account) {
     if (account.address.hexEip55 ==
         walletService.selectedAccountInstance!.address.hexEip55) {
       showToast(
@@ -77,6 +77,10 @@ class TokenSendScreenController extends BaseController {
       return;
     }
     receivingAddressController.selectFromAccounts(account.address.hexEip55);
+  }
+
+  void onSelectedFromContacts(String contactKey, Contact contact) {
+    receivingAddressController.selectFromAccounts(contact.address.hexEip55);
   }
 
   bool isValid() {
@@ -411,8 +415,7 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                     fontSize: 50.sp,
                     onTap: () => Get.to(
                       () => AccountListScreen(
-                        getBackOnSelected:
-                            controller.onSelectedReceivingAccount,
+                        getBackOnSelected: controller.onSelectedFromAccounts,
                       ),
                     ),
                   ),
@@ -422,6 +425,11 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                     height: 120.h,
                     title: 'Select from my Contacts',
                     fontSize: 50.sp,
+                    onTap: () => Get.to(
+                      () => ContactListScreen(
+                        getBackOnSelected: controller.onSelectedFromContacts,
+                      ),
+                    ),
                   ),
                   SizedBox(height: 50.h),
                   Row(

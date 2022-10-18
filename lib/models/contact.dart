@@ -6,7 +6,7 @@ part 'contact.g.dart';
 class Contact {
   String name;
   @JsonKey(fromJson: _ethereumAddressFromJson, toJson: _ethereumAddressToJson)
-  final EthereumAddress address;
+  EthereumAddress address;
 
   Contact({
     required this.name,
