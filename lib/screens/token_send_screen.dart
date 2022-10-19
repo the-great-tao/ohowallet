@@ -147,6 +147,7 @@ class TokenSendScreenController extends BaseController {
     showEstimation.value = false;
     canSend.value = true;
 
+    final networkKey = walletService.selectedNetwork.value;
     final network = walletService.selectedNetworkInstance!;
     final chainId = network.chainId.toInt();
     final token = tokenController.token!;
@@ -296,10 +297,28 @@ class TokenSendScreenController extends BaseController {
           transaction: Transaction(gasPrice: gasPrice),
         );
       }
+
       walletService.updateTransaction(
         status: OHOTransactionStatus.pending,
         hash: hash,
       );
+
+      final transaction = OHOTransaction()
+        ..status = OHOTransactionStatus.pending
+        ..type = OHOTransactionType.sendToken
+        ..networkKey = networkKey
+        ..tokenKey = tokenKey.value
+        ..tokenAddress = token.address.hexEip55
+        ..from = fromAddress.hexEip55
+        ..to = toAddress.hexEip55
+        ..hash = hash
+        ..gasPrice = gasPrice.getInWei.toString()
+        ..value = sendNativeToken ? sendAmount.getInWei.toString() : '0'
+        ..amount = !sendNativeToken ? sendAmount.getInWei.toString() : '0';
+
+      await isarService.isar.writeTxn(() async {
+        await isarService.ohoTransactions.put(transaction);
+      });
     } catch (error) {
       print(error);
       walletService.updateTransaction(status: OHOTransactionStatus.failed);
