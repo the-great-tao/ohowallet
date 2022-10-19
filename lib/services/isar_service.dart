@@ -7,6 +7,7 @@ class IsarService extends GetxService {
 
   Future<IsarService> init() async {
     isar = await Isar.open([OHOTransactionSchema]);
+    // isar.close(deleteFromDisk: true);
     return this;
   }
 }
