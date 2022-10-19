@@ -169,13 +169,13 @@ const OHOTransactionSchema = CollectionSchema(
     r'hash': IndexSchema(
       id: -7973251393006690288,
       name: r'hash',
-      unique: false,
+      unique: true,
       replace: false,
       properties: [
         IndexPropertySchema(
           name: r'hash',
-          type: IndexType.value,
-          caseSensitive: false,
+          type: IndexType.hash,
+          caseSensitive: true,
         )
       ],
     ),
@@ -433,6 +433,61 @@ void _oHOTransactionAttach(
   object.id = id;
 }
 
+extension OHOTransactionByIndex on IsarCollection<OHOTransaction> {
+  Future<OHOTransaction?> getByHash(String? hash) {
+    return getByIndex(r'hash', [hash]);
+  }
+
+  OHOTransaction? getByHashSync(String? hash) {
+    return getByIndexSync(r'hash', [hash]);
+  }
+
+  Future<bool> deleteByHash(String? hash) {
+    return deleteByIndex(r'hash', [hash]);
+  }
+
+  bool deleteByHashSync(String? hash) {
+    return deleteByIndexSync(r'hash', [hash]);
+  }
+
+  Future<List<OHOTransaction?>> getAllByHash(List<String?> hashValues) {
+    final values = hashValues.map((e) => [e]).toList();
+    return getAllByIndex(r'hash', values);
+  }
+
+  List<OHOTransaction?> getAllByHashSync(List<String?> hashValues) {
+    final values = hashValues.map((e) => [e]).toList();
+    return getAllByIndexSync(r'hash', values);
+  }
+
+  Future<int> deleteAllByHash(List<String?> hashValues) {
+    final values = hashValues.map((e) => [e]).toList();
+    return deleteAllByIndex(r'hash', values);
+  }
+
+  int deleteAllByHashSync(List<String?> hashValues) {
+    final values = hashValues.map((e) => [e]).toList();
+    return deleteAllByIndexSync(r'hash', values);
+  }
+
+  Future<Id> putByHash(OHOTransaction object) {
+    return putByIndex(r'hash', object);
+  }
+
+  Id putByHashSync(OHOTransaction object, {bool saveLinks = true}) {
+    return putByIndexSync(r'hash', object, saveLinks: saveLinks);
+  }
+
+  Future<List<Id>> putAllByHash(List<OHOTransaction> objects) {
+    return putAllByIndex(r'hash', objects);
+  }
+
+  List<Id> putAllByHashSync(List<OHOTransaction> objects,
+      {bool saveLinks = true}) {
+    return putAllByIndexSync(r'hash', objects, saveLinks: saveLinks);
+  }
+}
+
 extension OHOTransactionQueryWhereSort
     on QueryBuilder<OHOTransaction, OHOTransaction, QWhere> {
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhere> anyId() {
@@ -477,14 +532,6 @@ extension OHOTransactionQueryWhereSort
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         const IndexWhereClause.any(indexName: r'to'),
-      );
-    });
-  }
-
-  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhere> anyHash() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(
-        const IndexWhereClause.any(indexName: r'hash'),
       );
     });
   }
@@ -1445,100 +1492,6 @@ extension OHOTransactionQueryWhere
               lower: [],
               upper: [hash],
               includeUpper: false,
-            ));
-      }
-    });
-  }
-
-  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
-      hashGreaterThan(
-    String? hash, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'hash',
-        lower: [hash],
-        includeLower: include,
-        upper: [],
-      ));
-    });
-  }
-
-  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause> hashLessThan(
-    String? hash, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'hash',
-        lower: [],
-        upper: [hash],
-        includeUpper: include,
-      ));
-    });
-  }
-
-  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause> hashBetween(
-    String? lowerHash,
-    String? upperHash, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'hash',
-        lower: [lowerHash],
-        includeLower: includeLower,
-        upper: [upperHash],
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
-      hashStartsWith(String HashPrefix) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'hash',
-        lower: [HashPrefix],
-        upper: ['$HashPrefix\u{FFFFF}'],
-      ));
-    });
-  }
-
-  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
-      hashIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'hash',
-        value: [''],
-      ));
-    });
-  }
-
-  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
-      hashIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.lessThan(
-              indexName: r'hash',
-              upper: [''],
-            ))
-            .addWhereClause(IndexWhereClause.greaterThan(
-              indexName: r'hash',
-              lower: [''],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.greaterThan(
-              indexName: r'hash',
-              lower: [''],
-            ))
-            .addWhereClause(IndexWhereClause.lessThan(
-              indexName: r'hash',
-              upper: [''],
             ));
       }
     });

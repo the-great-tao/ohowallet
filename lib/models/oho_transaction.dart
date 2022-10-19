@@ -28,7 +28,7 @@ class OHOTransaction {
   @Index(type: IndexType.value, caseSensitive: false)
   String? to;
 
-  @Index(type: IndexType.value, caseSensitive: false)
+  @Index(unique: true)
   String? hash;
 
   @Index()
