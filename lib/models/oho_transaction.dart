@@ -36,9 +36,9 @@ class OHOTransaction {
   @Index()
   DateTime? blockDate;
 
-  String? gasPrice;
   String? value;
-  String? amount;
+  String? tokenAmount;
+  String? gasPrice;
   String? effectiveGasPrice;
   String? gasUsed;
 }

@@ -276,7 +276,19 @@ class TokenSendScreenController extends BaseController {
       network: network,
     );
 
+    var transaction = OHOTransaction()
+      ..status = OHOTransactionStatus.pending
+      ..type = OHOTransactionType.sendToken
+      ..networkKey = networkKey
+      ..tokenKey = tokenKey.value
+      ..tokenAddress = token.address.hexEip55
+      ..from = fromAddress.hexEip55
+      ..to = toAddress.hexEip55
+      ..gasPrice = gasPrice.getInWei.toString()
+      ..value = sendNativeToken ? sendAmount.getInWei.toString() : '0'
+      ..tokenAmount = !sendNativeToken ? sendAmount.getInWei.toString() : '0';
     String? hash;
+
     try {
       if (sendNativeToken) {
         hash = await web3Client.sendTransaction(
@@ -302,26 +314,17 @@ class TokenSendScreenController extends BaseController {
         status: OHOTransactionStatus.pending,
         hash: hash,
       );
-
-      final transaction = OHOTransaction()
-        ..status = OHOTransactionStatus.pending
-        ..type = OHOTransactionType.sendToken
-        ..networkKey = networkKey
-        ..tokenKey = tokenKey.value
-        ..tokenAddress = token.address.hexEip55
-        ..from = fromAddress.hexEip55
-        ..to = toAddress.hexEip55
-        ..hash = hash
-        ..gasPrice = gasPrice.getInWei.toString()
-        ..value = sendNativeToken ? sendAmount.getInWei.toString() : '0'
-        ..amount = !sendNativeToken ? sendAmount.getInWei.toString() : '0';
-
+      transaction.hash = hash;
       await isarService.isar.writeTxn(() async {
         await isarService.ohoTransactions.put(transaction);
       });
     } catch (error) {
       print(error);
       walletService.updateTransaction(status: OHOTransactionStatus.failed);
+      transaction.status = OHOTransactionStatus.failed;
+      await isarService.isar.writeTxn(() async {
+        await isarService.ohoTransactions.put(transaction);
+      });
       return;
     }
 
@@ -348,10 +351,10 @@ class TokenSendScreenController extends BaseController {
 
       print('[ $hash ] Transaction status: ${txReceipt.status}');
 
-      final blockNum = txReceipt.blockNumber.blockNum;
-      final blockNumHex = '0x${blockNum.toRadixString(16)}';
+      final blockNumber = txReceipt.blockNumber.blockNum;
+      final blockNumberHex = '0x${blockNumber.toRadixString(16)}';
       final blockInformation =
-          await web3Client.getBlockInformation(blockNumber: blockNumHex);
+          await web3Client.getBlockInformation(blockNumber: blockNumberHex);
       final blockTimestamp = blockInformation.timestamp;
       final gasUsed = txReceipt.gasUsed!;
       final effectiveGasPrice = txReceipt.effectiveGasPrice!.getInWei;
@@ -366,6 +369,17 @@ class TokenSendScreenController extends BaseController {
         feeCharged: feeCharged,
         network: network,
       );
+      transaction = transaction
+        ..status = txReceipt.status!
+            ? OHOTransactionStatus.successful
+            : OHOTransactionStatus.failed
+        ..blockNumber = blockNumber
+        ..blockDate = blockTimestamp
+        ..gasUsed = gasUsed.toString()
+        ..effectiveGasPrice = effectiveGasPrice.toString();
+      await isarService.isar.writeTxn(() async {
+        await isarService.ohoTransactions.put(transaction);
+      });
     } catch (error) {
       print(error);
     }
