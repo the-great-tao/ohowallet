@@ -207,10 +207,10 @@ class TransactionDetailsScreen
     launchUrl(Uri.parse('$blockExplorerUrl/address/$address'));
   }
 
-  Future<void> copyAddress(String address) async {
+  Future<void> copyTransactionHash(String address) async {
     await FlutterClipboard.copy(address);
     showToast(
-      message: 'Account address was copied to clipboard.',
+      message: 'Transaction Hash was copied to clipboard.',
       backgroundColor: OHOColors.statusSuccess,
     );
   }
@@ -399,7 +399,7 @@ class TransactionDetailsScreen
                         controller.hash_.value == ''
                             ? Container()
                             : GestureDetector(
-                                onTap: () => copyAddress(
+                                onTap: () => copyTransactionHash(
                                   controller.hash_.value,
                                 ),
                                 child: copyIcon,
