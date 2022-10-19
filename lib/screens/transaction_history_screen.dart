@@ -1,6 +1,16 @@
 import 'package:ohowallet/core/exports.dart';
 
-class TransactionHistoryScreenController extends BaseController {}
+class TransactionHistoryScreenController extends BaseController {
+  @override
+  void onInit() async {
+    super.onInit();
+    final transactions =
+        await isarService.isar.ohoTransactions.where().findAll();
+    for (var transaction in transactions) {
+      print(transaction.toJson());
+    }
+  }
+}
 
 class TransactionHistoryScreen
     extends BaseWidget<TransactionHistoryScreenController> {

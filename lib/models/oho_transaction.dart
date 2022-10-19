@@ -2,6 +2,7 @@ import 'package:ohowallet/core/exports.dart';
 
 part 'oho_transaction.g.dart';
 
+@JsonSerializable()
 @Collection(accessor: 'ohoTransactions')
 class OHOTransaction {
   Id id = Isar.autoIncrement;
@@ -27,8 +28,8 @@ class OHOTransaction {
   @Index(type: IndexType.value, caseSensitive: false)
   String? to;
 
-  @Index(unique: true)
-  late String hash;
+  @Index(type: IndexType.value, caseSensitive: false)
+  String? hash;
 
   @Index()
   int? blockNumber;
@@ -41,4 +42,27 @@ class OHOTransaction {
   String? gasPrice;
   String? effectiveGasPrice;
   String? gasUsed;
+
+  OHOTransaction({
+    required this.status,
+    required this.type,
+    this.networkKey,
+    this.tokenKey,
+    this.tokenAddress,
+    this.tokenAmount,
+    this.from,
+    this.to,
+    this.hash,
+    this.blockNumber,
+    this.blockDate,
+    this.value,
+    this.gasPrice,
+    this.effectiveGasPrice,
+    this.gasUsed,
+  });
+
+  factory OHOTransaction.fromJson(Map<String, dynamic> json) =>
+      _$OHOTransactionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$OHOTransactionToJson(this);
 }

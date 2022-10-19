@@ -276,17 +276,18 @@ class TokenSendScreenController extends BaseController {
       network: network,
     );
 
-    var transaction = OHOTransaction()
-      ..status = OHOTransactionStatus.pending
-      ..type = OHOTransactionType.sendToken
-      ..networkKey = networkKey
-      ..tokenKey = tokenKey.value
-      ..tokenAddress = token.address.hexEip55
-      ..from = fromAddress.hexEip55
-      ..to = toAddress.hexEip55
-      ..gasPrice = gasPrice.getInWei.toString()
-      ..value = sendNativeToken ? sendAmount.getInWei.toString() : '0'
-      ..tokenAmount = !sendNativeToken ? sendAmount.getInWei.toString() : '0';
+    var transaction = OHOTransaction(
+      status: OHOTransactionStatus.pending,
+      type: OHOTransactionType.sendToken,
+      networkKey: networkKey,
+      tokenKey: tokenKey.value,
+      tokenAddress: token.address.hexEip55,
+      from: fromAddress.hexEip55,
+      to: toAddress.hexEip55,
+      gasPrice: gasPrice.getInWei.toString(),
+      value: sendNativeToken ? sendAmount.getInWei.toString() : '0',
+      tokenAmount: !sendNativeToken ? sendAmount.getInWei.toString() : '0',
+    );
     String? hash;
 
     try {
@@ -314,6 +315,7 @@ class TokenSendScreenController extends BaseController {
         status: OHOTransactionStatus.pending,
         hash: hash,
       );
+
       transaction.hash = hash;
       await isarService.isar.writeTxn(() async {
         await isarService.ohoTransactions.put(transaction);
@@ -321,10 +323,6 @@ class TokenSendScreenController extends BaseController {
     } catch (error) {
       print(error);
       walletService.updateTransaction(status: OHOTransactionStatus.failed);
-      transaction.status = OHOTransactionStatus.failed;
-      await isarService.isar.writeTxn(() async {
-        await isarService.ohoTransactions.put(transaction);
-      });
       return;
     }
 
@@ -369,6 +367,7 @@ class TokenSendScreenController extends BaseController {
         feeCharged: feeCharged,
         network: network,
       );
+
       transaction = transaction
         ..status = txReceipt.status!
             ? OHOTransactionStatus.successful

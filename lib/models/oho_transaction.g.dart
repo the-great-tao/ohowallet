@@ -169,13 +169,13 @@ const OHOTransactionSchema = CollectionSchema(
     r'hash': IndexSchema(
       id: -7973251393006690288,
       name: r'hash',
-      unique: true,
+      unique: false,
       replace: false,
       properties: [
         IndexPropertySchema(
           name: r'hash',
-          type: IndexType.hash,
-          caseSensitive: true,
+          type: IndexType.value,
+          caseSensitive: false,
         )
       ],
     ),
@@ -244,7 +244,12 @@ int _oHOTransactionEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 + object.hash.length * 3;
+  {
+    final value = object.hash;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   {
     final value = object.networkKey;
     if (value != null) {
@@ -315,27 +320,28 @@ OHOTransaction _oHOTransactionDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = OHOTransaction();
-  object.blockDate = reader.readDateTimeOrNull(offsets[0]);
-  object.blockNumber = reader.readLongOrNull(offsets[1]);
-  object.effectiveGasPrice = reader.readStringOrNull(offsets[2]);
-  object.from = reader.readStringOrNull(offsets[3]);
-  object.gasPrice = reader.readStringOrNull(offsets[4]);
-  object.gasUsed = reader.readStringOrNull(offsets[5]);
-  object.hash = reader.readString(offsets[6]);
+  final object = OHOTransaction(
+    blockDate: reader.readDateTimeOrNull(offsets[0]),
+    blockNumber: reader.readLongOrNull(offsets[1]),
+    effectiveGasPrice: reader.readStringOrNull(offsets[2]),
+    from: reader.readStringOrNull(offsets[3]),
+    gasPrice: reader.readStringOrNull(offsets[4]),
+    gasUsed: reader.readStringOrNull(offsets[5]),
+    hash: reader.readStringOrNull(offsets[6]),
+    networkKey: reader.readStringOrNull(offsets[7]),
+    status: _OHOTransactionstatusValueEnumMap[
+            reader.readStringOrNull(offsets[8])] ??
+        OHOTransactionStatus.none,
+    to: reader.readStringOrNull(offsets[9]),
+    tokenAddress: reader.readStringOrNull(offsets[10]),
+    tokenAmount: reader.readStringOrNull(offsets[11]),
+    tokenKey: reader.readStringOrNull(offsets[12]),
+    type:
+        _OHOTransactiontypeValueEnumMap[reader.readStringOrNull(offsets[13])] ??
+            OHOTransactionType.none,
+    value: reader.readStringOrNull(offsets[14]),
+  );
   object.id = id;
-  object.networkKey = reader.readStringOrNull(offsets[7]);
-  object.status =
-      _OHOTransactionstatusValueEnumMap[reader.readStringOrNull(offsets[8])] ??
-          OHOTransactionStatus.none;
-  object.to = reader.readStringOrNull(offsets[9]);
-  object.tokenAddress = reader.readStringOrNull(offsets[10]);
-  object.tokenAmount = reader.readStringOrNull(offsets[11]);
-  object.tokenKey = reader.readStringOrNull(offsets[12]);
-  object.type =
-      _OHOTransactiontypeValueEnumMap[reader.readStringOrNull(offsets[13])] ??
-          OHOTransactionType.none;
-  object.value = reader.readStringOrNull(offsets[14]);
   return object;
 }
 
@@ -359,7 +365,7 @@ P _oHOTransactionDeserializeProp<P>(
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
@@ -427,61 +433,6 @@ void _oHOTransactionAttach(
   object.id = id;
 }
 
-extension OHOTransactionByIndex on IsarCollection<OHOTransaction> {
-  Future<OHOTransaction?> getByHash(String hash) {
-    return getByIndex(r'hash', [hash]);
-  }
-
-  OHOTransaction? getByHashSync(String hash) {
-    return getByIndexSync(r'hash', [hash]);
-  }
-
-  Future<bool> deleteByHash(String hash) {
-    return deleteByIndex(r'hash', [hash]);
-  }
-
-  bool deleteByHashSync(String hash) {
-    return deleteByIndexSync(r'hash', [hash]);
-  }
-
-  Future<List<OHOTransaction?>> getAllByHash(List<String> hashValues) {
-    final values = hashValues.map((e) => [e]).toList();
-    return getAllByIndex(r'hash', values);
-  }
-
-  List<OHOTransaction?> getAllByHashSync(List<String> hashValues) {
-    final values = hashValues.map((e) => [e]).toList();
-    return getAllByIndexSync(r'hash', values);
-  }
-
-  Future<int> deleteAllByHash(List<String> hashValues) {
-    final values = hashValues.map((e) => [e]).toList();
-    return deleteAllByIndex(r'hash', values);
-  }
-
-  int deleteAllByHashSync(List<String> hashValues) {
-    final values = hashValues.map((e) => [e]).toList();
-    return deleteAllByIndexSync(r'hash', values);
-  }
-
-  Future<Id> putByHash(OHOTransaction object) {
-    return putByIndex(r'hash', object);
-  }
-
-  Id putByHashSync(OHOTransaction object, {bool saveLinks = true}) {
-    return putByIndexSync(r'hash', object, saveLinks: saveLinks);
-  }
-
-  Future<List<Id>> putAllByHash(List<OHOTransaction> objects) {
-    return putAllByIndex(r'hash', objects);
-  }
-
-  List<Id> putAllByHashSync(List<OHOTransaction> objects,
-      {bool saveLinks = true}) {
-    return putAllByIndexSync(r'hash', objects, saveLinks: saveLinks);
-  }
-}
-
 extension OHOTransactionQueryWhereSort
     on QueryBuilder<OHOTransaction, OHOTransaction, QWhere> {
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhere> anyId() {
@@ -526,6 +477,14 @@ extension OHOTransactionQueryWhereSort
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         const IndexWhereClause.any(indexName: r'to'),
+      );
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhere> anyHash() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'hash'),
       );
     });
   }
@@ -1425,8 +1384,29 @@ extension OHOTransactionQueryWhere
     });
   }
 
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause> hashIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'hash',
+        value: [null],
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      hashIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'hash',
+        lower: [null],
+        includeLower: false,
+        upper: [],
+      ));
+    });
+  }
+
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause> hashEqualTo(
-      String hash) {
+      String? hash) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.equalTo(
         indexName: r'hash',
@@ -1436,7 +1416,7 @@ extension OHOTransactionQueryWhere
   }
 
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
-      hashNotEqualTo(String hash) {
+      hashNotEqualTo(String? hash) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -1465,6 +1445,100 @@ extension OHOTransactionQueryWhere
               lower: [],
               upper: [hash],
               includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      hashGreaterThan(
+    String? hash, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'hash',
+        lower: [hash],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause> hashLessThan(
+    String? hash, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'hash',
+        lower: [],
+        upper: [hash],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause> hashBetween(
+    String? lowerHash,
+    String? upperHash, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'hash',
+        lower: [lowerHash],
+        includeLower: includeLower,
+        upper: [upperHash],
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      hashStartsWith(String HashPrefix) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'hash',
+        lower: [HashPrefix],
+        upper: ['$HashPrefix\u{FFFFF}'],
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      hashIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'hash',
+        value: [''],
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      hashIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'hash',
+              upper: [''],
+            ))
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'hash',
+              lower: [''],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'hash',
+              lower: [''],
+            ))
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'hash',
+              upper: [''],
             ));
       }
     });
@@ -2468,8 +2542,26 @@ extension OHOTransactionQueryFilter
   }
 
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      hashIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'hash',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      hashIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'hash',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
       hashEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -2483,7 +2575,7 @@ extension OHOTransactionQueryFilter
 
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
       hashGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -2499,7 +2591,7 @@ extension OHOTransactionQueryFilter
 
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
       hashLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -2515,8 +2607,8 @@ extension OHOTransactionQueryFilter
 
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
       hashBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -4423,7 +4515,7 @@ extension OHOTransactionQueryProperty
     });
   }
 
-  QueryBuilder<OHOTransaction, String, QQueryOperations> hashProperty() {
+  QueryBuilder<OHOTransaction, String?, QQueryOperations> hashProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'hash');
     });
@@ -4481,3 +4573,64 @@ extension OHOTransactionQueryProperty
     });
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+OHOTransaction _$OHOTransactionFromJson(Map<String, dynamic> json) =>
+    OHOTransaction(
+      status: $enumDecode(_$OHOTransactionStatusEnumMap, json['status']),
+      type: $enumDecode(_$OHOTransactionTypeEnumMap, json['type']),
+      networkKey: json['networkKey'] as String?,
+      tokenKey: json['tokenKey'] as String?,
+      tokenAddress: json['tokenAddress'] as String?,
+      tokenAmount: json['tokenAmount'] as String?,
+      from: json['from'] as String?,
+      to: json['to'] as String?,
+      hash: json['hash'] as String?,
+      blockNumber: json['blockNumber'] as int?,
+      blockDate: json['blockDate'] == null
+          ? null
+          : DateTime.parse(json['blockDate'] as String),
+      value: json['value'] as String?,
+      gasPrice: json['gasPrice'] as String?,
+      effectiveGasPrice: json['effectiveGasPrice'] as String?,
+      gasUsed: json['gasUsed'] as String?,
+    )..id = json['id'] as int;
+
+Map<String, dynamic> _$OHOTransactionToJson(OHOTransaction instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'status': _$OHOTransactionStatusEnumMap[instance.status]!,
+      'type': _$OHOTransactionTypeEnumMap[instance.type]!,
+      'networkKey': instance.networkKey,
+      'tokenKey': instance.tokenKey,
+      'tokenAddress': instance.tokenAddress,
+      'from': instance.from,
+      'to': instance.to,
+      'hash': instance.hash,
+      'blockNumber': instance.blockNumber,
+      'blockDate': instance.blockDate?.toIso8601String(),
+      'value': instance.value,
+      'tokenAmount': instance.tokenAmount,
+      'gasPrice': instance.gasPrice,
+      'effectiveGasPrice': instance.effectiveGasPrice,
+      'gasUsed': instance.gasUsed,
+    };
+
+const _$OHOTransactionStatusEnumMap = {
+  OHOTransactionStatus.none: 'none',
+  OHOTransactionStatus.sending: 'sending',
+  OHOTransactionStatus.pending: 'pending',
+  OHOTransactionStatus.pendingHistory: 'pendingHistory',
+  OHOTransactionStatus.successful: 'successful',
+  OHOTransactionStatus.failed: 'failed',
+};
+
+const _$OHOTransactionTypeEnumMap = {
+  OHOTransactionType.none: 'none',
+  OHOTransactionType.swapToken: 'swapToken',
+  OHOTransactionType.sendToken: 'sendToken',
+  OHOTransactionType.sendNFT: 'sendNFT',
+};
