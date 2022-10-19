@@ -14,6 +14,7 @@ Future<void> setupMyApp() async {
   await Get.putAsync(() => WalletService().init());
   await Get.putAsync(() => ThemeService().init());
   await Get.putAsync(() => BiometricService().init());
+  await Get.putAsync(() => IsarService().init());
 }
 
 void runMyApp() {

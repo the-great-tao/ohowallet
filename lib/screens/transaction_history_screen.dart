@@ -1,19 +1,12 @@
 import 'package:ohowallet/core/exports.dart';
 
-class TransactionHistoryScreenController extends BaseController {
-  // static const pageSize = 20;
-  // final PagingController<String?, AlchemyGetNftsForOwnerItem> pagingController =
-  // PagingController(firstPageKey: null);
-}
+class TransactionHistoryScreenController extends BaseController {}
 
 class TransactionHistoryScreen
     extends BaseWidget<TransactionHistoryScreenController> {
-  final Account account;
-
   TransactionHistoryScreen({
     super.key,
     super.tag,
-    required this.account,
   }) : super(controller: TransactionHistoryScreenController());
 
   @override
