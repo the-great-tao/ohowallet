@@ -419,7 +419,7 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                 left: 50.w,
                 right: 50.w,
               ),
-              child: OHOAppBar02(),
+              child: OHOAppBar02(hasBackButton: true),
             ),
           ),
         ),
@@ -601,28 +601,17 @@ class TokenSendScreen extends BaseWidget<TokenSendScreenController> {
                           message: controller.errorMessage,
                         )..controller.message.value = controller.errorMessage),
                   SizedBox(height: 100.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      OHOOutlinedButton(
-                        width: 500.w,
-                        title: 'Back',
-                        onTap: () => Get.back(),
-                      ),
-                      OHOSolidButton(
-                        width: 500.w,
-                        title: !controller.estimated.value ||
-                                !controller.canSend.value
+                  OHOSolidButton(
+                    title:
+                        !controller.estimated.value || !controller.canSend.value
                             ? 'Send'
                             : 'Confirm',
-                        icon: Icon(
-                          FontAwesomeIcons.solidPaperPlane,
-                          color: themeService.solidButtonTextColor,
-                          size: 60.sp,
-                        ),
-                        onTap: () => controller.submit(),
-                      ),
-                    ],
+                    icon: Icon(
+                      FontAwesomeIcons.solidPaperPlane,
+                      color: themeService.solidButtonTextColor,
+                      size: 60.sp,
+                    ),
+                    onTap: () => controller.submit(),
                   ),
                   SizedBox(height: 1000.h),
                 ],

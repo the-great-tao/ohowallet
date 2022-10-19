@@ -33,7 +33,7 @@ class TokenReceiveScreen extends BaseWidget<TokenReceiveScreenController> {
                 left: 50.w,
                 right: 50.w,
               ),
-              child: OHOAppBar02(),
+              child: OHOAppBar02(hasBackButton: true),
             ),
           ),
         ),
@@ -66,7 +66,6 @@ class TokenReceiveScreen extends BaseWidget<TokenReceiveScreenController> {
                   getAccountAddress(),
                   SizedBox(height: 100.h),
                   OHOSolidButton(
-                    width: 800.w,
                     title: 'OK',
                     onTap: () => Get.back(),
                   ),
