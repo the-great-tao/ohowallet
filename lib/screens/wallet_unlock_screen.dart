@@ -16,7 +16,7 @@ class WalletUnlockScreenController extends BaseController {
       );
       return;
     }
-    Get.offAll(() => WalletMainScreen());
+    Get.offAll(() => MainScreen());
   }
 
   Future<void> biometricAuthenticate() async {
@@ -31,7 +31,7 @@ class WalletUnlockScreenController extends BaseController {
       );
       return;
     }
-    Get.offAll(() => WalletMainScreen());
+    Get.offAll(() => MainScreen());
   }
 
   Future<void> eraseData() async {

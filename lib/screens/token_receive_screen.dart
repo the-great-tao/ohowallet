@@ -11,6 +11,11 @@ class TokenReceiveScreen extends BaseWidget<TokenReceiveScreenController> {
     required this.account,
   }) : super(controller: TokenReceiveScreenController());
 
+  Widget getAccountAddress() {
+    if (walletService.selectedAccount.value.isEmpty) return Container();
+    return OHOAccountAddress()..controller.refreshAddress();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -18,16 +23,17 @@ class TokenReceiveScreen extends BaseWidget<TokenReceiveScreenController> {
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           elevation: 0.0,
-          toolbarHeight: 300.h,
+          toolbarHeight: 500.h,
           backgroundColor: Colors.transparent,
           automaticallyImplyLeading: false,
           flexibleSpace: SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 50.h,
-                horizontal: 50.w,
+              padding: EdgeInsets.only(
+                top: 50.h,
+                left: 50.w,
+                right: 50.w,
               ),
-              child: OHOAppBar01(step: 0),
+              child: OHOAppBar02(),
             ),
           ),
         ),
@@ -39,32 +45,34 @@ class TokenReceiveScreen extends BaseWidget<TokenReceiveScreenController> {
             gradient: themeService.screenBackgroundGradient,
           ),
           child: SafeArea(
-            child: Column(
-              children: [
-                OHOHeaderText('Token Receive'),
-                SizedBox(height: 200.h),
-                OHOText(
-                  'Scan or copy account address\nto receive coin or token.',
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      QrImage(
-                        size: 600.r,
-                        padding: EdgeInsets.all(4.r),
-                        foregroundColor: themeService.textColor,
-                        version: QrVersions.auto,
-                        errorCorrectionLevel: QrErrorCorrectLevel.Q,
-                        data: account.address.hexEip55,
-                      ),
-                      SizedBox(height: 100.h),
-                      OHOAccountAddress(),
-                    ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: 50.h),
+                  OHOHeaderText('Token Receive'),
+                  SizedBox(height: 50.h),
+                  OHOText(
+                    'Scan or copy account address\nto receive coin or token.',
                   ),
-                ),
-                SizedBox(height: 200.h),
-              ],
+                  SizedBox(height: 50.h),
+                  QrImage(
+                    size: 700.w,
+                    foregroundColor: themeService.textColor,
+                    version: QrVersions.auto,
+                    errorCorrectionLevel: QrErrorCorrectLevel.Q,
+                    data: account.address.hexEip55,
+                  ),
+                  SizedBox(height: 50.h),
+                  getAccountAddress(),
+                  SizedBox(height: 100.h),
+                  OHOSolidButton(
+                    width: 800.w,
+                    title: 'OK',
+                    onTap: () => Get.back(),
+                  ),
+                  SizedBox(height: 1000.h),
+                ],
+              ),
             ),
           ),
         ),

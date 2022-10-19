@@ -183,4 +183,7 @@ class ThemeService extends GetxService {
 
   Color get listItemInkwellHighlightColor =>
       lightMode.value ? Colors.white10 : Colors.black12;
+
+  Color get bottomBarUnselectedItemColor =>
+      lightMode.value ? Colors.black38 : Colors.white60;
 }
