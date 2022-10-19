@@ -55,10 +55,6 @@ class MainScreen extends BaseWidget<MainScreenController> {
               title: Text("NFTs"),
             ),
             OHOBottomBarItem(
-              icon: Icon(FontAwesomeIcons.clockRotateLeft),
-              title: Text("History"),
-            ),
-            OHOBottomBarItem(
               icon: Icon(FontAwesomeIcons.gear),
               title: Text("Settings"),
             ),
