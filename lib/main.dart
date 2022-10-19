@@ -23,6 +23,7 @@ void runMyApp() {
       builder: (context) => ScreenUtilInit(
         designSize: const Size(1125, 2436),
         minTextAdapt: true,
+        useInheritedMediaQuery: true,
         builder: (context, child) => const MyApp(),
       ),
     ),
@@ -55,6 +56,14 @@ void main() async {
   );
 }
 
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -78,6 +87,7 @@ class MyApp extends StatelessWidget {
               data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
               child: child!,
             ),
+      scrollBehavior: MyCustomScrollBehavior(),
     );
   }
 }

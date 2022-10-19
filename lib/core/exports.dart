@@ -1,6 +1,7 @@
 export 'dart:io';
 export 'dart:async';
 export 'dart:convert';
+export 'dart:ui' show PointerDeviceKind;
 export 'package:intl/intl.dart' show NumberFormat, DateFormat;
 export 'package:flutter/foundation.dart';
 export 'package:flutter/material.dart';
