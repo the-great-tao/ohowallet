@@ -36,6 +36,9 @@ class WalletUnlockScreenController extends BaseController {
 
   Future<void> eraseData() async {
     await appDataService.reset();
+    await appDataService.init();
+    await isarService.isar.close(deleteFromDisk: true);
+    await isarService.init();
     Get.offAll(() => WelcomeScreen());
   }
 }
