@@ -408,7 +408,7 @@ class TransactionHistoryScreen
                           OHOText(
                             'Pull to refresh History page or tap on a pending Transaction to refresh it.',
                           ),
-                          SizedBox(height: 50.h),
+                          SizedBox(height: 100.h),
                           transactionHistoryItem,
                         ],
                       );
