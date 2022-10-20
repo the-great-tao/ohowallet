@@ -429,6 +429,8 @@ class TransactionHistoryScreen
                       ),
                     ],
                   ),
+                  noMoreItemsIndicatorBuilder: (context) =>
+                      SizedBox(height: 1000.h),
                 ),
                 separatorBuilder: (context, index) {
                   return SizedBox(height: 50.h);
