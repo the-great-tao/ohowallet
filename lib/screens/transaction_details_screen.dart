@@ -92,9 +92,9 @@ class TransactionDetailsScreenController extends BaseController {
   Future<void> onUpdateTransaction({
     OHOTransactionStatus? status,
     OHOTransactionType? type,
+    String? tokenSymbol,
     double? tokenAmount,
     int? tokenDecimals,
-    String? tokenName,
     BigInt? tokenId,
     String? from,
     String? to,
@@ -112,18 +112,18 @@ class TransactionDetailsScreenController extends BaseController {
       type_.value = type;
     }
 
-    if (tokenAmount != null && tokenDecimals != null && tokenName != null) {
+    if (tokenSymbol != null && tokenAmount != null && tokenDecimals != null) {
       tokenAmount_.value = NumberFormat.currency(
         locale: 'en_US',
-        name: tokenName,
+        name: tokenSymbol,
         decimalDigits: tokenDecimals,
         customPattern: '#,###.# \u00a4',
       ).format(tokenAmount);
     }
 
-    if (tokenId != null && tokenName != null) {
+    if (tokenId != null && tokenSymbol != null) {
       tokenId_.value =
-          '#${NumberFormat('000000000').format(tokenId.toInt())} $tokenName';
+          '#${NumberFormat('000000000').format(tokenId.toInt())} $tokenSymbol';
     }
 
     if (from != null) {
@@ -158,6 +158,22 @@ class TransactionDetailsScreenController extends BaseController {
         customPattern: '#,###.# \u00a4',
       ).format(feeCharged);
     }
+  }
+
+  Future<void> launchAddress(String address) async {
+    final selectedNetwork = walletService.selectedNetworkInstance;
+    if (selectedNetwork == null) return;
+    final blockExplorerUrl = selectedNetwork.blockExplorerUrl;
+    if (blockExplorerUrl.isEmpty) return;
+    launchUrl(Uri.parse('$blockExplorerUrl/address/$address'));
+  }
+
+  Future<void> copyTransactionHash(String address) async {
+    await FlutterClipboard.copy(address);
+    showToast(
+      message: 'Transaction Hash was copied to clipboard.',
+      backgroundColor: OHOColors.statusSuccess,
+    );
   }
 }
 
@@ -196,22 +212,6 @@ class TransactionDetailsScreen
       FontAwesomeIcons.copy,
       size: 50.sp,
       color: themeService.textColor,
-    );
-  }
-
-  Future<void> launchAddress(String address) async {
-    final selectedNetwork = walletService.selectedNetworkInstance;
-    if (selectedNetwork == null) return;
-    final blockExplorerUrl = selectedNetwork.blockExplorerUrl;
-    if (blockExplorerUrl.isEmpty) return;
-    launchUrl(Uri.parse('$blockExplorerUrl/address/$address'));
-  }
-
-  Future<void> copyTransactionHash(String address) async {
-    await FlutterClipboard.copy(address);
-    showToast(
-      message: 'Transaction Hash was copied to clipboard.',
-      backgroundColor: OHOColors.statusSuccess,
     );
   }
 
@@ -329,7 +329,7 @@ class TransactionDetailsScreen
                         controller.from_.value == ''
                             ? Container()
                             : GestureDetector(
-                                onTap: () => launchAddress(
+                                onTap: () => controller.launchAddress(
                                   controller.from_.value,
                                 ),
                                 child: launchUrlIcon,
@@ -363,7 +363,7 @@ class TransactionDetailsScreen
                         controller.to_.value == ''
                             ? Container()
                             : GestureDetector(
-                                onTap: () => launchAddress(
+                                onTap: () => controller.launchAddress(
                                   controller.to_.value,
                                 ),
                                 child: launchUrlIcon,
@@ -399,7 +399,7 @@ class TransactionDetailsScreen
                         controller.hash_.value == ''
                             ? Container()
                             : GestureDetector(
-                                onTap: () => copyTransactionHash(
+                                onTap: () => controller.copyTransactionHash(
                                   controller.hash_.value,
                                 ),
                                 child: copyIcon,

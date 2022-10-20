@@ -147,11 +147,12 @@ class TokenSendScreenController extends BaseController {
     showEstimation.value = false;
     canSend.value = true;
 
-    final networkKey = walletService.selectedNetwork.value;
     final network = walletService.selectedNetworkInstance!;
+    final networkKey = walletService.selectedNetwork.value;
+    final networkCurrencySymbol = network.currencySymbol;
     final chainId = network.chainId.toInt();
     final token = tokenController.token!;
-    final tokenName = token.symbol;
+    final tokenSymbol = token.symbol;
 
     final from = walletService.selectedAccountInstance!.address.hexEip55;
     final to = receivingAddressController.address.value;
@@ -270,23 +271,27 @@ class TokenSendScreenController extends BaseController {
       type: OHOTransactionType.sendToken,
       from: from,
       to: to,
+      tokenSymbol: tokenSymbol,
       tokenAmount: double.parse(tokenAmount_),
       tokenDecimals: tokenDecimals > 6 ? 6 : tokenDecimals,
-      tokenName: tokenName,
       network: network,
     );
 
     var transaction = OHOTransaction(
       status: OHOTransactionStatus.pending,
       type: OHOTransactionType.sendToken,
+      submitDate: DateTime.now(),
       networkKey: networkKey,
+      networkCurrencySymbol: networkCurrencySymbol,
       tokenKey: tokenKey.value,
       tokenAddress: token.address.hexEip55,
+      tokenSymbol: tokenSymbol,
+      tokenAmount: sendAmount.getInWei.toString(),
+      tokenDecimals: tokenDecimals,
       from: fromAddress.hexEip55,
       to: toAddress.hexEip55,
       gasPrice: gasPrice.getInWei.toString(),
       value: sendNativeToken ? sendAmount.getInWei.toString() : '0',
-      tokenAmount: !sendNativeToken ? sendAmount.getInWei.toString() : '0',
     );
     String? hash;
 
@@ -376,6 +381,15 @@ class TokenSendScreenController extends BaseController {
         ..blockDate = blockTimestamp
         ..gasUsed = gasUsed.toString()
         ..effectiveGasPrice = effectiveGasPrice.toString();
+      await isarService.isar.writeTxn(() async {
+        await isarService.ohoTransactions.put(transaction);
+      });
+
+      final txInformation = await web3Client.getTransactionByHash(hash);
+
+      transaction = transaction
+        ..nonce = txInformation.nonce
+        ..input = bytesToHex(txInformation.input);
       await isarService.isar.writeTxn(() async {
         await isarService.ohoTransactions.put(transaction);
       });

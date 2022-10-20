@@ -52,45 +52,75 @@ const OHOTransactionSchema = CollectionSchema(
       name: r'hash',
       type: IsarType.string,
     ),
-    r'networkKey': PropertySchema(
+    r'input': PropertySchema(
       id: 7,
+      name: r'input',
+      type: IsarType.string,
+    ),
+    r'networkCurrencySymbol': PropertySchema(
+      id: 8,
+      name: r'networkCurrencySymbol',
+      type: IsarType.string,
+    ),
+    r'networkKey': PropertySchema(
+      id: 9,
       name: r'networkKey',
       type: IsarType.string,
     ),
+    r'nonce': PropertySchema(
+      id: 10,
+      name: r'nonce',
+      type: IsarType.long,
+    ),
     r'status': PropertySchema(
-      id: 8,
+      id: 11,
       name: r'status',
       type: IsarType.string,
       enumMap: _OHOTransactionstatusEnumValueMap,
     ),
+    r'submitDate': PropertySchema(
+      id: 12,
+      name: r'submitDate',
+      type: IsarType.dateTime,
+    ),
     r'to': PropertySchema(
-      id: 9,
+      id: 13,
       name: r'to',
       type: IsarType.string,
     ),
     r'tokenAddress': PropertySchema(
-      id: 10,
+      id: 14,
       name: r'tokenAddress',
       type: IsarType.string,
     ),
     r'tokenAmount': PropertySchema(
-      id: 11,
+      id: 15,
       name: r'tokenAmount',
       type: IsarType.string,
     ),
+    r'tokenDecimals': PropertySchema(
+      id: 16,
+      name: r'tokenDecimals',
+      type: IsarType.long,
+    ),
     r'tokenKey': PropertySchema(
-      id: 12,
+      id: 17,
       name: r'tokenKey',
       type: IsarType.string,
     ),
+    r'tokenSymbol': PropertySchema(
+      id: 18,
+      name: r'tokenSymbol',
+      type: IsarType.string,
+    ),
     r'type': PropertySchema(
-      id: 13,
+      id: 19,
       name: r'type',
       type: IsarType.string,
       enumMap: _OHOTransactiontypeEnumValueMap,
     ),
     r'value': PropertySchema(
-      id: 14,
+      id: 20,
       name: r'value',
       type: IsarType.string,
     )
@@ -101,6 +131,45 @@ const OHOTransactionSchema = CollectionSchema(
   deserializeProp: _oHOTransactionDeserializeProp,
   idName: r'id',
   indexes: {
+    r'status': IndexSchema(
+      id: -107785170620420283,
+      name: r'status',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'status',
+          type: IndexType.value,
+          caseSensitive: true,
+        )
+      ],
+    ),
+    r'type': IndexSchema(
+      id: 5117122708147080838,
+      name: r'type',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'type',
+          type: IndexType.value,
+          caseSensitive: true,
+        )
+      ],
+    ),
+    r'submitDate': IndexSchema(
+      id: -803306090242603252,
+      name: r'submitDate',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'submitDate',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
+    ),
     r'networkKey': IndexSchema(
       id: -7056945717654388473,
       name: r'networkKey',
@@ -251,6 +320,18 @@ int _oHOTransactionEstimateSize(
     }
   }
   {
+    final value = object.input;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.networkCurrencySymbol;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.networkKey;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -281,6 +362,12 @@ int _oHOTransactionEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.tokenSymbol;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.type.name.length * 3;
   {
     final value = object.value;
@@ -304,14 +391,20 @@ void _oHOTransactionSerialize(
   writer.writeString(offsets[4], object.gasPrice);
   writer.writeString(offsets[5], object.gasUsed);
   writer.writeString(offsets[6], object.hash);
-  writer.writeString(offsets[7], object.networkKey);
-  writer.writeString(offsets[8], object.status.name);
-  writer.writeString(offsets[9], object.to);
-  writer.writeString(offsets[10], object.tokenAddress);
-  writer.writeString(offsets[11], object.tokenAmount);
-  writer.writeString(offsets[12], object.tokenKey);
-  writer.writeString(offsets[13], object.type.name);
-  writer.writeString(offsets[14], object.value);
+  writer.writeString(offsets[7], object.input);
+  writer.writeString(offsets[8], object.networkCurrencySymbol);
+  writer.writeString(offsets[9], object.networkKey);
+  writer.writeLong(offsets[10], object.nonce);
+  writer.writeString(offsets[11], object.status.name);
+  writer.writeDateTime(offsets[12], object.submitDate);
+  writer.writeString(offsets[13], object.to);
+  writer.writeString(offsets[14], object.tokenAddress);
+  writer.writeString(offsets[15], object.tokenAmount);
+  writer.writeLong(offsets[16], object.tokenDecimals);
+  writer.writeString(offsets[17], object.tokenKey);
+  writer.writeString(offsets[18], object.tokenSymbol);
+  writer.writeString(offsets[19], object.type.name);
+  writer.writeString(offsets[20], object.value);
 }
 
 OHOTransaction _oHOTransactionDeserialize(
@@ -328,18 +421,24 @@ OHOTransaction _oHOTransactionDeserialize(
     gasPrice: reader.readStringOrNull(offsets[4]),
     gasUsed: reader.readStringOrNull(offsets[5]),
     hash: reader.readStringOrNull(offsets[6]),
-    networkKey: reader.readStringOrNull(offsets[7]),
+    input: reader.readStringOrNull(offsets[7]),
+    networkCurrencySymbol: reader.readStringOrNull(offsets[8]),
+    networkKey: reader.readStringOrNull(offsets[9]),
+    nonce: reader.readLongOrNull(offsets[10]),
     status: _OHOTransactionstatusValueEnumMap[
-            reader.readStringOrNull(offsets[8])] ??
+            reader.readStringOrNull(offsets[11])] ??
         OHOTransactionStatus.none,
-    to: reader.readStringOrNull(offsets[9]),
-    tokenAddress: reader.readStringOrNull(offsets[10]),
-    tokenAmount: reader.readStringOrNull(offsets[11]),
-    tokenKey: reader.readStringOrNull(offsets[12]),
+    submitDate: reader.readDateTimeOrNull(offsets[12]),
+    to: reader.readStringOrNull(offsets[13]),
+    tokenAddress: reader.readStringOrNull(offsets[14]),
+    tokenAmount: reader.readStringOrNull(offsets[15]),
+    tokenDecimals: reader.readLongOrNull(offsets[16]),
+    tokenKey: reader.readStringOrNull(offsets[17]),
+    tokenSymbol: reader.readStringOrNull(offsets[18]),
     type:
-        _OHOTransactiontypeValueEnumMap[reader.readStringOrNull(offsets[13])] ??
+        _OHOTransactiontypeValueEnumMap[reader.readStringOrNull(offsets[19])] ??
             OHOTransactionType.none,
-    value: reader.readStringOrNull(offsets[14]),
+    value: reader.readStringOrNull(offsets[20]),
   );
   object.id = id;
   return object;
@@ -369,22 +468,34 @@ P _oHOTransactionDeserializeProp<P>(
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
-      return (_OHOTransactionstatusValueEnumMap[
-              reader.readStringOrNull(offset)] ??
-          OHOTransactionStatus.none) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 11:
-      return (reader.readStringOrNull(offset)) as P;
+      return (_OHOTransactionstatusValueEnumMap[
+              reader.readStringOrNull(offset)] ??
+          OHOTransactionStatus.none) as P;
     case 12:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 13:
+      return (reader.readStringOrNull(offset)) as P;
+    case 14:
+      return (reader.readStringOrNull(offset)) as P;
+    case 15:
+      return (reader.readStringOrNull(offset)) as P;
+    case 16:
+      return (reader.readLongOrNull(offset)) as P;
+    case 17:
+      return (reader.readStringOrNull(offset)) as P;
+    case 18:
+      return (reader.readStringOrNull(offset)) as P;
+    case 19:
       return (_OHOTransactiontypeValueEnumMap[
               reader.readStringOrNull(offset)] ??
           OHOTransactionType.none) as P;
-    case 14:
+    case 20:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -493,6 +604,30 @@ extension OHOTransactionQueryWhereSort
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhere> anyStatus() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'status'),
+      );
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhere> anyType() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'type'),
+      );
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhere> anySubmitDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'submitDate'),
+      );
     });
   }
 
@@ -619,6 +754,400 @@ extension OHOTransactionQueryWhere
         lower: lowerId,
         includeLower: includeLower,
         upper: upperId,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause> statusEqualTo(
+      OHOTransactionStatus status) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'status',
+        value: [status],
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      statusNotEqualTo(OHOTransactionStatus status) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'status',
+              lower: [],
+              upper: [status],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'status',
+              lower: [status],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'status',
+              lower: [status],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'status',
+              lower: [],
+              upper: [status],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      statusGreaterThan(
+    OHOTransactionStatus status, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'status',
+        lower: [status],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      statusLessThan(
+    OHOTransactionStatus status, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'status',
+        lower: [],
+        upper: [status],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause> statusBetween(
+    OHOTransactionStatus lowerStatus,
+    OHOTransactionStatus upperStatus, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'status',
+        lower: [lowerStatus],
+        includeLower: includeLower,
+        upper: [upperStatus],
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      statusStartsWith(String StatusPrefix) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'status',
+        lower: [StatusPrefix],
+        upper: ['$StatusPrefix\u{FFFFF}'],
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      statusIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'status',
+        value: [''],
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      statusIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'status',
+              upper: [''],
+            ))
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'status',
+              lower: [''],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'status',
+              lower: [''],
+            ))
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'status',
+              upper: [''],
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause> typeEqualTo(
+      OHOTransactionType type) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'type',
+        value: [type],
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      typeNotEqualTo(OHOTransactionType type) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'type',
+              lower: [],
+              upper: [type],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'type',
+              lower: [type],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'type',
+              lower: [type],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'type',
+              lower: [],
+              upper: [type],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      typeGreaterThan(
+    OHOTransactionType type, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'type',
+        lower: [type],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause> typeLessThan(
+    OHOTransactionType type, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'type',
+        lower: [],
+        upper: [type],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause> typeBetween(
+    OHOTransactionType lowerType,
+    OHOTransactionType upperType, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'type',
+        lower: [lowerType],
+        includeLower: includeLower,
+        upper: [upperType],
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      typeStartsWith(String TypePrefix) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'type',
+        lower: [TypePrefix],
+        upper: ['$TypePrefix\u{FFFFF}'],
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      typeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'type',
+        value: [''],
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      typeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'type',
+              upper: [''],
+            ))
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'type',
+              lower: [''],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'type',
+              lower: [''],
+            ))
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'type',
+              upper: [''],
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      submitDateIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'submitDate',
+        value: [null],
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      submitDateIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'submitDate',
+        lower: [null],
+        includeLower: false,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      submitDateEqualTo(DateTime? submitDate) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'submitDate',
+        value: [submitDate],
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      submitDateNotEqualTo(DateTime? submitDate) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'submitDate',
+              lower: [],
+              upper: [submitDate],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'submitDate',
+              lower: [submitDate],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'submitDate',
+              lower: [submitDate],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'submitDate',
+              lower: [],
+              upper: [submitDate],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      submitDateGreaterThan(
+    DateTime? submitDate, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'submitDate',
+        lower: [submitDate],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      submitDateLessThan(
+    DateTime? submitDate, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'submitDate',
+        lower: [],
+        upper: [submitDate],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterWhereClause>
+      submitDateBetween(
+    DateTime? lowerSubmitDate,
+    DateTime? upperSubmitDate, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'submitDate',
+        lower: [lowerSubmitDate],
+        includeLower: includeLower,
+        upper: [upperSubmitDate],
         includeUpper: includeUpper,
       ));
     });
@@ -2704,6 +3233,315 @@ extension OHOTransactionQueryFilter
   }
 
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      inputIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'input',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      inputIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'input',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      inputEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'input',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      inputGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'input',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      inputLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'input',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      inputBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'input',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      inputStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'input',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      inputEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'input',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      inputContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'input',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      inputMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'input',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      inputIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'input',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      inputIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'input',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      networkCurrencySymbolIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'networkCurrencySymbol',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      networkCurrencySymbolIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'networkCurrencySymbol',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      networkCurrencySymbolEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'networkCurrencySymbol',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      networkCurrencySymbolGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'networkCurrencySymbol',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      networkCurrencySymbolLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'networkCurrencySymbol',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      networkCurrencySymbolBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'networkCurrencySymbol',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      networkCurrencySymbolStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'networkCurrencySymbol',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      networkCurrencySymbolEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'networkCurrencySymbol',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      networkCurrencySymbolContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'networkCurrencySymbol',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      networkCurrencySymbolMatches(String pattern,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'networkCurrencySymbol',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      networkCurrencySymbolIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'networkCurrencySymbol',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      networkCurrencySymbolIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'networkCurrencySymbol',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
       networkKeyIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2858,6 +3696,80 @@ extension OHOTransactionQueryFilter
   }
 
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      nonceIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'nonce',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      nonceIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'nonce',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      nonceEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'nonce',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      nonceGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'nonce',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      nonceLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'nonce',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      nonceBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'nonce',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
       statusEqualTo(
     OHOTransactionStatus value, {
     bool caseSensitive = true,
@@ -2989,6 +3901,80 @@ extension OHOTransactionQueryFilter
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'status',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      submitDateIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'submitDate',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      submitDateIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'submitDate',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      submitDateEqualTo(DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'submitDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      submitDateGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'submitDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      submitDateLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'submitDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      submitDateBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'submitDate',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -3455,6 +4441,80 @@ extension OHOTransactionQueryFilter
   }
 
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenDecimalsIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'tokenDecimals',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenDecimalsIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'tokenDecimals',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenDecimalsEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'tokenDecimals',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenDecimalsGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'tokenDecimals',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenDecimalsLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'tokenDecimals',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenDecimalsBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'tokenDecimals',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
       tokenKeyIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -3603,6 +4663,160 @@ extension OHOTransactionQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'tokenKey',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenSymbolIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'tokenSymbol',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenSymbolIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'tokenSymbol',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenSymbolEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'tokenSymbol',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenSymbolGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'tokenSymbol',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenSymbolLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'tokenSymbol',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenSymbolBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'tokenSymbol',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenSymbolStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'tokenSymbol',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenSymbolEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'tokenSymbol',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenSymbolContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'tokenSymbol',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenSymbolMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'tokenSymbol',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenSymbolIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'tokenSymbol',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterFilterCondition>
+      tokenSymbolIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'tokenSymbol',
         value: '',
       ));
     });
@@ -3998,6 +5212,32 @@ extension OHOTransactionQuerySortBy
     });
   }
 
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy> sortByInput() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'input', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy> sortByInputDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'input', Sort.desc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
+      sortByNetworkCurrencySymbol() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'networkCurrencySymbol', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
+      sortByNetworkCurrencySymbolDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'networkCurrencySymbol', Sort.desc);
+    });
+  }
+
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
       sortByNetworkKey() {
     return QueryBuilder.apply(this, (query) {
@@ -4012,6 +5252,18 @@ extension OHOTransactionQuerySortBy
     });
   }
 
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy> sortByNonce() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nonce', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy> sortByNonceDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nonce', Sort.desc);
+    });
+  }
+
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy> sortByStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.asc);
@@ -4022,6 +5274,20 @@ extension OHOTransactionQuerySortBy
       sortByStatusDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.desc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
+      sortBySubmitDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'submitDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
+      sortBySubmitDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'submitDate', Sort.desc);
     });
   }
 
@@ -4065,6 +5331,20 @@ extension OHOTransactionQuerySortBy
     });
   }
 
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
+      sortByTokenDecimals() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tokenDecimals', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
+      sortByTokenDecimalsDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tokenDecimals', Sort.desc);
+    });
+  }
+
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy> sortByTokenKey() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tokenKey', Sort.asc);
@@ -4075,6 +5355,20 @@ extension OHOTransactionQuerySortBy
       sortByTokenKeyDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tokenKey', Sort.desc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
+      sortByTokenSymbol() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tokenSymbol', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
+      sortByTokenSymbolDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tokenSymbol', Sort.desc);
     });
   }
 
@@ -4208,6 +5502,32 @@ extension OHOTransactionQuerySortThenBy
     });
   }
 
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy> thenByInput() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'input', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy> thenByInputDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'input', Sort.desc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
+      thenByNetworkCurrencySymbol() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'networkCurrencySymbol', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
+      thenByNetworkCurrencySymbolDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'networkCurrencySymbol', Sort.desc);
+    });
+  }
+
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
       thenByNetworkKey() {
     return QueryBuilder.apply(this, (query) {
@@ -4222,6 +5542,18 @@ extension OHOTransactionQuerySortThenBy
     });
   }
 
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy> thenByNonce() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nonce', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy> thenByNonceDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nonce', Sort.desc);
+    });
+  }
+
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy> thenByStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.asc);
@@ -4232,6 +5564,20 @@ extension OHOTransactionQuerySortThenBy
       thenByStatusDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.desc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
+      thenBySubmitDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'submitDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
+      thenBySubmitDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'submitDate', Sort.desc);
     });
   }
 
@@ -4275,6 +5621,20 @@ extension OHOTransactionQuerySortThenBy
     });
   }
 
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
+      thenByTokenDecimals() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tokenDecimals', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
+      thenByTokenDecimalsDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tokenDecimals', Sort.desc);
+    });
+  }
+
   QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy> thenByTokenKey() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tokenKey', Sort.asc);
@@ -4285,6 +5645,20 @@ extension OHOTransactionQuerySortThenBy
       thenByTokenKeyDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tokenKey', Sort.desc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
+      thenByTokenSymbol() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tokenSymbol', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QAfterSortBy>
+      thenByTokenSymbolDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tokenSymbol', Sort.desc);
     });
   }
 
@@ -4365,6 +5739,21 @@ extension OHOTransactionQueryWhereDistinct
     });
   }
 
+  QueryBuilder<OHOTransaction, OHOTransaction, QDistinct> distinctByInput(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'input', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QDistinct>
+      distinctByNetworkCurrencySymbol({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'networkCurrencySymbol',
+          caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<OHOTransaction, OHOTransaction, QDistinct> distinctByNetworkKey(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -4372,10 +5761,23 @@ extension OHOTransactionQueryWhereDistinct
     });
   }
 
+  QueryBuilder<OHOTransaction, OHOTransaction, QDistinct> distinctByNonce() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'nonce');
+    });
+  }
+
   QueryBuilder<OHOTransaction, OHOTransaction, QDistinct> distinctByStatus(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'status', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QDistinct>
+      distinctBySubmitDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'submitDate');
     });
   }
 
@@ -4400,10 +5802,24 @@ extension OHOTransactionQueryWhereDistinct
     });
   }
 
+  QueryBuilder<OHOTransaction, OHOTransaction, QDistinct>
+      distinctByTokenDecimals() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'tokenDecimals');
+    });
+  }
+
   QueryBuilder<OHOTransaction, OHOTransaction, QDistinct> distinctByTokenKey(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'tokenKey', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<OHOTransaction, OHOTransaction, QDistinct> distinctByTokenSymbol(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'tokenSymbol', caseSensitive: caseSensitive);
     });
   }
 
@@ -4474,9 +5890,28 @@ extension OHOTransactionQueryProperty
     });
   }
 
+  QueryBuilder<OHOTransaction, String?, QQueryOperations> inputProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'input');
+    });
+  }
+
+  QueryBuilder<OHOTransaction, String?, QQueryOperations>
+      networkCurrencySymbolProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'networkCurrencySymbol');
+    });
+  }
+
   QueryBuilder<OHOTransaction, String?, QQueryOperations> networkKeyProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'networkKey');
+    });
+  }
+
+  QueryBuilder<OHOTransaction, int?, QQueryOperations> nonceProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'nonce');
     });
   }
 
@@ -4484,6 +5919,13 @@ extension OHOTransactionQueryProperty
       statusProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'status');
+    });
+  }
+
+  QueryBuilder<OHOTransaction, DateTime?, QQueryOperations>
+      submitDateProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'submitDate');
     });
   }
 
@@ -4507,9 +5949,22 @@ extension OHOTransactionQueryProperty
     });
   }
 
+  QueryBuilder<OHOTransaction, int?, QQueryOperations> tokenDecimalsProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'tokenDecimals');
+    });
+  }
+
   QueryBuilder<OHOTransaction, String?, QQueryOperations> tokenKeyProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'tokenKey');
+    });
+  }
+
+  QueryBuilder<OHOTransaction, String?, QQueryOperations>
+      tokenSymbolProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'tokenSymbol');
     });
   }
 
@@ -4535,10 +5990,16 @@ OHOTransaction _$OHOTransactionFromJson(Map<String, dynamic> json) =>
     OHOTransaction(
       status: $enumDecode(_$OHOTransactionStatusEnumMap, json['status']),
       type: $enumDecode(_$OHOTransactionTypeEnumMap, json['type']),
+      submitDate: json['submitDate'] == null
+          ? null
+          : DateTime.parse(json['submitDate'] as String),
       networkKey: json['networkKey'] as String?,
+      networkCurrencySymbol: json['networkCurrencySymbol'] as String?,
       tokenKey: json['tokenKey'] as String?,
       tokenAddress: json['tokenAddress'] as String?,
+      tokenSymbol: json['tokenSymbol'] as String?,
       tokenAmount: json['tokenAmount'] as String?,
+      tokenDecimals: json['tokenDecimals'] as int?,
       from: json['from'] as String?,
       to: json['to'] as String?,
       hash: json['hash'] as String?,
@@ -4546,6 +6007,8 @@ OHOTransaction _$OHOTransactionFromJson(Map<String, dynamic> json) =>
       blockDate: json['blockDate'] == null
           ? null
           : DateTime.parse(json['blockDate'] as String),
+      nonce: json['nonce'] as int?,
+      input: json['input'] as String?,
       value: json['value'] as String?,
       gasPrice: json['gasPrice'] as String?,
       effectiveGasPrice: json['effectiveGasPrice'] as String?,
@@ -4557,16 +6020,22 @@ Map<String, dynamic> _$OHOTransactionToJson(OHOTransaction instance) =>
       'id': instance.id,
       'status': _$OHOTransactionStatusEnumMap[instance.status]!,
       'type': _$OHOTransactionTypeEnumMap[instance.type]!,
+      'submitDate': instance.submitDate?.toIso8601String(),
       'networkKey': instance.networkKey,
+      'networkCurrencySymbol': instance.networkCurrencySymbol,
       'tokenKey': instance.tokenKey,
       'tokenAddress': instance.tokenAddress,
+      'tokenSymbol': instance.tokenSymbol,
+      'tokenAmount': instance.tokenAmount,
+      'tokenDecimals': instance.tokenDecimals,
       'from': instance.from,
       'to': instance.to,
       'hash': instance.hash,
       'blockNumber': instance.blockNumber,
       'blockDate': instance.blockDate?.toIso8601String(),
+      'nonce': instance.nonce,
+      'input': instance.input,
       'value': instance.value,
-      'tokenAmount': instance.tokenAmount,
       'gasPrice': instance.gasPrice,
       'effectiveGasPrice': instance.effectiveGasPrice,
       'gasUsed': instance.gasUsed,

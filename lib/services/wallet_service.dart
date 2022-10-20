@@ -9,12 +9,28 @@ enum OHOTransactionStatus {
   failed,
 }
 
+const ohoTransactionStatusEnumValueMap = {
+  OHOTransactionStatus.none: 'None',
+  OHOTransactionStatus.sending: 'Sending',
+  OHOTransactionStatus.pending: 'Pending',
+  OHOTransactionStatus.pendingHistory: 'Pending',
+  OHOTransactionStatus.successful: 'Successful',
+  OHOTransactionStatus.failed: 'Failed',
+};
+
 enum OHOTransactionType {
   none,
   swapToken,
   sendToken,
   sendNFT,
 }
+
+const ohoTransactionTypeEnumValueMap = {
+  OHOTransactionType.none: 'None',
+  OHOTransactionType.swapToken: 'Swap Token',
+  OHOTransactionType.sendToken: 'Send Token',
+  OHOTransactionType.sendNFT: 'Send NFT',
+};
 
 enum AlchemyAssetTransferCategory {
   external,
@@ -28,9 +44,9 @@ enum AlchemyAssetTransferCategory {
 typedef OnUpdateTransaction = Future<void> Function({
   OHOTransactionStatus? status,
   OHOTransactionType? type,
+  String? tokenSymbol,
   double? tokenAmount,
   int? tokenDecimals,
-  String? tokenName,
   BigInt? tokenId,
   String? from,
   String? to,
@@ -316,9 +332,9 @@ class WalletService extends GetxService {
   Future<void> updateTransaction({
     OHOTransactionStatus? status,
     OHOTransactionType? type,
+    String? tokenSymbol,
     double? tokenAmount,
     int? tokenDecimals,
-    String? tokenName,
     BigInt? tokenId,
     String? from,
     String? to,
@@ -332,9 +348,9 @@ class WalletService extends GetxService {
     onUpdateTransaction!(
       status: status,
       type: type,
+      tokenSymbol: tokenSymbol,
       tokenAmount: tokenAmount,
       tokenDecimals: tokenDecimals,
-      tokenName: tokenName,
       tokenId: tokenId,
       from: from,
       to: to,
