@@ -9,7 +9,7 @@ enum OHOTransactionStatus {
   failed,
 }
 
-const ohoTransactionStatusEnumValueMap = {
+const ohoTransactionStatusStringMap = {
   OHOTransactionStatus.none: 'None',
   OHOTransactionStatus.sending: 'Sending',
   OHOTransactionStatus.pending: 'Pending',
@@ -25,7 +25,7 @@ enum OHOTransactionType {
   sendNFT,
 }
 
-const ohoTransactionTypeEnumValueMap = {
+const ohoTransactionTypeStringMap = {
   OHOTransactionType.none: 'None',
   OHOTransactionType.swapToken: 'Swap Token',
   OHOTransactionType.sendToken: 'Send Token',

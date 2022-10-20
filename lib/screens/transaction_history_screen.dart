@@ -2,6 +2,7 @@ import 'package:ohowallet/core/exports.dart';
 
 class TransactionHistoryItemController extends BaseController {
   OHOTransaction transaction;
+  var refreshing = true.obs;
 
   TransactionHistoryItemController({
     required this.transaction,
@@ -10,12 +11,22 @@ class TransactionHistoryItemController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    // refreshTransaction();
+    refreshTransaction();
   }
 
-  String get status => ohoTransactionStatusEnumValueMap[transaction.status]!;
+  String get status => ohoTransactionStatusStringMap[transaction.status]!;
 
-  String get type => ohoTransactionTypeEnumValueMap[transaction.type]!;
+  Color get statusColor {
+    if (transaction.status == OHOTransactionStatus.successful) {
+      return OHOColors.green;
+    }
+    if (transaction.status == OHOTransactionStatus.failed) {
+      return OHOColors.pink;
+    }
+    return themeService.textColor;
+  }
+
+  String get type => ohoTransactionTypeStringMap[transaction.type]!;
 
   String? get from => getShortAddress(transaction.from);
 
@@ -94,6 +105,7 @@ class TransactionHistoryItemController extends BaseController {
   }
 
   Future<void> refreshTransaction() async {
+    refreshing.value = true;
     try {
       final network = walletService.getNetworkByKey(transaction.networkKey!);
       final web3Client = Web3Client(network!.rpcUrl, Client());
@@ -127,6 +139,7 @@ class TransactionHistoryItemController extends BaseController {
     } catch (error) {
       print(error);
     }
+    refreshing.value = false;
   }
 
   Future<void> launchAddress(String address) async {
@@ -182,72 +195,95 @@ class TransactionHistoryItem
           highlightColor: themeService.listItemInkwellHighlightColor,
           splashColor: themeService.listItemInkwellSplashColor,
           borderRadius: BorderRadius.circular(50.r),
-          onTap: () {},
-          child: Container(
-            padding: EdgeInsets.all(50.r),
-            decoration: BoxDecoration(
-              color: themeService.textFieldBackgroundColor.withOpacity(0.5),
-              border: Border.all(
-                  color: themeService.textFieldBorderColor, width: 5.r),
-              borderRadius: BorderRadius.circular(50.r),
-            ),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: OHOText(
-                    controller.submitDate!,
-                    textAlign: TextAlign.left,
-                    fontSize: 40.sp,
-                  ),
+          onTap: () => controller.refreshTransaction(),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(50.r),
+                decoration: BoxDecoration(
+                  color: themeService.textFieldBackgroundColor.withOpacity(0.5),
+                  border: Border.all(
+                      color: themeService.textFieldBorderColor, width: 5.r),
+                  borderRadius: BorderRadius.circular(50.r),
                 ),
-                SizedBox(height: 20.h),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
                   children: [
-                    OHOText(
-                      controller.type,
-                      color: OHOColors.peach,
-                      fontWeight: FontWeight.w500,
+                    SizedBox(
+                      width: double.infinity,
+                      child: OHOText(
+                        controller.submitDate!,
+                        textAlign: TextAlign.left,
+                        fontSize: 40.sp,
+                      ),
                     ),
-                    Expanded(child: Container()),
-                    OHOText(
-                      controller.tokenAmount!,
-                      fontWeight: FontWeight.w500,
+                    SizedBox(height: 20.h),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        OHOText(
+                          controller.type,
+                          color: OHOColors.peach,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        Expanded(child: Container()),
+                        OHOText(
+                          controller.tokenAmount!,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                SizedBox(height: 20.h),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    OHOText(
-                      controller.status,
-                      color: OHOColors.green,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    Expanded(child: Container()),
-                    controller.transaction.hash == null
-                        ? spinKitFadingCircle
-                        : Row(
-                            children: [
-                              OHOText(
-                                controller.hash!,
+                    SizedBox(height: 20.h),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        controller.transaction.status ==
+                                    OHOTransactionStatus.successful ||
+                                controller.transaction.status ==
+                                    OHOTransactionStatus.failed
+                            ? OHOText(
+                                controller.status,
+                                color: controller.statusColor,
                                 fontWeight: FontWeight.w500,
+                              )
+                            : Row(
+                                children: [
+                                  OHOText(
+                                    controller.status,
+                                    color: controller.statusColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  SizedBox(width: 20.w),
+                                  spinKitFadingCircle,
+                                ],
                               ),
-                              SizedBox(width: 20.w),
-                              GestureDetector(
-                                onTap: () => controller.copyTransactionHash(
-                                  controller.transaction.hash!,
-                                ),
-                                child: copyIcon,
+                        Expanded(child: Container()),
+                        controller.transaction.hash == null
+                            ? spinKitFadingCircle
+                            : Row(
+                                children: [
+                                  OHOText(
+                                    controller.hash!,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  SizedBox(width: 20.w),
+                                  GestureDetector(
+                                    onTap: () => controller.copyTransactionHash(
+                                      controller.transaction.hash!,
+                                    ),
+                                    child: copyIcon,
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              !controller.refreshing.value
+                  ? Container()
+                  : SpinKitFadingCircle(color: themeService.textColor),
+            ],
           ),
         ),
       ),
@@ -364,6 +400,10 @@ class TransactionHistoryScreen
                         children: [
                           SizedBox(height: 50.h),
                           OHOHeaderText('History'),
+                          SizedBox(height: 50.h),
+                          OHOText(
+                            'Pull to refresh History page or tap on a Transaction to refresh it.',
+                          ),
                           SizedBox(height: 50.h),
                           transactionHistoryItem,
                         ],
