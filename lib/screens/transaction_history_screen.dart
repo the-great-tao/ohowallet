@@ -18,10 +18,10 @@ class TransactionHistoryItemController extends BaseController {
 
   Color get statusColor {
     if (transaction.status == OHOTransactionStatus.successful) {
-      return OHOColors.green;
+      return OHOColors.statusSuccess;
     }
     if (transaction.status == OHOTransactionStatus.failed) {
-      return OHOColors.pink;
+      return OHOColors.statusError;
     }
     return themeService.textColor;
   }
@@ -264,12 +264,13 @@ class TransactionHistoryItem
                       children: [
                         OHOText(
                           controller.type,
-                          color: OHOColors.peach,
+                          color: OHOColors.pink,
                           fontWeight: FontWeight.w500,
                         ),
                         Expanded(child: Container()),
                         OHOText(
                           controller.tokenAmount!,
+                          color: OHOColors.green,
                           fontWeight: FontWeight.w500,
                         ),
                       ],
