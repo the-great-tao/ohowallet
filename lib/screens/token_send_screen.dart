@@ -97,19 +97,6 @@ class TokenSendScreenController extends BaseController {
     canSend.value = true;
   }
 
-  Future<void> openTransactionDetailsScreen() async {
-    Get.dialog(
-      Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: EdgeInsets.symmetric(
-          vertical: 300.h,
-          horizontal: 50.w,
-        ),
-        child: TransactionDetailsScreen()..controller.resetData(),
-      ),
-    );
-  }
-
   Future<void> submit() async {
     if (receivingAddressController.address.value.isEmpty) {
       showToast(

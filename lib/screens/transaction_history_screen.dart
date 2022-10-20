@@ -161,6 +161,43 @@ class TransactionHistoryItemController extends BaseController {
       backgroundColor: OHOColors.statusSuccess,
     );
   }
+
+  Future<void> viewTransaction() async {
+    await refreshTransaction();
+
+    openTransactionDetailsScreen();
+
+    double? tokenAmount;
+    if (transaction.tokenAmount != null) {
+      tokenAmount = BigInt.parse(transaction.tokenAmount!) /
+          BigInt.from(10).pow(transaction.tokenDecimals!);
+      tokenAmount = double.parse(tokenAmount.toStringAsFixed(6));
+    }
+
+    BigInt? gasUsed;
+    double? feeCharged;
+    if (transaction.gasUsed != null && transaction.effectiveGasPrice != null) {
+      gasUsed = BigInt.parse(transaction.gasUsed!);
+      feeCharged = BigInt.parse(transaction.gasUsed!) *
+          BigInt.parse(transaction.effectiveGasPrice!) /
+          BigInt.from(10).pow(18);
+    }
+
+    walletService.updateTransaction(
+      status: transaction.status,
+      type: transaction.type,
+      tokenSymbol: transaction.tokenSymbol,
+      tokenAmount: tokenAmount,
+      tokenDecimals: 6,
+      from: transaction.from,
+      to: transaction.to,
+      hash: transaction.hash,
+      date: transaction.blockDate ?? transaction.submitDate,
+      gasUsed: gasUsed,
+      feeCharged: feeCharged,
+      network: walletService.getNetworkByKey(transaction.networkKey!),
+    );
+  }
 }
 
 class TransactionHistoryItem
@@ -199,7 +236,7 @@ class TransactionHistoryItem
           highlightColor: themeService.listItemInkwellHighlightColor,
           splashColor: themeService.listItemInkwellSplashColor,
           borderRadius: BorderRadius.circular(50.r),
-          onTap: () => controller.refreshTransaction(),
+          onTap: () => controller.viewTransaction(),
           child: Stack(
             alignment: Alignment.center,
             children: [

@@ -57,6 +57,19 @@ typedef OnUpdateTransaction = Future<void> Function({
   Network? network,
 });
 
+Future<void> openTransactionDetailsScreen() async {
+  Get.dialog(
+    Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: EdgeInsets.symmetric(
+        vertical: 300.h,
+        horizontal: 50.w,
+      ),
+      child: TransactionDetailsScreen()..controller.resetData(),
+    ),
+  );
+}
+
 class WalletService extends GetxService {
   static const accountsKey = 'appSettings-accounts';
   static const defaultAccountKey = 'appSettings-defaultAccount';
