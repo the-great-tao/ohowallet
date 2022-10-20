@@ -412,7 +412,7 @@ class TransactionHistoryScreen
                         children: [
                           pageHeader,
                           OHOText(
-                            'Pull to refresh History page or tap on a pending Transaction to refresh it.',
+                            'Pull to refresh History page or tap on a Transaction to refresh and view it.',
                           ),
                           SizedBox(height: 100.h),
                           transactionHistoryItem,
