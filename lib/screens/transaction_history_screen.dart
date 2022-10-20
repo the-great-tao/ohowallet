@@ -346,6 +346,14 @@ class TransactionHistoryScreen
     super.tag,
   }) : super(controller: TransactionHistoryScreenController());
 
+  Widget get pageHeader => Column(
+        children: [
+          SizedBox(height: 50.h),
+          OHOHeaderText('History'),
+          SizedBox(height: 50.h),
+        ],
+      );
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -402,9 +410,7 @@ class TransactionHistoryScreen
                     if (index == 0) {
                       return Column(
                         children: [
-                          SizedBox(height: 50.h),
-                          OHOHeaderText('History'),
-                          SizedBox(height: 50.h),
+                          pageHeader,
                           OHOText(
                             'Pull to refresh History page or tap on a pending Transaction to refresh it.',
                           ),
@@ -415,6 +421,14 @@ class TransactionHistoryScreen
                     }
                     return Column(children: [transactionHistoryItem]);
                   },
+                  noItemsFoundIndicatorBuilder: (context) => Column(
+                    children: [
+                      pageHeader,
+                      OHOText(
+                        'There is no transaction.',
+                      ),
+                    ],
+                  ),
                 ),
                 separatorBuilder: (context, index) {
                   return SizedBox(height: 50.h);
