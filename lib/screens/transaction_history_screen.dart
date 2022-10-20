@@ -105,6 +105,10 @@ class TransactionHistoryItemController extends BaseController {
   }
 
   Future<void> refreshTransaction() async {
+    if (transaction.status == OHOTransactionStatus.successful ||
+        transaction.status == OHOTransactionStatus.failed) {
+      return;
+    }
     refreshing.value = true;
     try {
       final network = walletService.getNetworkByKey(transaction.networkKey!);
@@ -402,7 +406,7 @@ class TransactionHistoryScreen
                           OHOHeaderText('History'),
                           SizedBox(height: 50.h),
                           OHOText(
-                            'Pull to refresh History page or tap on a Transaction to refresh it.',
+                            'Pull to refresh History page or tap on a pending Transaction to refresh it.',
                           ),
                           SizedBox(height: 50.h),
                           transactionHistoryItem,
