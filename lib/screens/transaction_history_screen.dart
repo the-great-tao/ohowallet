@@ -419,7 +419,7 @@ class TransactionHistoryScreen
                         ],
                       );
                     }
-                    return Column(children: [transactionHistoryItem]);
+                    return transactionHistoryItem;
                   },
                   noItemsFoundIndicatorBuilder: (context) => Column(
                     children: [
