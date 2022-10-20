@@ -2,7 +2,7 @@ import 'package:ohowallet/core/exports.dart';
 
 class TransactionHistoryItemController extends BaseController {
   OHOTransaction transaction;
-  var refreshing = true.obs;
+  var refreshing = false.obs;
 
   TransactionHistoryItemController({
     required this.transaction,
