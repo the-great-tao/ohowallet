@@ -373,23 +373,18 @@ class TokenSendScreenController extends BaseController {
         network: network,
       );
 
+      final txInformation = await web3Client.getTransactionByHash(hash);
+
       transaction = transaction
         ..status = txReceipt.status!
             ? OHOTransactionStatus.successful
             : OHOTransactionStatus.failed
         ..blockNumber = blockNumber
         ..blockDate = blockTimestamp
+        ..nonce = txInformation.nonce
+        ..input = bytesToHex(txInformation.input)
         ..gasUsed = gasUsed.toString()
         ..effectiveGasPrice = effectiveGasPrice.toString();
-      await isarService.isar.writeTxn(() async {
-        await isarService.ohoTransactions.put(transaction);
-      });
-
-      final txInformation = await web3Client.getTransactionByHash(hash);
-
-      transaction = transaction
-        ..nonce = txInformation.nonce
-        ..input = bytesToHex(txInformation.input);
       await isarService.isar.writeTxn(() async {
         await isarService.ohoTransactions.put(transaction);
       });
