@@ -92,7 +92,7 @@ class WalletService extends GetxService {
 
   var defaultNetworks = NetworkList(networks: {}).obs;
   var customNetworks = NetworkList(networks: {}).obs;
-  var selectedNetwork = 'ethereum'.obs;
+  var selectedNetwork = OHOSettings.defaultNetworkKey.obs;
   Network? selectedNetworkInstance;
 
   var tokens = TokenList(tokens: {}).obs;

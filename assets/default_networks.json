@@ -1,5 +1,12 @@
 {
   "networks": {
+    "oho": {
+      "name": "OHO Mainnet",
+      "rpcUrl": "https://mainnet-rpc.ohoscan.com",
+      "chainId": "39815",
+      "currencySymbol": "OHO",
+      "blockExplorerUrl": "https://ohoscan.com"
+    },
     "ethereum": {
       "name": "Ethereum Mainnet",
       "rpcUrl": "https://rpc.ankr.com/eth",
@@ -34,13 +41,6 @@
       "chainId": "43114",
       "currencySymbol": "AVAX",
       "blockExplorerUrl": "https://snowtrace.io"
-    },
-    "oho": {
-      "name": "OHO Mainnet",
-      "rpcUrl": "https://mainnet-rpc.ohoscan.com",
-      "chainId": "39815",
-      "currencySymbol": "OHO",
-      "blockExplorerUrl": "https://ohoscan.com"
     },
     "hertz": {
       "name": "Hertz Mainnet",

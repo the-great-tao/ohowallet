@@ -1,5 +1,5 @@
 class OHOSettings {
-  static const defaultNetworkKey = 'ethereum';
+  static const defaultNetworkKey = 'oho';
   static const nativeTokenAddress =
       '0x0000000000000000000000000000000000000000';
   static const nativeTokenDecimals = 18;
