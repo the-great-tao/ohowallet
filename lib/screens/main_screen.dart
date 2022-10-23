@@ -10,6 +10,17 @@ class MainScreen extends BaseWidget<MainScreenController> {
     super.tag,
   }) : super(controller: MainScreenController());
 
+  Widget? getBody() {
+    switch (controller.selectedIndex.value) {
+      case 0:
+        return WalletMainScreen();
+      case 1:
+        return CollectibleMainScreen();
+      default:
+        return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -52,7 +63,7 @@ class MainScreen extends BaseWidget<MainScreenController> {
             ),
             OHOBottomBarItem(
               icon: Icon(FontAwesomeIcons.images),
-              title: Text("NFTs"),
+              title: Text("Collectibles"),
             ),
             OHOBottomBarItem(
               icon: Icon(FontAwesomeIcons.gear),
@@ -60,7 +71,7 @@ class MainScreen extends BaseWidget<MainScreenController> {
             ),
           ],
         ),
-        body: WalletMainScreen(),
+        body: getBody(),
       );
     });
   }
