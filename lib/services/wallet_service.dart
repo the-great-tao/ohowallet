@@ -403,170 +403,85 @@ class WalletService extends GetxService {
 //     return null;
 //   }
 // }
-//
-// Future<Map<String, dynamic>?> alchemyNftApiCall({
-//   required String method,
-//   required Map<String, dynamic> params,
-// }) async {
-//   try {
-//     var response = await Dio().get(
-//       '$nftApiUrl/$method',
-//       options: Options(headers: {
-//         'Accept': 'application/json',
-//         'Content-Type': 'application/json',
-//       }),
-//       queryParameters: params,
-//     );
-//     print(response);
-//     return jsonDecode(response.toString());
-//   } on DioError catch (error) {
-//     print(error.response);
-//     return null;
-//   } catch (error) {
-//     print(error);
-//     return null;
-//   }
-// }
-//
-// Future<Map<String, dynamic>?> alchemyGetAssetTransfers({
-//   BlockNum? fromBlock,
-//   BlockNum? toBlock,
-//   EthereumAddress? fromAddress,
-//   EthereumAddress? toAddress,
-//   List<EthereumAddress>? contractAddresses,
-//   List<AlchemyAssetTransferCategory> categories = const [],
-//   String order = 'asc',
-//   int? maxCount,
-//   String? pageKey,
-//   bool excludeZeroValue = true,
-//   bool withMetadata = false,
-// }) async {
-//   final Map<String, dynamic> params = {};
-//   final contractAddresses_ = [];
-//   final categories_ = [];
-//
-//   if (fromBlock != null) {
-//     params['fromBlock'] = '0x${fromBlock.blockNum.toRadixString(16)}';
-//   }
-//
-//   if (toBlock != null) {
-//     params['toBlock'] = '0x${toBlock.blockNum.toRadixString(16)}';
-//   }
-//
-//   if (fromAddress != null) {
-//     params['fromAddress'] = fromAddress.hexEip55;
-//   }
-//
-//   if (toAddress != null) {
-//     params['toAddress'] = toAddress.hexEip55;
-//   }
-//
-//   if (contractAddresses != null) {
-//     for (var contractAddress in contractAddresses) {
-//       contractAddresses_.add(contractAddress.hexEip55);
-//     }
-//     params['contractAddresses'] = contractAddresses_;
-//   }
-//
-//   for (var category_ in categories) {
-//     var category = category_.toString();
-//     var categoryRuntimeType = category_.runtimeType.toString();
-//     category = category.substring(categoryRuntimeType.length + 1);
-//     categories_.add(category);
-//   }
-//   params['category'] = categories_;
-//
-//   params['order'] = order;
-//
-//   if (maxCount != null) {
-//     params['maxCount'] = '0x${maxCount.toRadixString(16)}';
-//   }
-//
-//   if (pageKey != null) {
-//     params['pageKey'] = pageKey;
-//   }
-//
-//   params['excludeZeroValue'] = excludeZeroValue;
-//
-//   params['withMetadata'] = withMetadata;
-//
-//   return alchemyRpcCall(
-//     method: 'alchemy_getAssetTransfers',
-//     params: params,
-//   );
-// }
-//
-// Future<Map<String, dynamic>?> alchemyGetNftsForOwner({
-//   required EthereumAddress owner,
-//   List<EthereumAddress>? contractAddresses,
-//   String? pageKey,
-//   int? pageSize,
-//   bool withMetadata = true,
-//   int? tokenUriTimeoutInMs,
-//   List<String>? filters,
-// }) async {
-//   final Map<String, dynamic> params = {};
-//   final contractAddresses_ = [];
-//
-//   params['owner'] = owner.hexEip55;
-//
-//   if (contractAddresses != null) {
-//     for (var contractAddress in contractAddresses) {
-//       contractAddresses_.add(contractAddress.hexEip55);
-//     }
-//     params['contractAddresses[]'] = contractAddresses_;
-//   }
-//
-//   if (pageKey != null) {
-//     params['pageKey'] = pageKey;
-//   }
-//
-//   if (pageSize != null) {
-//     params['pageSize'] = pageSize;
-//   }
-//
-//   params['withMetadata'] = withMetadata;
-//
-//   if (tokenUriTimeoutInMs != null) {
-//     params['tokenUriTimeoutInMs'] = tokenUriTimeoutInMs;
-//   }
-//
-//   if (filters != null) {
-//     params['filters'] = filters;
-//   }
-//
-//   return alchemyNftApiCall(
-//     method: 'getNFTs',
-//     params: params,
-//   );
-// }
-//
-// Future<Map<String, dynamic>?> alchemyGetNftMetadata({
-//   required EthereumAddress contractAddress,
-//   required BigInt tokenId,
-//   String? tokenType,
-//   int? tokenUriTimeoutInMs,
-//   bool refreshCache = false,
-// }) async {
-//   final Map<String, dynamic> params = {};
-//
-//   params['contractAddress'] = contractAddress.hexEip55;
-//
-//   params['tokenId'] = tokenId.toString();
-//
-//   if (tokenType != null) {
-//     params['tokenType'] = tokenType;
-//   }
-//
-//   if (tokenUriTimeoutInMs != null) {
-//     params['tokenUriTimeoutInMs'] = tokenUriTimeoutInMs;
-//   }
-//
-//   params['refreshCache'] = refreshCache;
-//
-//   return alchemyNftApiCall(
-//     method: 'getNFTMetadata',
-//     params: params,
-//   );
-// }
+
+  String? getMoralisChainByNetworkKey(String? networkKey) {
+    if (networkKey == null) return null;
+    switch (networkKey) {
+      case 'ethereum':
+        return 'eth';
+      case 'binance':
+        return 'bsc';
+      case 'polygon':
+        return 'polygon';
+      case 'fantom':
+        return 'fantom';
+      case 'avalanche':
+        return 'avalanche';
+      default:
+        return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> moralisAPICall({
+    required String path,
+    required Map<String, dynamic> params,
+  }) async {
+    try {
+      var response = await Dio().get(
+        '${OHOSettings.moralisBaseURL}/$path',
+        options: Options(headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json; charset=utf-8',
+          'X-API-Key': OHOSettings.moralisAPIKey,
+        }),
+        queryParameters: params,
+      );
+      print(response);
+      return jsonDecode(response.toString());
+    } on DioError catch (error) {
+      print(error.response);
+      return null;
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> moralisGetNFTsByWallet({
+    EthereumAddress? address,
+    String? chain,
+    String format = 'decimal',
+    List<EthereumAddress>? tokenAddresses,
+    int limit = 10,
+    String? cursor,
+  }) async {
+    final Map<String, dynamic> params = {};
+    final tokenAddresses_ = [];
+
+    final networkKey = selectedNetwork.value;
+    final account = selectedAccountInstance!;
+    final accountAddress = address ?? account.address.hexEip55;
+
+    params['chain'] = chain ?? getMoralisChainByNetworkKey(networkKey);
+
+    params['format'] = format;
+
+    if (tokenAddresses != null) {
+      for (var tokenAddress in tokenAddresses) {
+        tokenAddresses_.add(tokenAddress.hexEip55);
+      }
+      params['token_addresses'] = tokenAddresses_;
+    }
+
+    params['limit'] = limit;
+
+    if (cursor != null) {
+      params['cursor'] = cursor;
+    }
+
+    return moralisAPICall(
+      path: '$accountAddress/nft',
+      params: params,
+    );
+  }
 }
