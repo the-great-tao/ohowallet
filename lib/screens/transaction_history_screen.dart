@@ -439,7 +439,7 @@ class TransactionHistoryScreen
                     delegate: SliverChildListDelegate([
                       pageHeader,
                       OHOText(
-                        'Pull to refresh History page or tap on a Transaction to refresh and view it.',
+                        'Pull to refresh History page or tap on a Transaction to refresh and view it for more details.',
                       ),
                       SizedBox(height: 100.h),
                     ]),
