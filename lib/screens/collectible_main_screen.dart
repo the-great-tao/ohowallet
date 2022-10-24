@@ -87,107 +87,113 @@ class CollectibleMainScreen
             color: themeService.textColor,
             backgroundColor: themeService.textFieldBackgroundColor,
             onRefresh: () async => controller.pagingController.refresh(),
-            child: PagedGridView<String?, MoralisGetNFTsByWalletResultItem>(
-              pagingController: controller.pagingController,
-              builderDelegate:
-                  PagedChildBuilderDelegate<MoralisGetNFTsByWalletResultItem>(
-                firstPageProgressIndicatorBuilder: (context) =>
-                    SpinKitFadingCircle(color: themeService.textColor),
-                newPageProgressIndicatorBuilder: (context) =>
-                    SpinKitFadingCircle(color: themeService.textColor),
-                firstPageErrorIndicatorBuilder: (context) => Column(
-                  children: [
-                    pageHeader,
-                    OHOText(
-                      'There is problem loading collectibles or the current selected network is unsupported.',
+            child: CustomScrollView(
+              slivers: [
+                SliverList(delegate: SliverChildListDelegate([pageHeader])),
+                PagedSliverGrid<String?, MoralisGetNFTsByWalletResultItem>(
+                  pagingController: controller.pagingController,
+                  builderDelegate: PagedChildBuilderDelegate<
+                      MoralisGetNFTsByWalletResultItem>(
+                    firstPageProgressIndicatorBuilder: (context) =>
+                        SpinKitFadingCircle(color: themeService.textColor),
+                    newPageProgressIndicatorBuilder: (context) =>
+                        SpinKitFadingCircle(color: themeService.textColor),
+                    firstPageErrorIndicatorBuilder: (context) => Column(
+                      children: [
+                        pageHeader,
+                        OHOText(
+                          'There is problem loading collectibles or the current selected network is unsupported.',
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                itemBuilder: (context, item, index) => GestureDetector(
-                  onTap: () {},
-                  //   Get.dialog(
-                  //     Dialog(
-                  //       backgroundColor: Colors.transparent,
-                  //       child: NFTDetailsScreen(
-                  //         tag: 'nft-details-screen',
-                  //         owner: controller.walletService.accountAddress!,
-                  //         contract:
-                  //             EthereumAddress.fromHex(item.contract!.address!),
-                  //         id: BigInt.parse(item.id!.tokenId!),
-                  //         name: item.title,
-                  //         description: item.metadata!.description,
-                  //         imageUrl: item.metadata!.image,
-                  //         animationUrl: item.metadata!.animationUrl,
-                  //         reward: item.reward,
-                  //       ),
-                  //       insetPadding: EdgeInsets.symmetric(
-                  //         horizontal: 40.w,
-                  //         vertical: 60.h,
-                  //       ),
-                  //     ),
-                  //   );
-                  // },
-                  child: Card(
-                    elevation: 0.0,
-                    color:
-                        themeService.textFieldBackgroundColor.withOpacity(0.5),
-                    margin: EdgeInsets.fromLTRB(
-                      index % 2 == 0 ? 0.w : 20.w,
-                      20.h,
-                      index % 2 == 0 ? 20.w : 0.w,
-                      20.h,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        color: themeService.textFieldBorderColor,
-                        width: 5.r,
+                    itemBuilder: (context, item, index) => GestureDetector(
+                      onTap: () {},
+                      //   Get.dialog(
+                      //     Dialog(
+                      //       backgroundColor: Colors.transparent,
+                      //       child: NFTDetailsScreen(
+                      //         tag: 'nft-details-screen',
+                      //         owner: controller.walletService.accountAddress!,
+                      //         contract:
+                      //             EthereumAddress.fromHex(item.contract!.address!),
+                      //         id: BigInt.parse(item.id!.tokenId!),
+                      //         name: item.title,
+                      //         description: item.metadata!.description,
+                      //         imageUrl: item.metadata!.image,
+                      //         animationUrl: item.metadata!.animationUrl,
+                      //         reward: item.reward,
+                      //       ),
+                      //       insetPadding: EdgeInsets.symmetric(
+                      //         horizontal: 40.w,
+                      //         vertical: 60.h,
+                      //       ),
+                      //     ),
+                      //   );
+                      // },
+                      child: Card(
+                        elevation: 0.0,
+                        color: themeService.textFieldBackgroundColor
+                            .withOpacity(0.5),
+                        margin: EdgeInsets.fromLTRB(
+                          index % 2 == 0 ? 0.w : 20.w,
+                          20.h,
+                          index % 2 == 0 ? 20.w : 0.w,
+                          20.h,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: themeService.textFieldBorderColor,
+                            width: 5.r,
+                          ),
+                          borderRadius: BorderRadius.circular(50.r),
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.all(50.r),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: item.metadata_ == null ||
+                                        item.metadata_!.image == null
+                                    ? Container()
+                                    : CachedNetworkImage(
+                                        imageUrl: item.metadata_!.image!,
+                                      ),
+                              ),
+                              SizedBox(height: 20.h),
+                              OHOHeaderText(
+                                item.metadata_!.name!,
+                                softWrap: false,
+                                fontSize: 35.sp,
+                                overflow: TextOverflow.fade,
+                              ),
+                              SizedBox(height: 10.h),
+                              OHOText(
+                                'ID: #${NumberFormat('000000000').format(item.tokenId!.toInt())}',
+                                softWrap: false,
+                                fontSize: 35.sp,
+                                overflow: TextOverflow.fade,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(50.r),
                     ),
-                    child: Container(
-                      margin: EdgeInsets.all(50.r),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: item.metadata_ == null ||
-                                    item.metadata_!.image == null
-                                ? Container()
-                                : CachedNetworkImage(
-                                    imageUrl: item.metadata_!.image!,
-                                  ),
-                          ),
-                          SizedBox(height: 20.h),
-                          OHOHeaderText(
-                            item.metadata_!.name!,
-                            softWrap: false,
-                            fontSize: 35.sp,
-                            overflow: TextOverflow.fade,
-                          ),
-                          SizedBox(height: 10.h),
-                          OHOText(
-                            'ID: #${NumberFormat('000000000').format(item.tokenId!.toInt())}',
-                            softWrap: false,
-                            fontSize: 35.sp,
-                            overflow: TextOverflow.fade,
-                          ),
-                        ],
-                      ),
+                    noItemsFoundIndicatorBuilder: (context) => Column(
+                      children: [
+                        pageHeader,
+                        OHOText('There is no collectible.'),
+                      ],
                     ),
+                    noMoreItemsIndicatorBuilder: (context) =>
+                        SizedBox(height: 1000.h),
+                  ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.8,
                   ),
                 ),
-                noItemsFoundIndicatorBuilder: (context) => Column(
-                  children: [
-                    pageHeader,
-                    OHOText('There is no collectible.'),
-                  ],
-                ),
-                noMoreItemsIndicatorBuilder: (context) =>
-                    SizedBox(height: 1000.h),
-              ),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.8,
-              ),
+              ],
             ),
           ),
         ),

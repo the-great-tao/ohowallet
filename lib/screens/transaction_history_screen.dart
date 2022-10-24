@@ -433,46 +433,44 @@ class TransactionHistoryScreen
               color: themeService.textColor,
               backgroundColor: themeService.textFieldBackgroundColor,
               onRefresh: () async => controller.pagingController.refresh(),
-              child: PagedListView<int, OHOTransaction>.separated(
-                pagingController: controller.pagingController,
-                builderDelegate: PagedChildBuilderDelegate<OHOTransaction>(
-                  firstPageProgressIndicatorBuilder: (context) =>
-                      SpinKitFadingCircle(color: themeService.textColor),
-                  newPageProgressIndicatorBuilder: (context) =>
-                      SpinKitFadingCircle(color: themeService.textColor),
-                  itemBuilder: (context, item, index) {
-                    final transactionHistoryItem = TransactionHistoryItem(
-                      tag: 'transaction-history-item-$index',
-                      transaction: item,
-                    )..controller.transaction = item;
-                    if (index == 0) {
-                      return Column(
-                        children: [
-                          pageHeader,
-                          OHOText(
-                            'Pull to refresh History page or tap on a Transaction to refresh and view it.',
-                          ),
-                          SizedBox(height: 100.h),
-                          transactionHistoryItem,
-                        ],
-                      );
-                    }
-                    return transactionHistoryItem;
-                  },
-                  noItemsFoundIndicatorBuilder: (context) => Column(
-                    children: [
+              child: CustomScrollView(
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildListDelegate([
                       pageHeader,
                       OHOText(
-                        'There is no transaction.',
+                        'Pull to refresh History page or tap on a Transaction to refresh and view it.',
                       ),
-                    ],
+                      SizedBox(height: 100.h),
+                    ]),
                   ),
-                  noMoreItemsIndicatorBuilder: (context) =>
-                      SizedBox(height: 1000.h),
-                ),
-                separatorBuilder: (context, index) {
-                  return SizedBox(height: 50.h);
-                },
+                  PagedSliverList<int, OHOTransaction>.separated(
+                    pagingController: controller.pagingController,
+                    builderDelegate: PagedChildBuilderDelegate<OHOTransaction>(
+                      firstPageProgressIndicatorBuilder: (context) =>
+                          SpinKitFadingCircle(color: themeService.textColor),
+                      newPageProgressIndicatorBuilder: (context) =>
+                          SpinKitFadingCircle(color: themeService.textColor),
+                      itemBuilder: (context, item, index) {
+                        return TransactionHistoryItem(
+                          tag: 'transaction-history-item-$index',
+                          transaction: item,
+                        )..controller.transaction = item;
+                      },
+                      noItemsFoundIndicatorBuilder: (context) => Column(
+                        children: [
+                          pageHeader,
+                          OHOText('There is no transaction.'),
+                        ],
+                      ),
+                      noMoreItemsIndicatorBuilder: (context) =>
+                          SizedBox(height: 1000.h),
+                    ),
+                    separatorBuilder: (context, index) {
+                      return SizedBox(height: 50.h);
+                    },
+                  ),
+                ],
               ),
             ),
           ),
