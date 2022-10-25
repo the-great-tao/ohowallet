@@ -108,7 +108,6 @@ class CollectibleMainScreen
                         SpinKitFadingCircle(color: themeService.textColor),
                     firstPageErrorIndicatorBuilder: (context) => Column(
                       children: [
-                        pageHeader,
                         OHOText(
                           'There is problem loading collectibles or the current selected network is unsupported.',
                         ),
