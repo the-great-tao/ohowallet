@@ -109,7 +109,7 @@ class CollectibleMainScreen
                     firstPageErrorIndicatorBuilder: (context) => Column(
                       children: [
                         OHOText(
-                          'There is problem loading collectibles or the current selected network is unsupported.',
+                          'There is problem loading Collectibles or the current selected network is unsupported.',
                         ),
                       ],
                     ),
