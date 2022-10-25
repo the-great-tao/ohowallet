@@ -89,7 +89,15 @@ class CollectibleMainScreen
             onRefresh: () async => controller.pagingController.refresh(),
             child: CustomScrollView(
               slivers: [
-                SliverList(delegate: SliverChildListDelegate([pageHeader])),
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    pageHeader,
+                    OHOText(
+                      'Pull to refresh Collectibles page or tap on a Collectible to view it for more details.',
+                    ),
+                    SizedBox(height: 100.h),
+                  ]),
+                ),
                 PagedSliverGrid<String?, MoralisGetNFTsByWalletResultItem>(
                   pagingController: controller.pagingController,
                   builderDelegate: PagedChildBuilderDelegate<
@@ -181,8 +189,7 @@ class CollectibleMainScreen
                     ),
                     noItemsFoundIndicatorBuilder: (context) => Column(
                       children: [
-                        pageHeader,
-                        OHOText('There is no collectible.'),
+                        OHOText('There is no Collectible.'),
                       ],
                     ),
                     noMoreItemsIndicatorBuilder: (context) =>

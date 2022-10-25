@@ -459,8 +459,7 @@ class TransactionHistoryScreen
                       },
                       noItemsFoundIndicatorBuilder: (context) => Column(
                         children: [
-                          pageHeader,
-                          OHOText('There is no transaction.'),
+                          OHOText('There is no Transaction.'),
                         ],
                       ),
                       noMoreItemsIndicatorBuilder: (context) =>
