@@ -90,6 +90,7 @@ class WalletMainScreen extends BaseWidget<WalletMainScreenController> {
                           color: themeService.solidButtonTextColor,
                           size: 50.sp,
                         ),
+                        onTap: () => Get.to(() => TokenSwapScreen()),
                       ),
                       OHOSolidButton(
                         width: 350.w,

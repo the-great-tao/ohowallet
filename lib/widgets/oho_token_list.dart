@@ -78,7 +78,7 @@ class OHOTokenListItem extends BaseWidget<OHOTokenListItemController> {
     required this.tokenKey,
     required this.token,
     required this.getBackOnSelected,
-    bool editable = false,
+    bool editable = true,
   }) : super(
           controller: OHOTokenListItemController(
             tokenKey: tokenKey,
@@ -210,9 +210,8 @@ class OHOTokenListController extends BaseController {
     if (networkTokens == null) return;
     final prefix = tag == null ? '' : '$tag-';
     for (var tokenKey in networkTokens.keys) {
-      var tokenListItemController = Get.find<OHOTokenListItemController>(
-        tag: '${prefix}token-$selectedNetwork-$tokenKey',
-      );
+      var tokenListItemController =
+          Get.find<OHOTokenListItemController>(tag: '$prefix$tokenKey');
       tokenListItemController.toggleEditable();
     }
   }
@@ -237,7 +236,7 @@ class OHOTokenList extends BaseWidget<OHOTokenListController> {
       children: [
         for (var tokenKey in networkTokens.keys)
           OHOTokenListItem(
-            tag: '${prefix}token-$selectedNetwork-$tokenKey',
+            tag: '$prefix$tokenKey',
             tokenKey: tokenKey,
             token: networkTokens[tokenKey]!,
             getBackOnSelected: getBackOnSelected,
@@ -258,17 +257,17 @@ class OHOTokenList extends BaseWidget<OHOTokenListController> {
                 width: double.infinity,
                 child: OHOHeaderText('Tokens'),
               ),
-              Positioned(
-                right: 50.w,
-                child: GestureDetector(
-                  onTap: () => controller.toggleEditable(tag: tag),
-                  child: Icon(
-                    Icons.edit,
-                    size: 60.sp,
-                    color: themeService.textColor,
-                  ),
-                ),
-              )
+              // Positioned(
+              //   right: 50.w,
+              //   child: GestureDetector(
+              //     onTap: () => controller.toggleEditable(tag: tag),
+              //     child: Icon(
+              //       Icons.edit,
+              //       size: 60.sp,
+              //       color: themeService.textColor,
+              //     ),
+              //   ),
+              // )
             ],
           ),
           SizedBox(height: 50.h),
@@ -276,6 +275,11 @@ class OHOTokenList extends BaseWidget<OHOTokenListController> {
           SizedBox(height: 50.h),
           OHOSolidButton(
             title: 'Import Token',
+            onTap: () => Get.to(() => AddCommonTokenScreen()),
+          ),
+          SizedBox(height: 50.h),
+          OHOOutlinedButton(
+            title: 'Import Custom Token',
             onTap: () => Get.to(() => AddTokenScreen()),
           ),
         ],

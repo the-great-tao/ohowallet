@@ -8,4 +8,5 @@ class OHOSettings {
   static const moralisBaseURL = 'https://deep-index.moralis.io/api/v2';
   static const moralisAPIKey =
       '7NEFZw28cCMzWYQtHOv8bYLWlcwvRQN5yQTCSNxU16NfjcmbrLzAoKYF3XKafO4q';
+  static const oneInchBaseURL = 'https://api.1inch.io/v4.0';
 }
