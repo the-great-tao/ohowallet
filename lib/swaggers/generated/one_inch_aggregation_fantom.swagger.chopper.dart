@@ -17,7 +17,7 @@ class _$OneInchAggregationFantom extends OneInchAggregationFantom {
   final definitionType = OneInchAggregationFantom;
 
   @override
-  Future<Response<dynamic>> _v40250HealthcheckGet() {
+  Future<Response<dynamic>> _FactoryHealthCheckController_healthcheck() {
     final String $url = '/v4.0/250/healthcheck';
     final Request $request = Request(
       'GET',
@@ -28,7 +28,8 @@ class _$OneInchAggregationFantom extends OneInchAggregationFantom {
   }
 
   @override
-  Future<Response<ApproveSpenderResponseDto>> _v40250ApproveSpenderGet() {
+  Future<Response<ApproveSpenderResponseDto>>
+      _ChainApproveController_getSpender() {
     final String $url = '/v4.0/250/approve/spender';
     final Request $request = Request(
       'GET',
@@ -40,7 +41,8 @@ class _$OneInchAggregationFantom extends OneInchAggregationFantom {
   }
 
   @override
-  Future<Response<ApproveCalldataResponseDto>> _v40250ApproveTransactionGet({
+  Future<Response<ApproveCalldataResponseDto>>
+      _ChainApproveController_getCallData({
     required String? tokenAddress,
     String? amount,
   }) {
@@ -60,7 +62,7 @@ class _$OneInchAggregationFantom extends OneInchAggregationFantom {
   }
 
   @override
-  Future<Response<dynamic>> _v40250ApproveAllowanceGet({
+  Future<Response<dynamic>> _ChainApproveController_getAllowance({
     required String? tokenAddress,
     required String? walletAddress,
   }) {
@@ -79,7 +81,7 @@ class _$OneInchAggregationFantom extends OneInchAggregationFantom {
   }
 
   @override
-  Future<Response<TokensResponseDto>> _v40250TokensGet() {
+  Future<Response<TokensResponseDto>> _ChainTokensController_getTokens() {
     final String $url = '/v4.0/250/tokens';
     final Request $request = Request(
       'GET',
@@ -90,7 +92,7 @@ class _$OneInchAggregationFantom extends OneInchAggregationFantom {
   }
 
   @override
-  Future<Response<dynamic>> _v40250PresetsGet() {
+  Future<Response<dynamic>> _ChainPresetsController_getPresets() {
     final String $url = '/v4.0/250/presets';
     final Request $request = Request(
       'GET',
@@ -101,7 +103,8 @@ class _$OneInchAggregationFantom extends OneInchAggregationFantom {
   }
 
   @override
-  Future<Response<ProtocolsResponseDto>> _v40250LiquiditySourcesGet() {
+  Future<Response<ProtocolsResponseDto>>
+      _ChainProtocolsController_getProtocolsImages() {
     final String $url = '/v4.0/250/liquidity-sources';
     final Request $request = Request(
       'GET',
@@ -112,7 +115,7 @@ class _$OneInchAggregationFantom extends OneInchAggregationFantom {
   }
 
   @override
-  Future<Response<QuoteResponseDto>> _v40250QuoteGet({
+  Future<Response<QuoteResponseDto>> _ExchangeController_getQuote({
     required String? fromTokenAddress,
     required String? toTokenAddress,
     required String? amount,
@@ -149,7 +152,7 @@ class _$OneInchAggregationFantom extends OneInchAggregationFantom {
   }
 
   @override
-  Future<Response<SwapResponseDto>> _v40250SwapGet({
+  Future<Response<SwapResponseDto>> _ExchangeController_getSwap({
     required String? fromTokenAddress,
     required String? toTokenAddress,
     required String? amount,

@@ -17,7 +17,7 @@ class _$OneInchAggregationAvalanche extends OneInchAggregationAvalanche {
   final definitionType = OneInchAggregationAvalanche;
 
   @override
-  Future<Response<dynamic>> _v4043114HealthcheckGet() {
+  Future<Response<dynamic>> _FactoryHealthCheckController_healthcheck() {
     final String $url = '/v4.0/43114/healthcheck';
     final Request $request = Request(
       'GET',
@@ -28,7 +28,8 @@ class _$OneInchAggregationAvalanche extends OneInchAggregationAvalanche {
   }
 
   @override
-  Future<Response<ApproveSpenderResponseDto>> _v4043114ApproveSpenderGet() {
+  Future<Response<ApproveSpenderResponseDto>>
+      _ChainApproveController_getSpender() {
     final String $url = '/v4.0/43114/approve/spender';
     final Request $request = Request(
       'GET',
@@ -40,7 +41,8 @@ class _$OneInchAggregationAvalanche extends OneInchAggregationAvalanche {
   }
 
   @override
-  Future<Response<ApproveCalldataResponseDto>> _v4043114ApproveTransactionGet({
+  Future<Response<ApproveCalldataResponseDto>>
+      _ChainApproveController_getCallData({
     required String? tokenAddress,
     String? amount,
   }) {
@@ -60,7 +62,7 @@ class _$OneInchAggregationAvalanche extends OneInchAggregationAvalanche {
   }
 
   @override
-  Future<Response<dynamic>> _v4043114ApproveAllowanceGet({
+  Future<Response<dynamic>> _ChainApproveController_getAllowance({
     required String? tokenAddress,
     required String? walletAddress,
   }) {
@@ -79,7 +81,7 @@ class _$OneInchAggregationAvalanche extends OneInchAggregationAvalanche {
   }
 
   @override
-  Future<Response<TokensResponseDto>> _v4043114TokensGet() {
+  Future<Response<TokensResponseDto>> _ChainTokensController_getTokens() {
     final String $url = '/v4.0/43114/tokens';
     final Request $request = Request(
       'GET',
@@ -90,7 +92,7 @@ class _$OneInchAggregationAvalanche extends OneInchAggregationAvalanche {
   }
 
   @override
-  Future<Response<dynamic>> _v4043114PresetsGet() {
+  Future<Response<dynamic>> _ChainPresetsController_getPresets() {
     final String $url = '/v4.0/43114/presets';
     final Request $request = Request(
       'GET',
@@ -101,7 +103,8 @@ class _$OneInchAggregationAvalanche extends OneInchAggregationAvalanche {
   }
 
   @override
-  Future<Response<ProtocolsResponseDto>> _v4043114LiquiditySourcesGet() {
+  Future<Response<ProtocolsResponseDto>>
+      _ChainProtocolsController_getProtocolsImages() {
     final String $url = '/v4.0/43114/liquidity-sources';
     final Request $request = Request(
       'GET',
@@ -112,7 +115,7 @@ class _$OneInchAggregationAvalanche extends OneInchAggregationAvalanche {
   }
 
   @override
-  Future<Response<QuoteResponseDto>> _v4043114QuoteGet({
+  Future<Response<QuoteResponseDto>> _ExchangeController_getQuote({
     required String? fromTokenAddress,
     required String? toTokenAddress,
     required String? amount,
@@ -149,7 +152,7 @@ class _$OneInchAggregationAvalanche extends OneInchAggregationAvalanche {
   }
 
   @override
-  Future<Response<SwapResponseDto>> _v4043114SwapGet({
+  Future<Response<SwapResponseDto>> _ExchangeController_getSwap({
     required String? fromTokenAddress,
     required String? toTokenAddress,
     required String? amount,

@@ -17,7 +17,7 @@ class _$OneInchAggregationPolygon extends OneInchAggregationPolygon {
   final definitionType = OneInchAggregationPolygon;
 
   @override
-  Future<Response<dynamic>> _v40137HealthcheckGet() {
+  Future<Response<dynamic>> _FactoryHealthCheckController_healthcheck() {
     final String $url = '/v4.0/137/healthcheck';
     final Request $request = Request(
       'GET',
@@ -28,7 +28,8 @@ class _$OneInchAggregationPolygon extends OneInchAggregationPolygon {
   }
 
   @override
-  Future<Response<ApproveSpenderResponseDto>> _v40137ApproveSpenderGet() {
+  Future<Response<ApproveSpenderResponseDto>>
+      _ChainApproveController_getSpender() {
     final String $url = '/v4.0/137/approve/spender';
     final Request $request = Request(
       'GET',
@@ -40,7 +41,8 @@ class _$OneInchAggregationPolygon extends OneInchAggregationPolygon {
   }
 
   @override
-  Future<Response<ApproveCalldataResponseDto>> _v40137ApproveTransactionGet({
+  Future<Response<ApproveCalldataResponseDto>>
+      _ChainApproveController_getCallData({
     required String? tokenAddress,
     String? amount,
   }) {
@@ -60,7 +62,7 @@ class _$OneInchAggregationPolygon extends OneInchAggregationPolygon {
   }
 
   @override
-  Future<Response<dynamic>> _v40137ApproveAllowanceGet({
+  Future<Response<dynamic>> _ChainApproveController_getAllowance({
     required String? tokenAddress,
     required String? walletAddress,
   }) {
@@ -79,7 +81,7 @@ class _$OneInchAggregationPolygon extends OneInchAggregationPolygon {
   }
 
   @override
-  Future<Response<TokensResponseDto>> _v40137TokensGet() {
+  Future<Response<TokensResponseDto>> _ChainTokensController_getTokens() {
     final String $url = '/v4.0/137/tokens';
     final Request $request = Request(
       'GET',
@@ -90,7 +92,7 @@ class _$OneInchAggregationPolygon extends OneInchAggregationPolygon {
   }
 
   @override
-  Future<Response<dynamic>> _v40137PresetsGet() {
+  Future<Response<dynamic>> _ChainPresetsController_getPresets() {
     final String $url = '/v4.0/137/presets';
     final Request $request = Request(
       'GET',
@@ -101,7 +103,8 @@ class _$OneInchAggregationPolygon extends OneInchAggregationPolygon {
   }
 
   @override
-  Future<Response<ProtocolsResponseDto>> _v40137LiquiditySourcesGet() {
+  Future<Response<ProtocolsResponseDto>>
+      _ChainProtocolsController_getProtocolsImages() {
     final String $url = '/v4.0/137/liquidity-sources';
     final Request $request = Request(
       'GET',
@@ -112,7 +115,7 @@ class _$OneInchAggregationPolygon extends OneInchAggregationPolygon {
   }
 
   @override
-  Future<Response<QuoteResponseDto>> _v40137QuoteGet({
+  Future<Response<QuoteResponseDto>> _ExchangeController_getQuote({
     required String? fromTokenAddress,
     required String? toTokenAddress,
     required String? amount,
@@ -149,7 +152,7 @@ class _$OneInchAggregationPolygon extends OneInchAggregationPolygon {
   }
 
   @override
-  Future<Response<SwapResponseDto>> _v40137SwapGet({
+  Future<Response<SwapResponseDto>> _ExchangeController_getSwap({
     required String? fromTokenAddress,
     required String? toTokenAddress,
     required String? amount,

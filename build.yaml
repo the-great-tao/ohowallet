@@ -8,3 +8,4 @@ targets:
         options:
           input_folder: "lib/swaggers/"
           output_folder: "lib/swaggers/generated/"
+          use_path_for_request_names: false

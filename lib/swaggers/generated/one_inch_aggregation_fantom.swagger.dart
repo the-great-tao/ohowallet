@@ -39,40 +39,40 @@ abstract class OneInchAggregationFantom extends ChopperService {
   }
 
   ///API health check
-  Future<chopper.Response> v40250HealthcheckGet() {
-    return _v40250HealthcheckGet();
+  Future<chopper.Response> FactoryHealthCheckController_healthcheck() {
+    return _FactoryHealthCheckController_healthcheck();
   }
 
   ///API health check
   @Get(path: '/v4.0/250/healthcheck')
-  Future<chopper.Response> _v40250HealthcheckGet();
+  Future<chopper.Response> _FactoryHealthCheckController_healthcheck();
 
   ///Address of the 1inch router that must be trusted to spend funds for the exchange
   Future<chopper.Response<ApproveSpenderResponseDto>>
-      v40250ApproveSpenderGet() {
+      ChainApproveController_getSpender() {
     generatedMapping.putIfAbsent(ApproveSpenderResponseDto,
         () => ApproveSpenderResponseDto.fromJsonFactory);
 
-    return _v40250ApproveSpenderGet();
+    return _ChainApproveController_getSpender();
   }
 
   ///Address of the 1inch router that must be trusted to spend funds for the exchange
   @Get(path: '/v4.0/250/approve/spender')
   Future<chopper.Response<ApproveSpenderResponseDto>>
-      _v40250ApproveSpenderGet();
+      _ChainApproveController_getSpender();
 
   ///Generate data for calling the contract in order to allow the 1inch router to spend funds
   ///@param tokenAddress Token address you want to exchange
   ///@param amount The number of tokens that the 1inch router is allowed to spend.If not specified, it will be allowed to spend an infinite amount of tokens.
   Future<chopper.Response<ApproveCalldataResponseDto>>
-      v40250ApproveTransactionGet({
+      ChainApproveController_getCallData({
     required String? tokenAddress,
     String? amount,
   }) {
     generatedMapping.putIfAbsent(ApproveCalldataResponseDto,
         () => ApproveCalldataResponseDto.fromJsonFactory);
 
-    return _v40250ApproveTransactionGet(
+    return _ChainApproveController_getCallData(
         tokenAddress: tokenAddress, amount: amount);
   }
 
@@ -81,7 +81,7 @@ abstract class OneInchAggregationFantom extends ChopperService {
   ///@param amount The number of tokens that the 1inch router is allowed to spend.If not specified, it will be allowed to spend an infinite amount of tokens.
   @Get(path: '/v4.0/250/approve/transaction')
   Future<chopper.Response<ApproveCalldataResponseDto>>
-      _v40250ApproveTransactionGet({
+      _ChainApproveController_getCallData({
     @Query('tokenAddress') required String? tokenAddress,
     @Query('amount') String? amount,
   });
@@ -89,11 +89,11 @@ abstract class OneInchAggregationFantom extends ChopperService {
   ///Get the number of tokens that the 1inch router is allowed to spend
   ///@param tokenAddress Token address you want to exchange
   ///@param walletAddress Wallet address for which you want to check
-  Future<chopper.Response> v40250ApproveAllowanceGet({
+  Future<chopper.Response> ChainApproveController_getAllowance({
     required String? tokenAddress,
     required String? walletAddress,
   }) {
-    return _v40250ApproveAllowanceGet(
+    return _ChainApproveController_getAllowance(
         tokenAddress: tokenAddress, walletAddress: walletAddress);
   }
 
@@ -101,43 +101,47 @@ abstract class OneInchAggregationFantom extends ChopperService {
   ///@param tokenAddress Token address you want to exchange
   ///@param walletAddress Wallet address for which you want to check
   @Get(path: '/v4.0/250/approve/allowance')
-  Future<chopper.Response> _v40250ApproveAllowanceGet({
+  Future<chopper.Response> _ChainApproveController_getAllowance({
     @Query('tokenAddress') required String? tokenAddress,
     @Query('walletAddress') required String? walletAddress,
   });
 
   ///List of tokens that are available for swap in the 1inch Aggregation protocol
-  Future<chopper.Response<TokensResponseDto>> v40250TokensGet() {
+  Future<chopper.Response<TokensResponseDto>>
+      ChainTokensController_getTokens() {
     generatedMapping.putIfAbsent(
         TokensResponseDto, () => TokensResponseDto.fromJsonFactory);
 
-    return _v40250TokensGet();
+    return _ChainTokensController_getTokens();
   }
 
   ///List of tokens that are available for swap in the 1inch Aggregation protocol
   @Get(path: '/v4.0/250/tokens')
-  Future<chopper.Response<TokensResponseDto>> _v40250TokensGet();
+  Future<chopper.Response<TokensResponseDto>>
+      _ChainTokensController_getTokens();
 
   ///List of preset configurations for the 1inch router
-  Future<chopper.Response> v40250PresetsGet() {
-    return _v40250PresetsGet();
+  Future<chopper.Response> ChainPresetsController_getPresets() {
+    return _ChainPresetsController_getPresets();
   }
 
   ///List of preset configurations for the 1inch router
   @Get(path: '/v4.0/250/presets')
-  Future<chopper.Response> _v40250PresetsGet();
+  Future<chopper.Response> _ChainPresetsController_getPresets();
 
   ///List of liquidity sources that are available for routing in the 1inch Aggregation protocol
-  Future<chopper.Response<ProtocolsResponseDto>> v40250LiquiditySourcesGet() {
+  Future<chopper.Response<ProtocolsResponseDto>>
+      ChainProtocolsController_getProtocolsImages() {
     generatedMapping.putIfAbsent(
         ProtocolsResponseDto, () => ProtocolsResponseDto.fromJsonFactory);
 
-    return _v40250LiquiditySourcesGet();
+    return _ChainProtocolsController_getProtocolsImages();
   }
 
   ///List of liquidity sources that are available for routing in the 1inch Aggregation protocol
   @Get(path: '/v4.0/250/liquidity-sources')
-  Future<chopper.Response<ProtocolsResponseDto>> _v40250LiquiditySourcesGet();
+  Future<chopper.Response<ProtocolsResponseDto>>
+      _ChainProtocolsController_getProtocolsImages();
 
   ///Find the best quote to exchange via 1inch router
   ///@param fromTokenAddress
@@ -151,7 +155,7 @@ abstract class OneInchAggregationFantom extends ChopperService {
   ///@param mainRouteParts default: 10; max: 50  !should be the same for quote and swap!
   ///@param parts split parts. default: 50;  max: 100!should be the same for quote and swap!
   ///@param gasPrice default: fast from network
-  Future<chopper.Response<QuoteResponseDto>> v40250QuoteGet({
+  Future<chopper.Response<QuoteResponseDto>> ExchangeController_getQuote({
     required String? fromTokenAddress,
     required String? toTokenAddress,
     required String? amount,
@@ -167,7 +171,7 @@ abstract class OneInchAggregationFantom extends ChopperService {
     generatedMapping.putIfAbsent(
         QuoteResponseDto, () => QuoteResponseDto.fromJsonFactory);
 
-    return _v40250QuoteGet(
+    return _ExchangeController_getQuote(
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         amount: amount,
@@ -194,7 +198,7 @@ abstract class OneInchAggregationFantom extends ChopperService {
   ///@param parts split parts. default: 50;  max: 100!should be the same for quote and swap!
   ///@param gasPrice default: fast from network
   @Get(path: '/v4.0/250/quote')
-  Future<chopper.Response<QuoteResponseDto>> _v40250QuoteGet({
+  Future<chopper.Response<QuoteResponseDto>> _ExchangeController_getQuote({
     @Query('fromTokenAddress') required String? fromTokenAddress,
     @Query('toTokenAddress') required String? toTokenAddress,
     @Query('amount') required String? amount,
@@ -229,7 +233,7 @@ abstract class OneInchAggregationFantom extends ChopperService {
   ///@param complexityLevel min: 0; max: 3; default: 2; !should be the same for quote and swap!
   ///@param gasLimit
   ///@param gasPrice default: fast from network
-  Future<chopper.Response<SwapResponseDto>> v40250SwapGet({
+  Future<chopper.Response<SwapResponseDto>> ExchangeController_getSwap({
     required String? fromTokenAddress,
     required String? toTokenAddress,
     required String? amount,
@@ -254,7 +258,7 @@ abstract class OneInchAggregationFantom extends ChopperService {
     generatedMapping.putIfAbsent(
         SwapResponseDto, () => SwapResponseDto.fromJsonFactory);
 
-    return _v40250SwapGet(
+    return _ExchangeController_getSwap(
         fromTokenAddress: fromTokenAddress,
         toTokenAddress: toTokenAddress,
         amount: amount,
@@ -299,7 +303,7 @@ abstract class OneInchAggregationFantom extends ChopperService {
   ///@param gasLimit
   ///@param gasPrice default: fast from network
   @Get(path: '/v4.0/250/swap')
-  Future<chopper.Response<SwapResponseDto>> _v40250SwapGet({
+  Future<chopper.Response<SwapResponseDto>> _ExchangeController_getSwap({
     @Query('fromTokenAddress') required String? fromTokenAddress,
     @Query('toTokenAddress') required String? toTokenAddress,
     @Query('amount') required String? amount,

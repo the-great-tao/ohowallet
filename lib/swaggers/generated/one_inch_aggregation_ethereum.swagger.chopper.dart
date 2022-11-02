@@ -17,7 +17,7 @@ class _$OneInchAggregationEthereum extends OneInchAggregationEthereum {
   final definitionType = OneInchAggregationEthereum;
 
   @override
-  Future<Response<dynamic>> _v401HealthcheckGet() {
+  Future<Response<dynamic>> _FactoryHealthCheckController_healthcheck() {
     final String $url = '/v4.0/1/healthcheck';
     final Request $request = Request(
       'GET',
@@ -28,7 +28,8 @@ class _$OneInchAggregationEthereum extends OneInchAggregationEthereum {
   }
 
   @override
-  Future<Response<ApproveSpenderResponseDto>> _v401ApproveSpenderGet() {
+  Future<Response<ApproveSpenderResponseDto>>
+      _ChainApproveController_getSpender() {
     final String $url = '/v4.0/1/approve/spender';
     final Request $request = Request(
       'GET',
@@ -40,7 +41,8 @@ class _$OneInchAggregationEthereum extends OneInchAggregationEthereum {
   }
 
   @override
-  Future<Response<ApproveCalldataResponseDto>> _v401ApproveTransactionGet({
+  Future<Response<ApproveCalldataResponseDto>>
+      _ChainApproveController_getCallData({
     required String? tokenAddress,
     String? amount,
   }) {
@@ -60,7 +62,7 @@ class _$OneInchAggregationEthereum extends OneInchAggregationEthereum {
   }
 
   @override
-  Future<Response<dynamic>> _v401ApproveAllowanceGet({
+  Future<Response<dynamic>> _ChainApproveController_getAllowance({
     required String? tokenAddress,
     required String? walletAddress,
   }) {
@@ -79,7 +81,7 @@ class _$OneInchAggregationEthereum extends OneInchAggregationEthereum {
   }
 
   @override
-  Future<Response<TokensResponseDto>> _v401TokensGet() {
+  Future<Response<TokensResponseDto>> _ChainTokensController_getTokens() {
     final String $url = '/v4.0/1/tokens';
     final Request $request = Request(
       'GET',
@@ -90,7 +92,7 @@ class _$OneInchAggregationEthereum extends OneInchAggregationEthereum {
   }
 
   @override
-  Future<Response<dynamic>> _v401PresetsGet() {
+  Future<Response<dynamic>> _ChainPresetsController_getPresets() {
     final String $url = '/v4.0/1/presets';
     final Request $request = Request(
       'GET',
@@ -101,7 +103,8 @@ class _$OneInchAggregationEthereum extends OneInchAggregationEthereum {
   }
 
   @override
-  Future<Response<ProtocolsResponseDto>> _v401LiquiditySourcesGet() {
+  Future<Response<ProtocolsResponseDto>>
+      _ChainProtocolsController_getProtocolsImages() {
     final String $url = '/v4.0/1/liquidity-sources';
     final Request $request = Request(
       'GET',
@@ -112,7 +115,7 @@ class _$OneInchAggregationEthereum extends OneInchAggregationEthereum {
   }
 
   @override
-  Future<Response<QuoteResponseDto>> _v401QuoteGet({
+  Future<Response<QuoteResponseDto>> _ExchangeController_getQuote({
     required String? fromTokenAddress,
     required String? toTokenAddress,
     required String? amount,
@@ -149,7 +152,7 @@ class _$OneInchAggregationEthereum extends OneInchAggregationEthereum {
   }
 
   @override
-  Future<Response<SwapResponseDto>> _v401SwapGet({
+  Future<Response<SwapResponseDto>> _ExchangeController_getSwap({
     required String? fromTokenAddress,
     required String? toTokenAddress,
     required String? amount,
