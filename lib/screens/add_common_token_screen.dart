@@ -155,7 +155,9 @@ class AddCommonTokenScreenController extends BaseController {
       final tokens = response.body!.tokens;
       final List<TokenDto> newItems = [];
       for (var token in tokens.values) {
-        newItems.add(TokenDto.fromJson(token));
+        var tokenDto = TokenDto.fromJson(token);
+        if (tokenDto.address == OHOSettings.oneInchNativeTokenAddress) continue;
+        newItems.add(tokenDto);
       }
       newItems.sort((tokenA, tokenB) => tokenA.symbol.compareTo(tokenB.symbol));
 
