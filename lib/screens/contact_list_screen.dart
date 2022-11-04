@@ -13,7 +13,7 @@ class ContactListItem extends BaseWidget<ContactListItemController> {
     super.tag,
     required this.contactKey,
     required this.contact,
-    this.editable = false,
+    this.editable = true,
     required this.getBackOnSelected,
   }) : super(controller: ContactListItemController());
 
@@ -103,7 +103,7 @@ class ContactListItem extends BaseWidget<ContactListItemController> {
 }
 
 class ContactListScreenController extends BaseController {
-  var editable = false.obs;
+  var editable = true.obs;
 }
 
 class ContactListScreen extends BaseWidget<ContactListScreenController> {
@@ -165,18 +165,18 @@ class ContactListScreen extends BaseWidget<ContactListScreenController> {
                         width: double.infinity,
                         child: OHOHeaderText('Contacts'),
                       ),
-                      Positioned(
-                        right: 50.w,
-                        child: GestureDetector(
-                          onTap: () => controller.editable.value =
-                              !controller.editable.value,
-                          child: Icon(
-                            Icons.edit,
-                            size: 60.sp,
-                            color: themeService.textColor,
-                          ),
-                        ),
-                      )
+                      // Positioned(
+                      //   right: 50.w,
+                      //   child: GestureDetector(
+                      //     onTap: () => controller.editable.value =
+                      //         !controller.editable.value,
+                      //     child: Icon(
+                      //       Icons.edit,
+                      //       size: 60.sp,
+                      //       color: themeService.textColor,
+                      //     ),
+                      //   ),
+                      // )
                     ],
                   ),
                   contacts,

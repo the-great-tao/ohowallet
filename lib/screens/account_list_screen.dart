@@ -13,7 +13,7 @@ class AccountListItem extends BaseWidget<AccountListItemController> {
     super.tag,
     required this.accountKey,
     required this.account,
-    this.editable = false,
+    this.editable = true,
     required this.getBackOnSelected,
   }) : super(controller: AccountListItemController());
 
@@ -112,7 +112,7 @@ class AccountListItem extends BaseWidget<AccountListItemController> {
 }
 
 class AccountListScreenController extends BaseController {
-  var editable = false.obs;
+  var editable = true.obs;
 }
 
 class AccountListScreen extends BaseWidget<AccountListScreenController> {
@@ -174,18 +174,18 @@ class AccountListScreen extends BaseWidget<AccountListScreenController> {
                         width: double.infinity,
                         child: OHOHeaderText('Accounts'),
                       ),
-                      Positioned(
-                        right: 50.w,
-                        child: GestureDetector(
-                          onTap: () => controller.editable.value =
-                              !controller.editable.value,
-                          child: Icon(
-                            Icons.edit,
-                            size: 60.sp,
-                            color: themeService.textColor,
-                          ),
-                        ),
-                      )
+                      // Positioned(
+                      //   right: 50.w,
+                      //   child: GestureDetector(
+                      //     onTap: () => controller.editable.value =
+                      //         !controller.editable.value,
+                      //     child: Icon(
+                      //       Icons.edit,
+                      //       size: 60.sp,
+                      //       color: themeService.textColor,
+                      //     ),
+                      //   ),
+                      // )
                     ],
                   ),
                   accounts,
